@@ -1,0 +1,29 @@
+{
+  "name": "aug",
+  "owner": {
+    "name": "Bryon",
+    "email": "bryon@example.com"
+  },
+  "metadata": {
+    "description": "Development workflows, tooling standards, and productivity utilities for Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "dev",
+      "source": "./dev",
+      "description": "Development workflows and tooling for software engineering projects",
+      "version": "1.0.0",
+      "category": "development",
+      "keywords": ["development", "workflow", "ci-cd", "testing", "refactoring", "git"]
+    },
+    {
+      "name": "util",
+      "source": "./util",
+      "description": "Personal productivity utilities for session management",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["productivity", "session", "context"]
+    }
+  ]
+}

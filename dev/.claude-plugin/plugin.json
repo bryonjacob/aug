@@ -1,0 +1,8 @@
+{
+  "name": "dev",
+  "description": "Development workflows and tooling for software engineering projects. Includes skills for stack configuration, web UI development, documentation standards, and workflow automation. Commands for issue management, refactoring, and project initialization.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Bryon"
+  }
+}
