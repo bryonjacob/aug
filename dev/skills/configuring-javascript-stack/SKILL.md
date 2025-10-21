@@ -98,22 +98,37 @@ export default defineConfig({
 }
 ```
 
-## .eslintrc.json
+## eslint.config.js
 
-```json
-{
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "rules": {
-    "no-console": "warn",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-    "@typescript-eslint/no-explicit-any": "error"
-  }
-}
+ESLint v9+ uses flat config format:
+
+```javascript
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsparser from '@typescript-eslint/parser'
+
+export default [
+  {
+    ignores: ['node_modules/**', 'dist/**', 'coverage/**', '.vitest/**'],
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      'no-console': 'warn',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'error',
+    },
+  },
+]
 ```
 
 ## vitest.config.ts
@@ -126,7 +141,14 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      exclude: ['node_modules/', 'tests/', 'dist/'],
+      exclude: [
+        'node_modules/',
+        'tests/',
+        'dist/',
+        'coverage/',
+        '**/*.config.{js,ts}',
+        '**/.*rc.{js,ts,json}',
+      ],
       thresholds: {
         lines: 80,
         functions: 80,

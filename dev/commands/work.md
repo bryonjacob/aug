@@ -6,7 +6,7 @@ $ARGUMENTS
 ## Purpose
 Autonomous execution of issue(s) from branch creation through PR merge (or merge to main if no GitHub), passing all quality gates.
 
-This command delegates actual development work to specialized software-engineer agents to conserve main thread tokens and enable parallel execution when appropriate.
+This command handles development work using the `executing-development-issues` skill and related development skills to ensure complete, high-quality implementations.
 
 ## Execution Strategy Syntax
 
@@ -43,27 +43,27 @@ Executes as:
 
 ## CRITICAL: Git Worktrees for Parallel Execution
 
-**⚠️ NEVER run parallel agents in the same working directory.**
+**⚠️ NEVER run parallel tasks in the same working directory.**
 
-When executing issues in parallel, each agent MUST work in its own git worktree to prevent race conditions during testing, linting, and git operations.
+When executing issues in parallel, each task MUST work in its own git worktree to prevent race conditions during testing, linting, and git operations.
 
 ### Why Worktrees Are Required
 
 **Without worktrees (DANGEROUS):**
-- Agent A runs tests → Agent B's code causes Agent A's tests to fail
-- Agent A runs lint → sees errors from Agent B's uncommitted changes
-- Agents conflict on file locks, git index, and test artifacts
+- Task A runs tests → Task B's code causes Task A's tests to fail
+- Task A runs lint → sees errors from Task B's uncommitted changes
+- Tasks conflict on file locks, git index, and test artifacts
 - Unpredictable failures and corrupted work
 
 **With worktrees (SAFE):**
-- Each agent has isolated working directory
+- Each task has isolated working directory
 - Independent test runs, lint checks, and git operations
 - Clean separation of concerns
 - Parallel work actually works
 
 ### Worktree Setup for Parallel Execution
 
-**Before launching parallel agents:**
+**Before launching parallel tasks:**
 
 ```bash
 # Main repo stays on main branch
@@ -79,10 +79,10 @@ git worktree add ../worktree-100 -b 100-feature-name
 # Create worktree for issue 101
 git worktree add ../worktree-101 -b 101-feature-name
 
-# Now launch agents, each working in their own worktree directory
+# Now launch tasks, each working in their own worktree directory
 ```
 
-**After agents complete:**
+**After tasks complete:**
 
 ```bash
 # Remove worktrees (branches already merged via PR)
@@ -94,9 +94,9 @@ git worktree remove ../worktree-101
 git worktree prune
 ```
 
-### Worktree Delegation
+### Worktree Task Instructions
 
-When delegating to agents for parallel work, include the worktree path:
+When delegating to Task tool for parallel work, include the worktree path:
 
 ```
 You are working on issue [NUMBER] in worktree directory: [WORKTREE_PATH]
@@ -122,8 +122,9 @@ git remote get-url origin 2>/dev/null | grep -q github.com && echo "GitHub" || e
 
 ### Single Issue
 For a single issue number (e.g., `/work 123` or `/work LOCAL001`):
-- Delegate to one software-engineer agent
-- Agent handles complete lifecycle: branch → implementation → tests → docs → PR → review → merge
+- Execute using the `executing-development-issues` skill
+- Handle complete lifecycle: branch → implementation → tests → docs → PR → review → merge
+- Use relevant stack-specific skills as needed (Python, JavaScript, Next.js, etc.)
 
 ### Multiple Issues
 For multiple issue numbers (e.g., `/work 123 124 125` or `/work LOCAL001 LOCAL002`):
@@ -151,39 +152,46 @@ Read all issues and determine:
 
 **If parallel is safe:**
 ```
-Launch multiple software-engineer agents in parallel (one per issue)
-Each agent works independently on its issue
-Agents create separate branches and PRs
+Set up git worktrees (one per issue)
+Execute multiple issues in parallel using Task tool with general-purpose agents
+Each task works independently on its issue in its own worktree
+Each creates separate branches and PRs
 Merges happen as each PR is approved
 ```
 
 **If sequential is required:**
 ```
-Launch software-engineer agents one at a time
-Wait for issue 1 to merge before starting issue 2
+Execute issues one at a time in the main working directory
+Complete issue 1 and merge before starting issue 2
 Ensures clean linear development when needed
 ```
 
 **If mixed (some parallel, some sequential):**
 ```
 Group independent issues together
-Launch parallel agents for the group
+Set up worktrees for parallel group
+Execute parallel group using Task tool
 Wait for group to complete before starting dependent issues
 ```
 
-## Delegation Instructions
+## Task Instructions for Parallel or Delegated Work
 
-When delegating to software-engineer agent(s), provide complete context:
+When using the Task tool for parallel or complex work, provide complete context:
 
 ```
-You are a software engineer working on issue [NUMBER/ID].
+You are working on issue [NUMBER/ID].
+
+[If in worktree:]
+Working directory: [WORKTREE_PATH]
+IMPORTANT: All git operations must be performed from within your worktree directory.
+Your worktree is isolated from other parallel work. Test, lint, and commit freely.
 
 Issue source: [GitHub/Local]
 Issue details:
 [Full issue content including acceptance criteria]
 
 Your mission:
-1. Create feature branch
+1. Create feature branch (if not in worktree)
 2. Implement changes to satisfy all acceptance criteria
 3. Write comprehensive tests
 4. Update documentation
@@ -193,7 +201,7 @@ Your mission:
 8. Mark PR ready when all checks pass
 9. Merge after approval
 
-Use the `executing-development-issues` skill for complete development standards.
+CRITICAL: Use the `executing-development-issues` skill for complete development standards.
 Use language-specific skills as needed:
 - `configuring-python-stack` for Python projects
 - `configuring-javascript-stack` for JavaScript/TypeScript
@@ -208,17 +216,17 @@ Report back when issue is complete and merged, including:
 
 ## Parallel Execution Example
 
-When running multiple issues in parallel, launch agents using the Task tool:
+When running multiple issues in parallel, launch tasks using the Task tool:
 
 ```
 # For issues 123, 124, 125 that are independent:
 # Use a SINGLE message with multiple Task tool calls:
 
-Task tool call 1: software-engineer working on issue 123
-Task tool call 2: software-engineer working on issue 124
-Task tool call 3: software-engineer working on issue 125
+Task tool call 1: subagent_type=general-purpose, working on issue 123 in ../worktree-123
+Task tool call 2: subagent_type=general-purpose, working on issue 124 in ../worktree-124
+Task tool call 3: subagent_type=general-purpose, working on issue 125 in ../worktree-125
 
-# Each agent works independently
+# Each task works independently in its own worktree
 # Each creates its own branch and PR
 # Merges happen as PRs are approved
 ```
@@ -230,44 +238,44 @@ When issues have dependencies:
 ```
 # For issues 123 (foundation), 124 (depends on 123):
 
-Task tool call: software-engineer working on issue 123
-[Wait for completion and merge]
+Execute issue 123 directly using executing-development-issues skill
+[Complete and merge]
 
-Task tool call: software-engineer working on issue 124
+Execute issue 124 directly using executing-development-issues skill
 [Now builds on 123's merged changes]
 ```
 
 ## Monitoring Progress
 
-When agents are running:
-- Agents work autonomously through the full development lifecycle
-- Each agent reports back when their issue is complete
-- You can continue other work while agents execute
-- Agents handle all git operations, testing, and quality checks
+When working on issues (directly or via Task tool):
+- Work proceeds autonomously through the full development lifecycle
+- Follow the `executing-development-issues` skill for complete workflow
+- For parallel work, each task in its worktree handles git operations independently
+- Tasks report back when their issue is complete
 
 ## Important Notes
 
-**Token Efficiency:**
-- Delegating to agents keeps main thread context small
-- Each agent has fresh context focused only on its issue
-- Agents handle all implementation details independently
+**Execution Modes:**
+- **Single/Sequential:** Execute directly using skills in main working directory
+- **Parallel/Complex:** Use Task tool with worktrees for isolation
+- **Token Efficiency:** Task tool conserves context; use for parallel or complex work
 
 **Quality Assurance:**
-- Every agent must pass `just check-all` before merging
-- Every agent must satisfy all acceptance criteria
-- Every agent creates PR for review (GitHub) or clean commits (local)
+- Must pass `just check-all` before merging
+- Must satisfy all acceptance criteria
+- Must create PR for review (GitHub) or clean commits (local)
 - No shortcuts - quality is non-negotiable
 
 **Parallel Safety:**
 - Only run issues in parallel if truly independent
 - When in doubt, run sequentially - merge conflicts waste more time than serial execution
 - Complex features with shared components should run sequentially
+- Git worktrees required for parallel execution
 
-**Agent Autonomy:**
-- Agents handle complete workflow without intervention
-- Agents make implementation decisions within issue scope
-- Agents self-review before marking PR ready
-- Agents report back only when complete
+**Skill Usage:**
+- Always use `executing-development-issues` skill as primary workflow
+- Reference stack-specific skills for tooling standards
+- Follow Definition of Done checklist completely
 
 ## Workflow Reference
 
@@ -334,16 +342,23 @@ Output strategy in visual syntax:
 **4. For Single Issue (No Parallelization Needed)**
 
 ```
+Execute directly using the executing-development-issues skill:
+- Work in current directory (no worktree needed)
+- Follow complete workflow from skill
+- Use stack-specific skills as needed
+- Complete all Definition of Done criteria
+
+OR if delegating for token efficiency:
 Launch one Task tool call:
 - subagent_type: "general-purpose"
 - description: "Complete issue [NUMBER]"
-- prompt: [Full delegation instructions with issue details and @software-engineer reference]
+- prompt: [Full task instructions with issue details and skill references]
 - Working directory: Current directory (no worktree needed)
 ```
 
 **5. For Parallel Issues - Setup Worktrees**
 
-**CRITICAL: Before launching parallel agents, create worktrees**
+**CRITICAL: Before launching parallel tasks, create worktrees**
 
 ```bash
 # Ensure main is up to date
@@ -359,30 +374,39 @@ git worktree add ../worktree-101 -b 101-brief-description
 git worktree list
 ```
 
-**6. Launch Agents Based on Strategy**
+**6. Execute Based on Strategy**
 
 **For parallel execution:**
 ```
 Single message with multiple Task tool calls:
-- Task 1: software-engineer on issue 99 in ../worktree-99
-- Task 2: software-engineer on issue 100 in ../worktree-100
-- Task 3: software-engineer on issue 101 in ../worktree-101
+- Task 1: subagent_type=general-purpose on issue 99 in ../worktree-99
+- Task 2: subagent_type=general-purpose on issue 100 in ../worktree-100
+- Task 3: subagent_type=general-purpose on issue 101 in ../worktree-101
 
 All in one message to execute concurrently.
 
-Each agent must be told:
+Each task must be told:
 - Their worktree path
 - To cd into worktree before any git operations
 - That they're isolated from other parallel work
+- To use executing-development-issues skill
 ```
 
 **For sequential execution:**
 ```
-Task tool call for issue 99 (in main directory, no worktree)
-[Wait for agent to complete and report back]
-Task tool call for issue 100 (in main directory)
-[Wait for agent to complete and report back]
+Execute issue 99 directly using executing-development-issues skill
+[Complete and merge]
+
+Execute issue 100 directly using executing-development-issues skill
+[Complete and merge]
+
 Continue until all issues complete
+
+OR if delegating for token efficiency:
+Task tool call for issue 99 (in main directory, no worktree)
+[Wait for completion and merge]
+Task tool call for issue 100 (in main directory)
+[Continue as needed]
 ```
 
 **For mixed execution (parallel groups + sequential):**
@@ -391,18 +415,18 @@ Create worktrees for parallel group
 Launch Task calls for parallel issues (in worktrees)
 [Wait for group completion]
 Clean up worktrees
-Launch next sequential issue (in main directory)
+Execute next sequential issue directly or via Task (in main directory)
 [Continue as needed]
 ```
 
 **7. Monitor and Cleanup**
 
 ```
-As agents complete:
-- Collect their reports
+As work completes:
+- Collect reports (if using Task tool)
 - Verify PRs merged (or commits to main for local)
 
-After parallel agents finish:
+After parallel tasks finish:
 - Remove worktrees:
   git worktree remove ../worktree-99
   git worktree remove ../worktree-100
