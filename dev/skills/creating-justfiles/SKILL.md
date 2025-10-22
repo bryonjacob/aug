@@ -1,6 +1,6 @@
 ---
 name: creating-justfiles
-description: Use when creating justfile for a new project or adding standard commands - provides templates for Python, JavaScript, and polyglot projects with required commands (dev, format, lint, test, check-all, clean)
+description: Use when creating justfile for a new project or adding standard commands - provides templates for Python, JavaScript, Java, and polyglot projects with required commands (dev, format, lint, test, check-all, clean)
 ---
 
 # Creating Justfiles
@@ -134,7 +134,7 @@ typecheck:
 
 # Run tests
 test:
-    pnpm vitest run
+    pnpm vitest run --reporter=verbose
 
 # Run tests in watch mode
 test-watch:
@@ -143,6 +143,15 @@ test-watch:
 # Run tests with coverage
 coverage:
     pnpm vitest run --coverage
+
+# Check complexity
+complexity:
+    pnpm ts-complex src/**/*.ts
+
+# Count lines of code (largest files first)
+loc N="20":
+    @echo "📊 Lines of code by file (largest first, showing {{N}}):"
+    @pnpm cloc src/ --by-file --include-lang=TypeScript --quiet | sort -rn | head -{{N}}
 
 # Build project
 build:
@@ -155,6 +164,64 @@ check-all: format lint typecheck coverage
 # Clean generated files
 clean:
     rm -rf node_modules dist coverage .vitest
+```
+
+## Java Project Template
+
+```just
+set shell := ["bash", "-uc"]
+
+default:
+    @just --list
+
+# Install dependencies
+dev:
+    mvn clean install -DskipTests
+
+# Format code with Spotless
+format:
+    mvn spotless:apply
+
+# Lint code with SpotBugs
+lint:
+    mvn spotbugs:check
+
+# Type check (compile)
+typecheck:
+    mvn clean compile
+
+# Run tests
+test:
+    mvn test
+
+# Run tests in watch mode
+test-watch:
+    mvn fizzed-watcher:run
+
+# Run tests with coverage
+coverage:
+    mvn clean verify
+
+# Check complexity (detailed analysis)
+complexity:
+    mvn pmd:pmd
+
+# Count lines of code (largest files first)
+loc N="20":
+    @echo "📊 Lines of code by file (largest first, showing {{N}}):"
+    @cloc src/ --by-file --include-lang=Java --quiet | sort -rn | head -{{N}}
+
+# Build project
+build:
+    mvn clean package
+
+# Run all quality checks
+check-all: format lint typecheck coverage
+    @echo "✅ All checks passed"
+
+# Clean generated files
+clean:
+    mvn clean
 ```
 
 ## Polyglot Project Template
@@ -358,5 +425,6 @@ scoop install just
 
 - **Python only:** Use Python template
 - **JavaScript only:** Use JavaScript template
-- **Both:** Use Polyglot template
-- **Other language:** Adapt Python template pattern
+- **Java only:** Use Java template
+- **Multiple languages:** Use Polyglot template (adapt for your combination)
+- **Other language:** Adapt one of the existing templates to your stack
