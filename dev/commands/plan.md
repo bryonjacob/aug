@@ -240,97 +240,50 @@ NEXT=$((NEXT + 1))
 printf "LOCAL%03d" $NEXT
 ```
 
-## Execution Strategy Planning
+## Execution Strategy
 
-After creating all issues, analyze their dependencies and provide a recommended execution strategy using visual syntax.
+After creating all issues, provide the recommended execution order.
 
-### Execution Strategy Syntax
-
-- `>` = sequential (then)
-- `|` = parallel (and)
-- `()` = grouping
-- `-` = range
-
-**Be conservative:** Only recommend parallel execution when issues are clearly independent.
-
-### Dependency Analysis
-
-For each issue pair, consider:
-- **File/module overlap:** Do they touch the same code?
-- **Logical dependencies:** Does one build on another?
-- **Shared resources:** Database schemas, API contracts, configuration?
-- **Feature relationships:** Are they part of the same feature flow?
-
-**Conservative decision matrix:**
-- Same module/feature → Sequential
-- Explicit "Part of" or "Depends on" → Sequential
-- Different modules, no overlap → Parallel
-- Unclear → Sequential (safe default)
+Issues should be executed **sequentially** in dependency order.
 
 ### Output Format
 
 After creating all issues, output:
 
 ```
-## Recommended Execution Strategy
+## Recommended Execution Order
 
-Based on dependency analysis:
+Issues to execute in order:
 
-Strategy: [VISUAL_SYNTAX]
-
-Explanation:
-- [Issue X]: [Brief reasoning]
-- [Issue Y]: [Brief reasoning]
-- [Issues A|B]: Independent, safe to parallelize
-- [Issues C>D]: D depends on C
+1. Issue #99 - [Title]
+2. Issue #100 - [Title]
+3. Issue #101 - [Title]
 
 To execute this plan:
-/work [VISUAL_SYNTAX]
+/work 99 100 101
 
-Example:
-/work 99>100>(101|102)>103
+Or execute them one at a time:
+/work 99
+/work 100
+/work 101
 ```
 
-### Example Outputs
+### Example Output
 
-**All sequential:**
 ```
-Strategy: 99>100>101>102
+## Recommended Execution Order
 
-Explanation:
-- All issues modify the authentication module
-- Each builds on the previous implementation
-- Must be done in order
+Based on dependencies:
+
+1. Issue #99 - Database schema setup (foundation)
+2. Issue #100 - User API endpoint (requires database)
+3. Issue #101 - Auth API endpoint (requires database)
+4. Issue #102 - Integration tests (requires all endpoints)
 
 To execute:
-/work 99>100>101>102
-```
+/work 99 100 101 102
 
-**Some parallel:**
-```
-Strategy: 99>(100|101|102)>103
-
-Explanation:
-- Issue 99: Database schema (foundation)
-- Issues 100-102: Independent API endpoints (can parallelize)
-- Issue 103: Integration tests (requires all endpoints)
-
-To execute:
-/work 99>(100|101|102)>103
-```
-
-**Complex nested:**
-```
-Strategy: 99>100>(101|102|(103>104))>(105|106)>107
-
-Explanation:
-- Issue 99-100: Sequential setup
-- Parallel group: 101, 102, and (103 then 104)
-- Parallel group: 105 and 106
-- Issue 107: Final integration
-
-To execute:
-/work 99>100>(101|102|(103>104))>(105|106)>107
+Each issue will be completed fully before moving to the next.
 ```
 
 ## Execution Notes
@@ -340,7 +293,7 @@ To execute:
 - Follow same issue template structure regardless of storage
 - Use conventional commit prefixes in titles for better organization
 - Same SDLC rigor whether using GitHub or local issues
-- **Always output recommended execution strategy** after creating issues
+- **Always output recommended execution order** after creating issues
 
 ## Example Flow
 1. Create parent issue → Save its ID
