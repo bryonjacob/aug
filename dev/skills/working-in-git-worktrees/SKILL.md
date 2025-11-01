@@ -1,154 +1,99 @@
 ---
 name: working-in-git-worktrees
-description: Use when working in parallel with other agents or when assigned a worktree directory - explains worktree isolation, how to work normally, and what's different from regular branches
+description: Working in isolated worktree directories for parallel work - work normally, tests isolated, orchestrator handles cleanup
 ---
 
 # Working in Git Worktrees
 
-## Overview
+## Purpose
 
-Git worktrees allow parallel work by creating isolated working directories on separate branches. Each worktree has its own files, but shares git history.
+Git worktrees create isolated working directories on separate branches. Enables parallel work without conflicts.
 
-**Why you might be in a worktree:**
-- Working in parallel with other agents
-- Each agent needs isolated directory
-- Prevents race conditions during tests/linting
-- Your branch independent from other parallel work
+**Why you're in a worktree:**
+- Parallel work with other agents
+- Test/lint isolation
+- Independent branch work
 
-## Identifying Worktree
+## Check if in Worktree
 
 ```bash
-# Check if in worktree
 git rev-parse --git-dir
-# Output .git → main repo
-# Output ../path/.git/worktrees/name → in worktree
+# .git → main repo
+# ../path/.git/worktrees/name → worktree
 
-# Or check current directory
-pwd
-# Contains "worktree" → likely in worktree
-
-# Verify current branch
 git branch  # Shows your feature branch
 ```
 
-## Working in Worktree
+## Working Normally
 
-**Good news: Everything works normally!**
-
-You can:
-- Make commits as usual
+**Everything works normally!**
+- Commit, push, pull as usual
 - Run tests in isolation
-- Push/pull to remote
 - Create PRs
 - All git operations work
 
 **What's different:**
-- Working directory is NOT the main repo location
-- Your changes don't affect other parallel work
-- Tests run independently
-- Lint/format see only your changes
+- Separate working directory
+- Changes don't affect parallel work
+- Tests/lint see only your changes
 
-## Typical Workflow
+## Workflow
 
 ```bash
-# You're delegated: "Work in ../worktree-42"
+# Delegated to worktree
 cd ../worktree-42
 
-# Verify setup
-git branch  # Should show feature-branch-42
-git status  # Should be clean
+# Verify
+git branch  # feature-branch-42
+git status  # Clean
 
 # Work normally
 # Edit files
 git add .
-git commit -m "feat: implement feature"
-
-# Run tests (isolated from other work)
-just test
-
-# Quality checks (see only your changes)
+git commit -m "feat: implement"
 just check-all
-
-# Push when ready
 git push -u origin HEAD
 
 # Create PR
 gh pr create --draft
 ```
 
-## Key Differences
+## Comparison
 
 | Aspect | Main Repo | Worktree |
 |--------|-----------|----------|
-| Location | Original clone path | Separate directory |
-| Branch | Checked out in main | Checked out in worktree |
-| Tests | Might conflict with parallel work | Fully isolated |
-| Files | Shared with worktrees | Independent |
-| Git history | Shared | Shared (same repo) |
+| Location | Original path | Separate directory |
+| Tests | May conflict | Fully isolated |
+| Files | Shared | Independent |
+| Git history | Shared | Shared |
 
-## After Work Complete
+## After Complete
 
-**Don't manually delete worktree!**
+**Don't manually delete!**
 
-After PR merge:
-- Orchestrator cleans up worktree
-- Just switch back to main repo
-- Continue with next task
+Orchestrator handles cleanup after merge. Just return to main:
 
 ```bash
-# After your PR merges
-cd ../main-repo  # Or original location
+cd ../main-repo
 git checkout main
 git pull
-# Worktree cleanup handled elsewhere
 ```
 
-## Common Patterns
+## Commands
 
-**Checking out to worktree from main:**
 ```bash
-# Usually done by orchestrator, but FYI:
+# Create (usually orchestrator does this)
 git worktree add ../worktree-42 -b feature-42
-cd ../worktree-42
-# Now on feature-42 in isolated directory
-```
 
-**Listing all worktrees:**
-```bash
+# List
 git worktree list
-# Shows all active worktrees and their branches
-```
 
-**Removing worktree (orchestrator does this):**
-```bash
+# Remove (orchestrator does this)
 git worktree remove ../worktree-42
 ```
 
 ## Troubleshooting
 
-**"Can't checkout branch, already checked out"**
-- Branch is checked out in another worktree
-- Switch to different branch in other worktree first
-- Or use different branch name
-
-**Changes not showing up:**
-- Make sure you're in correct worktree directory
-- Check `pwd` and `git branch`
-
-**Tests failing unexpectedly:**
-- Verify worktree has latest changes
-- `git pull` or `git fetch` if needed
-
-## Benefits
-
-**Why use worktrees:**
-- Work on multiple branches simultaneously
-- No stashing required when switching context
-- Each branch isolated - tests don't interfere
-- Perfect for parallel agent work
-- Safe experimentation without affecting main work
-
-**When NOT to use:**
-- Sequential work on single branch
-- Personal development without parallel tasks
-- Simple bug fixes on main branch
+**"Branch already checked out"** - Switch branch in other worktree first
+**Changes not showing** - Check `pwd` and `git branch`
+**Tests failing** - Verify with `git pull`
