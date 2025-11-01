@@ -1,3 +1,9 @@
+---
+name: start-project
+description: Initialize new project with complete development setup
+argument-hint: <project-name>
+---
+
 # start-project
 
 ## Task

@@ -1,3 +1,8 @@
+---
+name: devinit
+description: Audit project and setup missing development components
+---
+
 # devinit
 
 ## Task

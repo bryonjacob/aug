@@ -1,3 +1,9 @@
+---
+name: plan
+description: Break down work into GitHub or local issues with execution strategy
+argument-hint: <description>
+---
+
 # plan
 
 ## Task

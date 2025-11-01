@@ -1,3 +1,9 @@
+---
+name: work
+description: Execute issue(s) through complete development lifecycle from branch creation to PR merge
+argument-hint: <issue-numbers>
+---
+
 # work
 
 ## Task

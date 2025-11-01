@@ -1,3 +1,9 @@
+---
+name: refactor
+description: Systematic refactoring with 90%+ coverage requirement
+argument-hint: <scope>
+---
+
 # refactor
 
 ## Task

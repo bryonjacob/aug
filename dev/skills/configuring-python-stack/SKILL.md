@@ -1,62 +1,128 @@
 ---
 name: configuring-python-stack
-description: Use when setting up Python projects, configuring quality tools (formatting, linting, type checking, testing), or running web services in containers - provides modern toolchain standards using uv and ruff
+description: Python stack configuration - uv, ruff, mypy, pytest with 96% coverage threshold
 ---
 
-# Configuring Python Stack
+# Python Stack
 
-## Overview
+## Toolchain
 
-Modern Python toolchain using **uv** (package management) and **ruff** (formatting + linting). Replaces Poetry/pip + black + isort + flake8 with faster, simpler tools.
-
-## Toolchain (Complete List)
-
-| Tool | Purpose | Replaces |
-|------|---------|----------|
-| **uv** | Package manager, venv, builds | pip + venv + setuptools |
-| **ruff** | Format + lint + import sort | black + flake8 + isort |
-| **mypy** | Type checking (strict) | - |
-| **pytest** | Testing framework | - |
-| **pytest-cov** | Coverage (80%+ threshold) | - |
-| **pytest-watcher** | Watch mode for tests | - |
-| **radon** | Complexity analysis | - |
-| **pygount** | File size monitoring (<150 lines) | - |
-
-**IMPORTANT:** Install ALL dev dependencies - missing tools = incomplete quality checks.
+| Tool | Use |
+|------|-----|
+| **uv** | Package manager, venv, builds |
+| **ruff** | Format + lint + import sort |
+| **mypy** | Type checking (strict) |
+| **pytest** | Testing framework |
+| **pytest-cov** | Coverage (96% threshold) |
+| **pytest-watcher** | Watch mode |
+| **radon** | Complexity analysis |
+| **pygount** | Lines of code |
+| **pip-audit** | Security vulnerabilities |
+| **pip-licenses** | License analysis |
+| **cyclonedx-py** | SBOM generation |
 
 ## Quick Reference
 
 ```bash
-# Setup
-uv venv .venv
-uv pip install -e ".[dev]"
-
-# Quality checks (use 'uv run' to auto-activate venv)
-uv run ruff format .           # Format
-uv run ruff check .            # Lint
-uv run mypy src                # Type check
-uv run pytest --durations=10   # Test (show 10 slowest)
-uv run pytest --cov=src --cov-report=term-missing --cov-fail-under=80 --durations=10
-uv run radon cc src -a -nb     # Complexity
-uv run pygount --format=sloccount src/ | sort -rn | head -20  # File sizes
+uv venv .venv && uv pip install -e ".[dev]"
+uv run ruff format .
+uv run ruff check --fix . --select C90 --complexity-max 10
+uv run mypy src
+uv run pytest -m "not integration" --durations=10
+uv run pytest -m "not integration" --cov=src --cov-fail-under=96
 ```
 
-## Web Services: Critical Configuration
-
-**Always bind to `0.0.0.0` (not `127.0.0.1`) for Docker compatibility.**
-
-Make host/port configurable via environment variables:
+**Web services:** Bind to `0.0.0.0` (not `127.0.0.1`) for Docker.
 
 ```python
-import os
-
-if __name__ == "__main__":
-    host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", "8000"))
-    uvicorn.run("app:app", host=host, port=port)
+host = os.getenv("HOST", "0.0.0.0")
+port = int(os.getenv("PORT", "8000"))
 ```
 
-## pyproject.toml Essentials
+## Standard Justfile Interface
+
+**Implements:** justfile-standard-interface
+
+```just
+set shell := ["bash", "-uc"]
+
+# Show all available commands
+default:
+    @just --list
+
+# Install dependencies and setup development environment
+dev-install:
+    uv venv .venv
+    uv pip install -e ".[dev]"
+
+# Format code (auto-fix)
+format:
+    uv run ruff format .
+
+# Lint code (auto-fix, complexity threshold=10)
+lint:
+    uv run ruff check --fix . --select C90 --complexity-max 10
+
+# Type check code
+typecheck:
+    uv run mypy src
+
+# Run unit tests
+test:
+    uv run pytest -m "not integration" --durations=10
+
+# Run tests in watch mode
+test-watch:
+    uv run pytest-watcher --now --clear . -m "not integration" -- --durations=10
+
+# Run unit tests with coverage threshold (96%)
+coverage:
+    uv run pytest -m "not integration" --cov=src --cov-report=term-missing --cov-report=html --cov-fail-under=96 --durations=10
+
+# Run integration tests with coverage report (no threshold)
+integration-test:
+    uv run pytest -m "integration" --cov=src --cov-report=term-missing --cov-report=html --durations=10
+
+# Detailed complexity report for refactoring decisions
+complexity:
+    uv run radon cc src -a -nb
+
+# Show N largest files by lines of code
+loc N="20":
+    @echo "📊 Top {{N}} largest files by LOC:"
+    @uv run pygount --format=summary src/ | grep "\.py" | sort -k2 -rn | head -{{N}}
+
+# Show outdated packages
+deps:
+    uv pip list --outdated
+
+# Check for security vulnerabilities
+vulns:
+    uv run pip-audit
+
+# Analyze licenses (flag GPL, etc.)
+lic:
+    uv run pip-licenses --summary
+
+# Generate software bill of materials
+sbom:
+    uv run cyclonedx-py requirements requirements.txt -o sbom.json
+
+# Build artifacts
+build:
+    uv run python -m build
+
+# Run all quality checks (format, lint, typecheck, coverage - fastest first)
+check-all: format lint typecheck coverage
+    @echo "✅ All checks passed"
+
+# Remove generated files and artifacts
+clean:
+    rm -rf .venv __pycache__ .pytest_cache .mypy_cache .coverage htmlcov dist build *.egg-info
+    find . -type f -name "*.pyc" -delete
+```
+
+## pyproject.toml
 
 ```toml
 [project]
@@ -68,12 +134,13 @@ dependencies = []
 dev = [
     "pytest>=8.0", "pytest-cov>=4.1", "pytest-watcher>=0.4",
     "mypy>=1.8", "ruff>=0.3", "radon>=6.0", "pygount>=3.1",
+    "pip-audit", "pip-licenses", "cyclonedx-py", "build",
 ]
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-select = ["E", "F", "I", "N", "UP", "B", "C90"]  # NO 'D' (docstring rules)
+select = ["E", "F", "I", "N", "UP", "B", "C90"]
 
 [tool.ruff.mccabe]
 max-complexity = 10
@@ -83,62 +150,17 @@ strict = true
 disallow_untyped_defs = true
 
 [tool.coverage.report]
-fail_under = 80
+fail_under = 96
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: integration tests (deselect with '-m not integration')",
+]
 ```
 
-## UV Filesystem Warning Fix
+## Notes
 
-If seeing "Failed to hardlink files" warnings, configure UV globally (one-time):
-
-```bash
-mkdir -p ~/.config/uv
-cat > ~/.config/uv/uv.toml << 'EOF'
-link-mode = "copy"
-EOF
-```
-
-## justfile Commands
-
-```just
-dev:
-    uv venv .venv && uv pip install -e ".[dev]"
-
-format:
-    uv run ruff format .
-
-lint:
-    uv run ruff check .
-
-typecheck:
-    uv run mypy src
-
-test:
-    uv run pytest --durations=10  # CRITICAL: --durations=10 monitors test performance
-
-test-watch:
-    uv run pytest-watcher --now --clear . -- --durations=10
-
-coverage:
-    uv run pytest --cov=src --cov-report=term-missing --cov-fail-under=80 --durations=10
-
-check-all: format lint typecheck coverage
-```
-
-## Common Mistakes
-
-| Mistake | Fix |
-|---------|-----|
-| Using Poetry/pip | Use **uv** for all package management |
-| Using black + isort | Use **ruff** alone (does both) |
-| Missing dev tools | Must install: pytest-watcher, radon, pygount |
-| Forgetting --durations=10 | **Every pytest command** must include --durations=10 |
-| Binding to 127.0.0.1 | Bind to **0.0.0.0** for Docker |
-| Including 'D' in ruff rules | **Remove** - we don't enforce docstring rules |
-| Verbose pyproject.toml | Keep ruff select minimal: ["E", "F", "I", "N", "UP", "B", "C90"] |
-
-## Quality Thresholds
-
-- Coverage: **80% minimum** (90%+ before refactoring)
-- Complexity: **Max 10** (cyclomatic)
-- Type coverage: **100%** (mypy strict mode)
-- File size: **<150 lines** where practical
+- Mark integration tests: `@pytest.mark.integration`
+- Unit tests (unmarked) run in check-all with 96% threshold
+- `--durations=10` monitors test performance
+- No docstring enforcement (no 'D' in ruff rules)

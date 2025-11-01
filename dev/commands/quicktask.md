@@ -1,3 +1,9 @@
+---
+name: quicktask
+description: Handle ad-hoc work with automatic issue creation and execution
+argument-hint: <task-description>
+---
+
 # quicktask
 
 ## Task

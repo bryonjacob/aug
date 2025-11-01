@@ -159,10 +159,10 @@ export default defineConfig({
         '**/.*rc.{js,ts,json}',
       ],
       thresholds: {
-        lines: 80,
-        functions: 80,
-        branches: 80,
-        statements: 80,
+        lines: 96,
+        functions: 96,
+        branches: 96,
+        statements: 96,
       },
     },
   },
@@ -199,51 +199,94 @@ export default defineConfig({
 }
 ```
 
-## justfile Integration
+## justfile Implementation
+
+**Implements:** justfile-standard-interface
 
 ```just
-dev:
+set shell := ["bash", "-uc"]
+
+# Show all available commands
+default:
+    @just --list
+
+# Install dependencies and setup development environment
+dev-install:
     pnpm install
 
+# Format code (auto-fix)
 format:
     pnpm prettier --write .
 
+# Lint code (auto-fix, complexity threshold=10)
 lint:
-    pnpm eslint .
+    pnpm eslint . --fix --max-complexity 10
 
+# Type check code
 typecheck:
     pnpm tsc --noEmit
 
+# Run unit tests
 test:
-    pnpm vitest run --reporter=verbose  # Shows slow tests
+    pnpm vitest run tests/unit --reporter=verbose
 
+# Run tests in watch mode
 test-watch:
-    pnpm vitest
+    pnpm vitest tests/unit
 
+# Run unit tests with coverage threshold (96%)
 coverage:
-    pnpm vitest run --coverage
+    pnpm vitest run tests/unit --coverage --coverage.lines=96
 
+# Run integration tests with coverage report (no threshold)
+integration-test:
+    pnpm vitest run tests/integration --coverage
+
+# Detailed complexity report for refactoring decisions
 complexity:
-    pnpm ts-complex src/**/*.ts
+    pnpm dlx @pnpm/complexity src
 
+# Show N largest files by lines of code
 loc N="20":
-    @echo "📊 Lines of code by file (largest first, showing {{N}}):"
-    @pnpm cloc src/ --by-file --include-lang=TypeScript --quiet | sort -rn | head -{{N}}
+    @echo "📊 Top {{N}} largest files by LOC:"
+    @pnpm cloc src/ --by-file --quiet | sort -rn | head -{{N}}
 
+# Show outdated packages
+deps:
+    pnpm outdated
+
+# Check for security vulnerabilities
+vulns:
+    pnpm audit
+
+# Analyze licenses (flag GPL, etc.)
+lic:
+    pnpm dlx license-checker --summary
+
+# Generate software bill of materials
+sbom:
+    pnpm dlx @cyclonedx/cyclonedx-npm --output-file sbom.json
+
+# Build artifacts
+build:
+    pnpm tsc
+
+# Run all quality checks (format, lint, typecheck, coverage - fastest first)
 check-all: format lint typecheck coverage
     @echo "✅ All checks passed"
 
+# Remove generated files and artifacts
 clean:
     rm -rf node_modules dist coverage .vitest
 ```
 
 ## Quality Thresholds
 
-- **Coverage:** 80% minimum
+- **Coverage:** 96% for unit tests (blocking), integration tests informational
 - **Type coverage:** 100% (no `any` types)
 - **Linting:** Zero eslint violations
 - **Type checking:** Zero tsc errors
-- **Complexity:** Max 10 (cyclomatic)
+- **Complexity:** Max 10 (cyclomatic, enforced in lint)
 
 ## Common Patterns
 

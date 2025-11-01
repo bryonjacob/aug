@@ -1,3 +1,8 @@
+---
+name: notetoself
+description: Save current working context for later resumption
+---
+
 # notetoself
 
 ## Task
