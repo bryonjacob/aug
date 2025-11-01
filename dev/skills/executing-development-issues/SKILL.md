@@ -1,174 +1,116 @@
 ---
 name: executing-development-issues
-description: Use when implementing GitHub or local issues through complete development lifecycle - covers branch creation, implementation, testing, PR creation, and merge workflow with quality gates
+description: Complete development lifecycle for GitHub/local issues - branch, implement, test, PR, merge with quality gates
 ---
 
 # Executing Development Issues
 
-## Overview
+## Purpose
 
-Complete workflow for implementing issues from start to finish: branch → code → tests → PR → review → merge. Works for both GitHub issues and local issues (ISSUES.LOCAL/).
+Complete workflow: branch → code → tests → PR → merge. Works for GitHub and local issues (ISSUES.LOCAL/).
 
-**Core principle:** One issue at a time, full lifecycle before moving to next.
+**Core principle:** One issue at a time, full lifecycle before next.
+
+## Uses
+
+**Standard Interface:** justfile-standard-interface
+
+```bash
+just test-watch  # Continuous testing
+just check-all   # Quality gate before merge
+```
 
 ## Quick Reference
 
 ```bash
-# 1. Get issue details
+# 1. Get issue
 gh issue view [NUMBER]              # GitHub
 cat ISSUES.LOCAL/LOCAL###-Title.md  # Local
 
-# 2. Create branch (if not in worktree)
+# 2. Branch (if not in worktree)
 git checkout -b [ISSUE_ID]-description
 
-# 3. Implement with tests
-just test-watch  # Keep running
+# 3. Implement with TDD
+just test-watch
 
-# 4. Quality checks
+# 4. Quality gate
 just check-all
 
-# 5. Create PR (GitHub only)
+# 5. PR (GitHub only)
 gh pr create --draft
-gh pr ready  # When complete
+gh pr ready
 
 # 6. Merge
 gh pr merge --squash --delete-branch  # GitHub
-git checkout main && git merge --squash BRANCH  # Local
+git merge --squash BRANCH            # Local
 ```
 
-## Working Directory: Worktree vs Main
+## Worktree vs Main
 
-**Check if in worktree:**
+**Check:**
 ```bash
-git rev-parse --git-dir  # Shows .git or ../path/.git/worktrees/name
+git rev-parse --git-dir  # .git = main, worktrees/name = worktree
 ```
 
-**If IN worktree (parallel work):**
-- You're already on your feature branch
-- No need to checkout or create branch
-- Work normally, worktree is isolated
-- After merge, worktree cleaned up by orchestrator
-
-**If NOT in worktree (sequential work):**
-```bash
-git checkout main
-git pull origin main
-git checkout -b [ISSUE_ID]-description
-```
+**In worktree:** Already on feature branch, work normally
+**Not in worktree:** `git checkout -b [ISSUE_ID]-description`
 
 ## Branch Naming
 
-- **GitHub issues:** `[issue-number]-[brief-description]`
-  - Example: `42-add-user-auth`
-- **Local issues:** `LOCAL###-[brief-description]`
-  - Example: `LOCAL001-fix-parser`
+- GitHub: `42-add-user-auth`
+- Local: `LOCAL001-fix-parser`
 
-## Implementation Workflow
+## Implementation
 
-**1. Read acceptance criteria carefully**
-- Understand what "done" means
+**1. Read acceptance criteria**
+- Understand "done"
 - Note all requirements
 - Identify edge cases
 
-**2. Follow TDD:**
-- Write test for expected behavior
-- Implement to satisfy test
+**2. TDD cycle**
+- Write test
+- Implement
 - Refactor while green
 - Commit frequently
 
-**3. Commit messages:**
+**3. Commit messages**
 ```bash
-git commit -m "feat: specific change description
+git commit -m "feat: specific change
 
-Refs #42"  # or "Refs LOCAL###"
+Refs #42"
 ```
 
-**4. Create draft PR early (GitHub):**
+**4. Draft PR early (GitHub)**
 ```bash
-git push -u origin HEAD
-
-gh pr create \
-  --title "feat: description" \
-  --body "Closes #42
-
-## Changes
-- Change 1
-- Change 2
-
-## Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2" \
-  --draft
+gh pr create --draft --title "feat: description" --body "Closes #42"
 ```
 
 ## Definition of Done
 
-Before marking complete:
-
 - ✅ All acceptance criteria met
 - ✅ Tests written and passing
-- ✅ Coverage >= 80% (90%+ before refactoring)
+- ✅ Coverage >= 96%
 - ✅ `just check-all` passes
 - ✅ Documentation updated
-- ✅ Code clean and maintainable
-- ✅ PR created (GitHub) / branch pushed (local)
-- ✅ CI passing (GitHub)
-- ✅ Self-review completed
+- ✅ Self-review completed (self-reviewing-code skill)
 - ✅ Merged to main
 - ✅ Issue closed
-
-**If any incomplete, work is not done.**
-
-## Common Mistakes
-
-| Mistake | Fix |
-|---------|-----|
-| Working on multiple issues | One at a time, full lifecycle |
-| Skipping tests | Write tests as you implement |
-| Ignoring quality checks | `just check-all` must pass |
-| Unclear commits | Explain what and why |
-| Forgetting documentation | Update docs with code |
-| Rushing to merge | Self-review with fresh eyes |
-
-## Quality Gates
-
-```bash
-just check-all  # Must pass:
-```
-- Code formatted
-- No lint errors
-- Type checking passes
-- All tests pass
-- Coverage meets threshold
 
 ## Merging
 
 **GitHub:**
 ```bash
-gh pr ready  # Mark ready for review
-# After approval:
+gh pr ready
 gh pr merge --squash --delete-branch
 ```
 
 **Local:**
 ```bash
-# Update issue status BEFORE merge
 sed -i '' 's/^status: ready$/status: closed/' ISSUES.LOCAL/LOCAL###-Title.md
-
 git checkout main
 git merge --squash BRANCH
-git add ISSUES.LOCAL/LOCAL###-Title.md
 git commit -m "feat: description
 
 Closes LOCAL###"
 git branch -d BRANCH
 ```
-
-## When to Ask for Help
-
-- Acceptance criteria unclear
-- Quality checks failing mysteriously
-- Scope larger than issue suggests
-- Making assumptions about requirements
-- Considering architectural changes
-- Tests flaky or slow

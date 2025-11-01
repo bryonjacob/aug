@@ -1,119 +1,74 @@
 ---
 name: self-reviewing-code
-description: Use when PR is complete and ready for review - provides fresh-eyes review checklist to catch problems before marking ready, including when to invoke code-review subagent
+description: Self-review checklist before marking PR ready - catch clarity, correctness, and maintainability issues with fresh eyes
 ---
 
 # Self-Reviewing Code
 
-## Overview
+## Purpose
 
-Before marking PR ready, review with beginner-mind. Fresh perspective catches assumptions, missing edge cases, and unclear code that made sense in the moment.
+Review your own PR with beginner-mind before marking ready. Step back and catch assumptions, missing edge cases, unclear code.
 
-**Core insight:** You're too close to the code. Step back and review as if seeing it for the first time.
+**Core insight:** You're too close to the code. Review as if seeing it for the first time.
+
+## Pre-Review
+
+```bash
+just check-all    # Automated checks
+gh pr checks      # CI status
+```
 
 ## Self-Review Checklist
 
-**Before marking PR ready:**
+**Before marking ready:**
 
-- [ ] Re-read original issue - are ALL criteria met?
-- [ ] Review the diff - is code clear and maintainable?
-- [ ] Check test coverage - are edge cases covered?
-- [ ] Verify documentation updated
-- [ ] Run `just check-all` one final time
-- [ ] Check CI status: `gh pr checks`
-
-## When to Invoke Code Review Subagent
-
-**Consider using fresh subagent when:**
-- Change is complex (>200 lines, multiple files)
-- Touches critical paths (auth, payments, data integrity)
-- Refactoring without clear tests
-- You're unsure about approach
-- Making architectural changes
-- Want extra confidence before review
-
-**How fresh review helps:**
-
-A subagent with no prior context catches:
-- Assumptions that aren't obvious
-- Missing edge cases you didn't consider
-- Code that made sense to you but is unclear
-- Documentation gaps
-- Subtle bugs from too much familiarity
-
-**Invoke pattern:**
-```bash
-# Create review request describing:
-# - What the code does
-# - What to look for
-# - Specific concerns
-
-# Subagent sees only:
-# - Issue description
-# - The diff
-# - Test files
-```
+- [ ] Re-read original issue - ALL criteria met?
+- [ ] Review diff - code clear and maintainable?
+- [ ] Edge cases covered in tests?
+- [ ] Documentation updated?
+- [ ] `just check-all` passes?
+- [ ] CI green?
 
 ## Review Questions
 
 **Clarity:**
-- Would this make sense to someone unfamiliar with the code?
-- Are variable/function names descriptive?
-- Is complex logic commented with "why"?
+- Would this make sense to someone unfamiliar?
+- Variable/function names descriptive?
+- Complex logic commented with "why"?
 
 **Correctness:**
-- Do tests cover edge cases?
-- Are error conditions handled?
-- Could this fail in production scenarios?
+- Tests cover edge cases?
+- Error conditions handled?
+- Could this fail in production?
 
 **Maintainability:**
-- Is code DRY (Don't Repeat Yourself)?
-- Are functions focused on single responsibility?
-- Would future changes be easy?
+- Code DRY?
+- Functions single-responsibility?
+- Future changes easy?
 
 **Performance:**
-- Any obvious performance issues?
+- Obvious performance issues?
 - Database queries efficient?
-- Unnecessary loops or allocations?
 
 **Security:**
-- Are inputs validated?
+- Inputs validated?
 - Sensitive data handled properly?
 - No injection vulnerabilities?
 
-## Common Issues Caught in Self-Review
+## Common Issues
 
 - Leftover debugging code (`console.log`, `print`)
-- Commented-out code that should be removed
+- Commented-out code
 - TODOs that should be issues
 - Magic numbers without constants
-- Inconsistent error handling
 - Missing null/undefined checks
 - Hardcoded values that should be config
-- Tests that pass but don't test the right thing
 
 ## Fresh Eyes Technique
 
-**Take a break before review:**
-1. Complete implementation
-2. Walk away for 15+ minutes
-3. Come back and review as if someone else wrote it
-4. Read diff line by line
-5. Question every decision
+1. Walk away 15+ minutes
+2. Come back, review as if someone else wrote it
+3. Read diff line by line
+4. Question every decision
 
-**Perspective shifts:**
-- "Would I approve this PR if reviewing someone else's code?"
-- "Will I understand this in 6 months?"
-- "What questions would a reviewer ask?"
-
-## After Self-Review
-
-**If you find issues:**
-- Fix them before marking ready
-- Don't rationalize "good enough"
-- Small fixes now prevent bigger problems later
-
-**If everything looks good:**
-- Mark PR ready for review
-- Respond promptly to reviewer feedback
-- Treat feedback as learning opportunity
+**Ask:** "Would I approve this reviewing someone else's code?"
