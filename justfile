@@ -9,7 +9,7 @@ tok:
     #!/usr/bin/env bash
     echo "Token count by file:"
     echo "===================="
-    find dev util -name "*.md" -type f | while read -r file; do
+    find aug-dev aug-util aug-web -name "*.md" -type f | while read -r file; do
         # Rough estimate: ~4 chars per token
         chars=$(wc -c < "$file")
         tokens=$((chars / 4))
@@ -17,7 +17,7 @@ tok:
     done | sort -rn
     echo ""
     echo "Total:"
-    total_chars=$(find dev util -name "*.md" -type f -exec cat {} + | wc -c)
+    total_chars=$(find aug-dev aug-util aug-web -name "*.md" -type f -exec cat {} + | wc -c)
     total_tokens=$((total_chars / 4))
     printf "%6d tokens (estimated)\n" "$total_tokens"
 
@@ -27,7 +27,7 @@ lint:
     echo "Validating frontmatter..."
     exit_code=0
 
-    find dev util -name "*.md" -type f | while read -r file; do
+    find aug-dev aug-util aug-web -name "*.md" -type f | while read -r file; do
         # Skip CLAUDE.md and README.md files
         if [[ "$file" == */CLAUDE.md ]] || [[ "$file" == */README.md ]]; then
             continue
@@ -113,7 +113,7 @@ refs:
     commands=$(find dev util -path "*/commands/*.md" -type f)
 
     # Check for references to non-existent skills/commands
-    find dev util -name "*.md" -type f | while read -r file; do
+    find aug-dev aug-util aug-web -name "*.md" -type f | while read -r file; do
         # Look for skill references (skill:name-format)
         grep -o 'skill:[a-z-]*' "$file" 2>/dev/null | while read -r ref; do
             skill_name=$(echo "$ref" | cut -d: -f2)
@@ -164,7 +164,7 @@ analyze:
 
 # Validate a justfile against v2 interface spec
 validate-justfile JUSTFILE:
-    @bash dev/skills/justfile-standard-interface/scripts/validate-justfile.sh "{{JUSTFILE}}"
+    @bash aug-dev/skills/justfile-standard-interface/scripts/validate-justfile.sh "{{JUSTFILE}}"
 
 # Clean generated artifacts
 clean:
