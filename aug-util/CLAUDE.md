@@ -1,4 +1,4 @@
-# Module: Util Plugin
+# Module: Aug-Util Plugin
 
 ## Purpose
 
@@ -64,8 +64,8 @@ Commands tested through:
 ## Plugin Metadata
 
 Defined in `.claude-plugin/plugin.json`:
-- Name: `util`
-- Version: `1.0.0`
+- Name: `aug-util`
+- Version: `1.2.0`
 - Category: `productivity`
 - Keywords: productivity, session, context
 
