@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Development workflows, tooling standards, and productivity utilities for Claude Code",
-    "version": "1.2.0"
+    "version": "2.0.0"
   },
   "plugins": [
     {
       "name": "aug-dev",
       "source": "./aug-dev",
       "description": "Core development workflows and tooling standards",
-      "version": "1.2.0",
+      "version": "2.0.0",
       "category": "development",
       "keywords": ["development", "workflow", "ci-cd", "testing", "refactoring", "git"]
     },
@@ -21,7 +21,7 @@
       "name": "aug-web",
       "source": "./aug-web",
       "description": "Next.js, static sites, Tailwind, and web development patterns",
-      "version": "1.2.0",
+      "version": "2.0.0",
       "category": "development",
       "keywords": ["nextjs", "react", "tailwind", "static-sites", "web"]
     },
@@ -29,7 +29,7 @@
       "name": "aug-util",
       "source": "./aug-util",
       "description": "Session management and working context utilities",
-      "version": "1.2.0",
+      "version": "2.0.0",
       "category": "productivity",
       "keywords": ["productivity", "session", "context"]
     }
