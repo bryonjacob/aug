@@ -1,8 +1,0 @@
-{
-  "name": "util",
-  "description": "Personal productivity utilities for session management. Save and resume working context across sessions to avoid conversation compacting overhead.",
-  "version": "1.0.0",
-  "author": {
-    "name": "Bryon"
-  }
-}
