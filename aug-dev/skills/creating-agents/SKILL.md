@@ -5,11 +5,11 @@ description: Use when creating or editing agent definitions - ensures proper fro
 
 # Creating Agents
 
-## Overview
+## Purpose
 
-Create well-formed agent definitions that follow established patterns, avoid duplication, and provide clear, actionable guidance.
+Create well-formed agent definitions following established patterns. Avoid duplication, ensure proper structure.
 
-## Agent Anatomy
+## Agent Structure
 
 ```markdown
 ---
@@ -25,65 +25,62 @@ Clear statement of what this agent does
 [Main content sections...]
 ```
 
-**Frontmatter rules:**
-- `name`: kebab-case, descriptive
+**Frontmatter:**
+- `name`: kebab-case
 - `description`: One line, action-oriented (~60 chars)
   - ✅ "Python toolchain setup and configuration standards"
   - ❌ "An agent that helps with Python"
 
 ## Before Creating
 
-**1. Check for existing agents:**
+**1. Check existing:**
 ```bash
-ls .claude/agents/
-ls ~/.claude/agents/
+ls .claude/agents/ ~/.claude/agents/
 grep -r "keyword" .claude/agents/
 ```
 
-**2. Validate no overlap:**
-- Is there already an agent for this domain?
-- Should this be merged into existing agent?
+**2. Validate no overlap** - merge into existing if similar
 
-**3. Determine location:**
+**3. Location:**
 - Project-specific → `.claude/agents/`
-- User-global → `~/.claude/agents/` (only if explicitly requested)
+- User-global → `~/.claude/agents/` (only if requested)
 
-## Agent Categories
+## Agent Types
 
-**Stack/Tooling agents** (`[language]-stack`):
-- Language toolchain and tools
+**Stack/Tooling** (`[language]-stack`):
+- Toolchain and tools
 - Configuration files
 - Quality thresholds
 
-**Workflow agents** (process name):
+**Workflow** (process name):
 - Step-by-step process
-- When to use / when not to use
+- When to use / avoid
 - Examples and anti-patterns
 
-**Standards agents** (`[topic]-standards`):
+**Standards** (`[topic]-standards`):
 - Rules and conventions
-- Rationale for standards
-- How to verify/enforce
+- Rationale
+- Verification
 
-**Setup agents** (`[tool]-setup`):
-- Installation steps
+**Setup** (`[tool]-setup`):
+- Installation
 - Configuration
 - Verification
 
-## Creation Workflow
+## Creation Steps
 
-**1. Understand the need:**
-- What problem does this solve?
+**1. Define:**
+- What problem?
 - Who uses it and when?
-- What's the trigger for using this agent?
+- Trigger for using?
 
-**2. Define scope:**
-- What's IN scope (specific problem)
-- What's OUT of scope (reference other agents)
+**2. Scope:**
+- IN scope (specific problem)
+- OUT scope (reference other agents)
 
-**3. Choose appropriate structure:**
+**3. Structure:**
 
-For **stack agents:**
+Stack agents:
 ```markdown
 ## Toolchain
 ## Project Structure
@@ -93,7 +90,7 @@ For **stack agents:**
 ## Common Patterns
 ```
 
-For **workflow agents:**
+Workflow agents:
 ```markdown
 ## Purpose
 ## When to Use
@@ -104,25 +101,21 @@ For **workflow agents:**
 
 **4. Validate references:**
 ```bash
-# If agent includes @agent-name references, verify they exist
 test -f .claude/agents/agent-name.md && echo "exists" || echo "missing"
 ```
 
-**5. Quality checklist:**
-- [ ] Frontmatter includes name and description
+**5. Checklist:**
+- [ ] Frontmatter with name and description
 - [ ] Name is kebab-case
-- [ ] Description is one line, action-oriented
+- [ ] Description one line, action-oriented
 - [ ] Purpose clearly stated
-- [ ] Instructions are actionable
-- [ ] Code examples are complete
+- [ ] Instructions actionable
+- [ ] Code examples complete
 - [ ] All @agent-name references validated
-- [ ] No duplication of existing content
+- [ ] No duplication
 
-## Naming Conventions
+## Naming Patterns
 
-**Format:** kebab-case
-
-**Patterns:**
 - `[language]-stack` - python-stack, javascript-stack
 - `[tool]-setup` - git-setup, docker-setup
 - `[topic]-standards` - context-standards
@@ -131,62 +124,57 @@ test -f .claude/agents/agent-name.md && echo "exists" || echo "missing"
 
 ## Porting Patterns
 
-When creating similar agents (e.g., "java-stack like python-stack"):
+When creating similar agents:
 
-**1. Read reference agents:**
+**1. Read references:**
 ```bash
 cat .claude/agents/python-stack.md
 cat .claude/agents/javascript-stack.md
 ```
 
-**2. Extract common patterns:**
-- What sections do they share?
-- What principles are universal?
-- What's domain-specific?
+**2. Extract:**
+- Common sections?
+- Universal principles?
+- Domain-specific?
 
-**3. Apply to new domain:**
-- Research best-in-breed tools for target language
-- Match the structure from reference agents
-- Adapt quality thresholds (same principles, domain values)
-- Maintain consistent voice and detail level
+**3. Apply:**
+- Research tools for target domain
+- Match structure from references
+- Adapt quality thresholds
+- Maintain voice/detail level
 
-**Key:** Extract the **agentic skills/goals**, not just content.
+Extract the **agentic skills/goals**, not just content.
 
-## Editing Existing Agents
+## Editing Existing
 
-**1. Read the agent first:**
+**1. Read first:**
 ```bash
 cat .claude/agents/agent-name.md
 ```
 
-**2. Understand current scope:**
-- What is it trying to do?
-- What patterns does it follow?
+**2. Understand scope** - what it does, patterns
 
-**3. Make surgical changes:**
+**3. Surgical changes:**
 - Don't rewrite unnecessarily
-- Preserve existing style
+- Preserve style
 - Keep consistent with purpose
-- Update references if changed
 
-**4. Validate after editing:**
-- Check @agent-name references still valid
-- No conflicts introduced
+**4. Validate:**
+- References still valid
+- No conflicts
 - Frontmatter correct
 
 ## Common Mistakes
 
-❌ **Creating overlapping agents** - Always check existing first
-❌ **Vague descriptions** - Be specific about when to use
-❌ **Missing frontmatter** - Every agent needs name and description
-❌ **Broken references** - Validate all @agent-name references
-❌ **Wrong location** - Project `.claude/agents/`, not `~/.claude/agents/`
-❌ **Duplicating content** - Reference existing agents instead
-❌ **Mega-agents** - Keep focused on one thing
+❌ Overlapping agents - check existing first
+❌ Vague descriptions - be specific about when
+❌ Missing frontmatter
+❌ Broken references
+❌ Wrong location
+❌ Duplicating content - reference instead
+❌ Mega-agents - stay focused
 
 ## Verification
-
-**After creating/editing:**
 
 ```bash
 # Check frontmatter
@@ -198,16 +186,3 @@ grep -o '@[a-z-]*' .claude/agents/agent-name.md
 # Check naming
 echo "agent-name" | grep -E '^[a-z][a-z0-9-]*$'
 ```
-
-## When to Use This Skill
-
-✅ **Use when:**
-- Creating a new agent definition
-- Editing existing agents
-- Porting patterns from existing agents
-- Validating agent references
-- Checking for conflicts/overlap
-
-❌ **Don't use for:**
-- General documentation (not agents)
-- Project CLAUDE.md files

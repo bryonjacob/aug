@@ -9,140 +9,99 @@ description: Audit project and setup missing development components
 $ARGUMENTS
 
 ## Purpose
-Audit project and set up missing development workflow components. Ensures project follows standards defined in ~/.claude/CLAUDE.md.
+
+Audit project, set up missing development workflow components. Ensure standards from ~/.claude/CLAUDE.md.
 
 ## Audit Checklist
 
-Run these checks and report status:
-
-### 1. Git Setup
+**1. Git:**
 ```bash
-# Is this a git repo?
-git rev-parse --git-dir 2>/dev/null
-
-# Does it have a GitHub remote?
-git remote get-url origin 2>/dev/null | grep -q github.com
-
-# Current branch
-git branch --show-current
+git rev-parse --git-dir  # Is git repo?
+git remote get-url origin | grep github.com  # GitHub remote?
+git branch --show-current  # Current branch
 ```
 
-### 2. Justfile
+**2. Justfile:**
 ```bash
-# Does justfile exist?
 [ -f justfile ] && echo "exists" || echo "missing"
-
-# If exists, check for required commands
-if [ -f justfile ]; then
-  just --list | grep -E "^    (dev|format|lint|typecheck|test|test-watch|coverage|check-all|clean)$"
-fi
+just --list | grep -E "^    (dev|format|lint|typecheck|test|test-watch|coverage|check-all|clean)$"
 ```
 
-### 3. Project CLAUDE.md
+**3. CLAUDE.md:**
 ```bash
-# Does project CLAUDE.md exist in root?
 [ -f CLAUDE.md ] && echo "exists" || echo "missing"
 ```
 
-### 4. Language Stack
-Detect language and check setup:
+**4. Language Stack:**
 
-**Python:**
+Python:
 ```bash
-# Detect Python project
-[ -f pyproject.toml ] || [ -f setup.py ] || [ -f requirements.txt ]
-
-# Check for .venv
+[ -f pyproject.toml ] || [ -f setup.py ]
 [ -d .venv ]
-
-# Check pyproject.toml has required tools
-grep -q "ruff" pyproject.toml
-grep -q "mypy" pyproject.toml
-grep -q "pytest" pyproject.toml
+grep -q "ruff\|mypy\|pytest" pyproject.toml
 ```
 
-**JavaScript:**
+JavaScript:
 ```bash
-# Detect JavaScript project
 [ -f package.json ]
-
-# Check for pnpm
 [ -f pnpm-lock.yaml ]
-
-# Check for TypeScript
 [ -f tsconfig.json ]
-
-# Check package.json has required tools
-grep -q "prettier" package.json
-grep -q "eslint" package.json
-grep -q "typescript" package.json
+grep -q "prettier\|eslint\|typescript" package.json
 ```
 
-### 5. Git Hooks
+**5. Git Hooks:**
 ```bash
-# Check if hooks exist
-[ -f .git/hooks/pre-commit ] && [ -x .git/hooks/pre-commit ] && echo "pre-commit installed"
-[ -f .git/hooks/pre-push ] && [ -x .git/hooks/pre-push ] && echo "pre-push installed"
-
-# Check if hooks call justfile
-if [ -f .git/hooks/pre-commit ]; then
-  grep -q "just" .git/hooks/pre-commit && echo "uses justfile"
-fi
+[ -f .git/hooks/pre-commit ] && [ -x .git/hooks/pre-commit ]
+[ -f .git/hooks/pre-push ] && [ -x .git/hooks/pre-push ]
+grep -q "just" .git/hooks/pre-commit
 ```
 
-### 6. GitHub Actions
+**6. GitHub Actions:**
 ```bash
-# Check for PR checks workflow
-[ -f .github/workflows/pr-checks.yml ] && echo "exists" || echo "missing"
+[ -f .github/workflows/pr-checks.yml ]
 ```
 
 ## Setup Actions
 
-After audit, offer to set up missing components:
+**Justfile:** Use `creating-justfiles` skill
 
-### Setup Justfile
-Use the `creating-justfiles` skill and create appropriate template based on detected language.
-
-### Setup Project CLAUDE.md
-Create template:
+**CLAUDE.md template:**
 ```markdown
 # [Project Name]
 
 ## Purpose
-[User provides description]
+[Description]
 
 ## Tech Stack
-[Detected from project files]
+[Detected]
 
 ## Development Setup
-1. Install dependencies: `just dev`
-2. Install git hooks: `just hooks`
-3. Run tests: `just test`
+1. Install: `just dev`
+2. Hooks: `just hooks`
+3. Test: `just test`
 
 ## Architecture
-[User provides or leave blank]
+[Optional]
 
 ## Development Workflow
-See ~/.claude/CLAUDE.md for standard workflow.
+See ~/.claude/CLAUDE.md
 ```
 
-### Setup Language Stack
-**Python:** Use `configuring-python-stack` skill for setup
-**JavaScript:** Use `configuring-javascript-stack` skill for setup
+**Language:**
+- Python → `configuring-python-stack` skill
+- JavaScript → `configuring-javascript-stack` skill
 
-### Setup Git Hooks
-Use `installing-git-hooks` skill and run `just hooks` command
+**Hooks:** `installing-git-hooks` skill, run `just hooks`
 
-### Setup GitHub Actions
-Use `configuring-github-actions` skill and create appropriate workflow file
+**Actions:** `configuring-github-actions` skill
 
-## Execution Flow
+## Flow
 
-1. **Audit:** Check all components, report status
-2. **Confirm:** Ask user which missing components to set up
-3. **Setup:** Create/configure requested components
-4. **Verify:** Run `just check-all` to ensure everything works
-5. **Commit:** Offer to commit setup changes
+1. **Audit** - Check all, report status
+2. **Confirm** - Ask which missing to setup
+3. **Setup** - Create/configure
+4. **Verify** - Run `just check-all`
+5. **Commit** - Offer to commit
 
 ## Report Format
 
@@ -151,32 +110,32 @@ Development Environment Audit
 ==============================
 
 ✅ Git repository initialized
-✅ GitHub remote configured (origin)
-✅ On branch: main
+✅ GitHub remote configured
+✅ Branch: main
 
 ❌ Justfile missing
-   → Can create with standard commands
+   → Create with standard commands
 
-✅ Project CLAUDE.md exists
+✅ CLAUDE.md exists
 
 ✅ Python project detected
-✅ Virtual environment (.venv) exists
-❌ pyproject.toml missing ruff configuration
-   → Can add standard configuration
+❌ pyproject.toml missing ruff
+   → Add standard configuration
 
 ❌ Git hooks not installed
-   → Can install with: just hooks
+   → Install: just hooks
 
-❌ GitHub Actions workflow missing
-   → Can create .github/workflows/pr-checks.yml
+❌ GitHub Actions missing
+   → Create .github/workflows/pr-checks.yml
 
 ---
-Ready to set up missing components? (y/n)
+Setup missing components? (y/n)
 ```
 
-## Execution Notes
-- Non-destructive - always ask before creating/modifying files
-- Detect language automatically from project files
-- Use appropriate agent for each setup task
-- Verify setup works before declaring complete
-- Offer to commit all changes at the end
+## Notes
+
+- Non-destructive - ask before changes
+- Auto-detect language
+- Use appropriate skill for each setup
+- Verify before declaring complete
+- Offer commit at end

@@ -10,97 +10,95 @@ argument-hint: <project-name>
 $ARGUMENTS
 
 ## Purpose
-Initialize a new project repository with full development workflow setup.
+
+Initialize new project with full development workflow setup.
 
 ## Steps
 
-### 1. Create GitHub Repository
+**1. Create GitHub Repo:**
 ```bash
-# If creating new repo
 gh repo create [PROJECT_NAME] --public --clone
 cd [PROJECT_NAME]
-
-# If repo already exists
-cd [PROJECT_PATH]
 ```
 
-### 2. Create Project CLAUDE.md
-Use `configuring-python-stack` or `configuring-javascript-stack` skills to determine tech stack, and `documenting-with-claude-md` skill for documentation structure:
+**2. Create CLAUDE.md:**
+
+Use `documenting-with-claude-md` skill:
 
 ```markdown
 # [Project Name]
 
 ## Purpose
-[Brief description of what this project does]
+[Description]
 
 ## Architecture Overview
-[High-level architecture decisions]
+[High-level decisions]
 
 ## Module Index
-- `src/` - Main source code
-  - Add module links as they are created (e.g., `src/auth/` - Authentication (see src/auth/CLAUDE.md))
+- `src/` - Main source
+  - Add module links as created
 
 ## Tech Stack
 - [Language/framework]
-- [Key dependencies]
+- [Dependencies]
 
 ## Development Setup
-1. Install dependencies: `just dev`
-2. Install git hooks: `just hooks`
-3. Run tests: `just test`
+1. Install: `just dev`
+2. Hooks: `just hooks`
+3. Test: `just test`
 
 ## Development Workflow
-See ~/.claude/CLAUDE.md for standard workflow.
-Use `/plan` to break down work, `/work` to execute issues.
+See ~/.claude/CLAUDE.md
+Use `/plan` to break down, `/work` to execute
 ```
 
-### 3. Create Justfile
-Use the `creating-justfiles` skill and create appropriate justfile for tech stack.
+**3. Create Justfile:**
 
-For Python projects, use Python template from `creating-justfiles` skill.
-For JavaScript projects, use JavaScript template from `creating-justfiles` skill.
+Use `creating-justfiles` skill for appropriate template
 
-### 4. Initialize Language Stack
-Use `configuring-python-stack` or `configuring-javascript-stack` skills and set up:
+**4. Initialize Language Stack:**
 
-**Python:**
+Python (`configuring-python-stack`):
 ```bash
 uv venv .venv
 source .venv/bin/activate
-# Create pyproject.toml with standard config (see configuring-python-stack skill)
+# Create pyproject.toml with standard config
 ```
 
-**JavaScript:**
+JavaScript (`configuring-javascript-stack`):
 ```bash
 pnpm init
-# Create package.json, tsconfig.json, .prettierrc, .eslintrc.json (see configuring-javascript-stack skill)
+# Create package.json, tsconfig.json, configs
 ```
 
-### 5. Install Git Hooks
-Use `installing-git-hooks` skill:
+**5. Install Hooks:**
+
+Use `installing-git-hooks`:
 ```bash
 just hooks
 ```
 
-### 6. Create GitHub Actions Workflow
-Use `configuring-github-actions` skill and create `.github/workflows/pr-checks.yml` with appropriate template.
+**6. GitHub Actions:**
 
-### 7. Initial Commit
+Use `configuring-github-actions` for `.github/workflows/pr-checks.yml`
+
+**7. Initial Commit:**
 ```bash
 git add .
 git commit -m "chore: Initial project setup
 
-- Add project CLAUDE.md
-- Add justfile with standard commands
-- Configure language toolchain
-- Set up git hooks
-- Add GitHub Actions PR checks
+- Add CLAUDE.md
+- Add justfile
+- Configure toolchain
+- Set up hooks
+- Add PR checks
 
 🤖 Generated with Claude Code"
 git push -u origin main
 ```
 
-### 8. Create GitHub Project (Optional)
+**8. GitHub Project (Optional):**
+
 If user wants project board:
 ```bash
 OWNER_ID=$(gh api user --jq .node_id)
@@ -114,10 +112,7 @@ mutation {
     title: "[PROJECT_NAME]"
     includeDraftIssues: false
   }) {
-    projectV2 {
-      id
-      url
-    }
+    projectV2 { id url }
   }
 }' --jq '.data.copyProjectV2.projectV2.id')
 
@@ -127,16 +122,14 @@ mutation {
     projectId: "'$PROJECT_ID'"
     repositoryId: "'$REPO_ID'"
   }) {
-    repository {
-      name
-    }
+    repository { name }
   }
 }'
 ```
 
-## Execution Notes
-- Use language-specific skills for stack setup (configuring-python-stack, configuring-javascript-stack)
-- Use creating-justfiles skill for build tooling
-- Set up git hooks before first commit
-- Create comprehensive project CLAUDE.md for context
-- Ensure all quality gates work before declaring setup complete
+## Notes
+
+- Use language-specific skills for stack
+- Use creating-justfiles for tooling
+- Set up hooks before first commit
+- Ensure quality gates work before done
