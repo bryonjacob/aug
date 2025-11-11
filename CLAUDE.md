@@ -38,10 +38,10 @@ This marketplace provides a centralized distribution point for Claude Code plugi
 
 ```bash
 # Add marketplace locally
-/plugin marketplace add /app/bryon/augmentium
+/plugin marketplace add /app/bryon/aug
 
 # Install plugins
-/plugin install dev@aug
+/plugin install aug-dev@aug
 /plugin install util@aug
 ```
 

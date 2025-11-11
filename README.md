@@ -39,10 +39,10 @@ Personal productivity utilities for session management.
 
 ```bash
 # Symlink to local development directory
-/plugin marketplace add /app/bryon/augmentium
+/plugin marketplace add /app/bryon/aug
 
 # Or use absolute path
-/plugin marketplace add ~/path/to/augmentium
+/plugin marketplace add ~/path/to/aug
 ```
 
 ### Installing Plugins
