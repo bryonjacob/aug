@@ -21,8 +21,9 @@ This marketplace provides a centralized distribution point for Claude Code plugi
 
 ## Module Index
 
-- `dev/` - Development workflows and tooling (see dev/CLAUDE.md)
-- `util/` - Personal productivity utilities (see util/CLAUDE.md)
+- `aug-dev/` - Development workflows and tooling (see aug-dev/CLAUDE.md)
+- `aug-core/` - AI-enhancement capabilities (see aug-core/CLAUDE.md)
+- `aug-web/` - Web development patterns (see aug-web/CLAUDE.md)
 - `.claude-plugin/` - Marketplace metadata (marketplace.json)
 
 ## Tech Stack

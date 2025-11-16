@@ -1,31 +1,63 @@
 # Aug Plugin Marketplace
 
-A collection of plugins for Claude Code providing development workflows, tooling standards, and productivity utilities.
+A collection of plugins for Claude Code providing development workflows, tooling standards, and AI-enhancement capabilities.
 
 ## Available Plugins
 
-### dev
+### aug-dev
 
-Development workflows and tooling for software engineering projects.
+Core development workflows and tooling standards for software engineering projects.
 
-**Location:** `dev/`
+**Location:** `aug-dev/`
 
-**Contents:**
-- 15 skills covering stack configuration, web UI development, development standards, and workflows
-- 6 commands for issue management, refactoring, and project initialization
-
-[View plugin details](dev/README.md)
-
-### util
-
-Personal productivity utilities for session management.
-
-**Location:** `util/`
+**Version:** 2.0.0
 
 **Contents:**
-- 2 commands for saving and resuming working context across sessions
+- Epic planning with architecture design and task breakdown
+- Autonomous task execution from GitHub issues
+- Project initialization and environment setup
+- Systematic refactoring with coverage requirements
+- Stack configuration (JavaScript/TypeScript, Python, Java)
+- Development standards (justfile, git hooks, GitHub Actions, CLAUDE.md/MkDocs docs)
 
-[View plugin details](util/README.md)
+[View plugin details](aug-dev/README.md)
+
+### aug-core
+
+AI-enhancement capabilities for making Claude more powerful.
+
+**Location:** `aug-core/`
+
+**Version:** 3.0.0 (Major v3 overhaul)
+
+**Contents:**
+- Session management (save/resume context across sessions)
+- Hemingwayesque (concise prompt writing)
+- Automate (autonomous command execution with user proxy)
+- Workflow orchestration (multi-command workflows)
+- Workflow design skill (discover/design/refactor workflows)
+
+**Key Features:**
+- `/hemingway` - Ruthless concision for AI prompts
+- `/automate /command` - Run commands autonomously
+- `/workflow-run [workflow-name]` - Execute complete workflows
+- User-standin agent for context-aware automation
+
+[View plugin details](aug-core/README.md)
+
+### aug-web
+
+Web development patterns and Next.js-specific workflows.
+
+**Location:** `aug-web/`
+
+**Version:** 2.0.0
+
+**Contents:**
+- Next.js, static sites, Tailwind patterns
+- Web-specific development standards
+
+[View plugin details](aug-web/README.md)
 
 ## Installation
 
@@ -38,37 +70,68 @@ Personal productivity utilities for session management.
 ### Local Development
 
 ```bash
-# Symlink to local development directory
-/plugin marketplace add /app/bryon/aug
+# Add marketplace locally
+/plugin marketplace add /path/to/aug
 
-# Or use absolute path
-/plugin marketplace add ~/path/to/aug
+# Install plugins
+/plugin install aug-dev@aug
+/plugin install aug-core@aug
+/plugin install aug-web@aug
+
+# Or install all at once
+/plugin install aug-dev@aug aug-core@aug aug-web@aug
 ```
 
-### Installing Plugins
+## Quick Start
 
-After adding the marketplace, install individual plugins:
+### Epic Development Workflow
 
 ```bash
-# Install dev plugin
-/plugin install dev@aug
+# Manual execution (step-by-step)
+/plan-chat "Add JWT authentication"
+/plan-breakdown
+/plan-create
+/work 123
 
-# Install util plugin
-/plugin install util@aug
+# Automated execution (full workflow)
+/workflow-run epic-development
+```
 
-# Install both
-/plugin install dev@aug util@aug
+### Session Management
+
+```bash
+# Save context before switching work
+/notetoself
+
+# Resume later
+/futureme
+```
+
+### Concise Prompt Writing
+
+```bash
+# Rewrite verbose content
+/hemingway "I would like you to please help me understand..."
+```
+
+### Automate Interactive Commands
+
+```bash
+# Run commands autonomously
+/automate /plan-breakdown
+/automate /refactor src/auth/
 ```
 
 ## Plugin Structure
 
-Each plugin follows the standard Claude Code plugin structure:
+Each plugin follows standard Claude Code plugin structure:
 
 ```
 plugin-name/
 ├── .claude-plugin/
 │   └── plugin.json    # Plugin metadata (required)
-├── README.md          # Plugin documentation
+├── CLAUDE.md          # Architecture and implementation details
+├── README.md          # User-facing documentation
 ├── skills/            # Skills directory (optional)
 │   └── skill-name/
 │       └── SKILL.md
@@ -76,30 +139,34 @@ plugin-name/
 │   └── command.md
 ├── agents/            # Agents directory (optional)
 │   └── agent.md
-└── hooks/             # Hooks directory (optional)
-    └── hooks.json
+└── workflows/         # Workflows directory (optional)
+    └── workflow.md
 ```
 
-## Usage
+## Version 3.0 Highlights
 
-After installation, all skills and commands from installed plugins are available in Claude Code:
+**Major Changes:**
+- Renamed `aug-util` → `aug-core` with expanded scope
+- Added hemingwayesque skill for concise AI prompt writing
+- Added automate command with user-standin agent
+- Added workflow system (design, run, status commands)
+- Integrated epic-development workflow across aug-dev and aug-core
 
-```bash
-# Use a command
-/work 123
-
-# Reference a skill in context
-@executing-development-issues
-```
+**Philosophy:**
+- Context-driven automation (reads CLAUDE.md, analyzes codebase)
+- Cross-plugin integration (commands reference workflows)
+- Three execution modes: manual, automated, hybrid
+- "Not One Word Wasted" for all AI-facing content
 
 ## Contributing
 
 To add new plugins to this marketplace:
 
 1. Create plugin directory with appropriate structure
-2. Add README.md documenting the plugin
-3. Update this marketplace README
+2. Add CLAUDE.md and README.md documentation
+3. Update `.claude-plugin/marketplace.json`
 4. Test plugin installation and usage
+5. Follow hemingwayesque principles for concise documentation
 
 ## License
 
