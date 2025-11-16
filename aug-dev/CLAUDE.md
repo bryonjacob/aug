@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Core development workflows and tooling standards for software engineering projects. Encompasses the complete software development lifecycle from project initialization through issue planning, execution, refactoring, and code review.
+Core development workflows and tooling standards for software engineering projects. Encompasses the complete software development lifecycle from epic planning through autonomous task execution.
 
 ## Responsibilities
 
+- Epic planning with architecture design and task breakdown
+- Autonomous task execution from GitHub issues
 - Project initialization and environment setup
-- Issue planning and management (GitHub or local)
-- Autonomous issue execution with parallel/sequential strategies
 - Systematic refactoring with coverage requirements
 - Stack configuration (JavaScript/TypeScript, Python, Java)
 - Development standards (justfile, git hooks, GitHub Actions, CLAUDE.md/MkDocs docs)
@@ -16,14 +16,30 @@ Core development workflows and tooling standards for software engineering projec
 ## Key Files
 
 ### Commands (`commands/`)
-- `work.md` - Autonomous issue execution with sequential/parallel strategies and git worktree support
-- `plan.md` - Break down work into GitHub or local issues with execution strategy analysis
-- `refactor.md` - Systematic refactoring requiring 90%+ coverage before changes
-- `quicktask.md` - Ad-hoc task workflow (combines plan + work)
+
+**Epic Planning Workflow:**
+- `plan-chat.md` - Interactive architecture and design session
+- `plan-breakdown.md` - Decompose epic into deliverable tasks
+- `plan-create.md` - Generate comprehensive GitHub issues
+- `plan-status.md` - Show current planning progress
+- `plan-commit.md` - Optional: persist planning to repo
+
+**Task Execution:**
+- `work.md` - Autonomous task execution from GitHub issue to PR
+
+**Project Setup:**
 - `start-project.md` - Initialize new project with full development setup
 - `devinit.md` - Audit existing project and set up missing components
+- `quicktask.md` - Ad-hoc task workflow (quick one-off tasks)
+- `refactor.md` - Systematic refactoring requiring 96%+ coverage
 
 ### Skills (`skills/`)
+
+**Core Development Skills:**
+- `software-architecture/` - Epic planning, architecture design, task breakdown
+- `software-development/` - Implementation following specifications
+- `software-debugging/` - Systematic bug finding and fixing
+- `software-quality/` - Test coverage analysis and strategy
 
 **Stack Configuration:**
 - `configuring-javascript-stack/` - JavaScript/TypeScript toolchain (pnpm, prettier, eslint, vitest)
@@ -47,16 +63,38 @@ Core development workflows and tooling standards for software engineering projec
 
 ## Public Interface
 
-### Commands
-- `/work [STRATEGY]` - Execute issues with execution strategy syntax
-- `/plan [DESCRIPTION]` - Create GitHub/local issues with execution strategy
-- `/refactor [SCOPE]` - Refactor with coverage gates
-- `/quicktask [DESCRIPTION]` - Quick ad-hoc task with issue tracking
-- `/start-project [NAME]` - Initialize new project
-- `/devinit` - Audit and setup development environment
+### Epic Planning Workflow
+
+**Interactive Planning (all planning time here):**
+```bash
+/plan-chat "Add JWT authentication"     # Architecture & design session
+/plan-breakdown                         # Break into tasks with specs
+/plan-create                            # Generate GitHub issues
+```
+
+**Optional:**
+```bash
+/plan-status                            # Check planning progress
+/plan-commit                            # Persist planning to repo
+```
+
+**Autonomous Execution:**
+```bash
+/work 124                               # Execute task issue autonomously
+```
+
+### Project Management
+
+```bash
+/start-project [NAME]                   # Initialize new project
+/devinit                                # Audit and setup development environment
+/quicktask [DESCRIPTION]                # Quick ad-hoc task with issue tracking
+/refactor [SCOPE]                       # Refactor with coverage gates
+```
 
 ### Skills
-All skills available for reference using `@skill-name` syntax.
+
+All skills available for use via `Skill` tool.
 
 ## Dependencies
 
@@ -66,15 +104,31 @@ All skills available for reference using `@skill-name` syntax.
 
 ## Architecture Decisions
 
-**Issue Storage:**
-- Prefer GitHub issues when git remote configured
-- Fallback to `ISSUES.LOCAL/LOCAL###-Title.md` for local-only projects
-- Same SDLC rigor regardless of storage mechanism
+**Epic Planning Philosophy:**
+- All interactive time in planning phase
+- Planning artifacts ephemeral by default (`/tmp/devplan/`)
+- GitHub issues are source of truth after `/plan-create`
+- Optional persistence to `.devplan/` via `/plan-commit`
 
-**Execution Strategies:**
-- Visual syntax for parallel/sequential: `>` (sequential), `|` (parallel), `()` (grouping)
-- Git worktrees required for parallel execution to avoid race conditions
-- Conservative parallelization - only when clearly independent
+**Git Workflow:**
+- Flat branch structure only: all task branches from `main`
+- All PRs directly to `main`
+- Branch naming: `epic/{epic-id}/{task-slug}`
+- No nested branches (LLMs handle flat structures better)
+
+**Task Execution:**
+- Fully autonomous from issue to PR
+- Idempotent: safe to re-run if interrupted
+- Incremental commits and pushes (recoverable)
+- Self-healing: auto-fixes format/lint/type errors (max 3 attempts)
+- Quality-gated: must pass `just check-all` before PR
+
+**Issue Structure:**
+- Structured metadata at top (parseable, not labels)
+- Complete specifications with code examples
+- Implementation guidance with step-by-step chunks
+- Testing strategy and acceptance criteria
+- All needed context for autonomous execution
 
 **Quality Gates:**
 - All workflows require `just check-all` passing before merge
@@ -90,13 +144,13 @@ All skills available for reference using `@skill-name` syntax.
 
 Skills and commands are tested through:
 - Real-world usage in development workflows
-- Agent execution validation
+- Idempotent behavior validation
 - Quality gate enforcement in CI/CD
 
 ## Plugin Metadata
 
 Defined in `.claude-plugin/plugin.json`:
 - Name: `aug-dev`
-- Version: `1.2.0`
+- Version: `2.0.0`
 - Category: `development`
-- Keywords: development, workflow, ci-cd, testing, refactoring, git
+- Keywords: development, workflow, ci-cd, testing, refactoring, git, planning
