@@ -4,6 +4,8 @@ description: Autonomous task execution from GitHub issue to PR
 argument-hint: <issue-number>
 ---
 
+**Workflow:** [epic-development](../../aug-core/workflows/epic-development.md) • **Phase:** execute (step 4/4, repeatable)
+
 # Work - Autonomous Task Execution
 
 Execute a task from GitHub issue through to PR creation, fully autonomously.

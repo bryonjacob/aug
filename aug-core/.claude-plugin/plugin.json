@@ -1,0 +1,8 @@
+{
+  "name": "aug-core",
+  "description": "AI-enhancement capabilities: session management, concise prompt writing (hemingwayesque), autonomous command execution (automate), and workflow orchestration.",
+  "version": "3.0.0",
+  "author": {
+    "name": "Bryon"
+  }
+}

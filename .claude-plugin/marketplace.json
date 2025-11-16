@@ -5,8 +5,8 @@
     "email": "bryon@jacobtx.net"
   },
   "metadata": {
-    "description": "Development workflows, tooling standards, and productivity utilities for Claude Code",
-    "version": "2.0.0"
+    "description": "Development workflows, tooling standards, and AI-enhancement capabilities for Claude Code",
+    "version": "3.0.0"
   },
   "plugins": [
     {
@@ -26,12 +26,12 @@
       "keywords": ["nextjs", "react", "tailwind", "static-sites", "web"]
     },
     {
-      "name": "aug-util",
-      "source": "./aug-util",
-      "description": "Session management and working context utilities",
-      "version": "2.0.0",
+      "name": "aug-core",
+      "source": "./aug-core",
+      "description": "AI-enhancement capabilities and workflow orchestration",
+      "version": "3.0.0",
       "category": "productivity",
-      "keywords": ["productivity", "session", "context"]
+      "keywords": ["ai-enhancement", "automation", "workflows", "session", "prompts"]
     }
   ]
 }

@@ -3,6 +3,8 @@ name: plan-breakdown
 description: Break epic into deliverable tasks with detailed specs
 ---
 
+**Workflow:** [epic-development](../../aug-core/workflows/epic-development.md) • **Phase:** breakdown (step 2/4) • **Next:** /plan-create
+
 # Plan Breakdown - Task Decomposition
 
 Decompose an epic into independently deliverable tasks with comprehensive implementation guidance.
