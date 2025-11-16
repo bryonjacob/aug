@@ -8,9 +8,9 @@ argument-hint: <issue-number>
 
 # Work - Autonomous Task Execution
 
-Execute a task from GitHub issue through to PR creation, fully autonomously.
+Execute GitHub issue through to PR. Fully autonomous.
 
-**Purpose**: Implement a task following its GitHub issue specification, with incremental commits, quality gates, and self-healing.
+**Purpose**: Implement task from issue spec with incremental commits, quality gates, and self-healing.
 
 **Prerequisites**: Task issue created by `/plan-create` with complete specification.
 
@@ -22,24 +22,24 @@ Execute a task from GitHub issue through to PR creation, fully autonomously.
 - **Incremental**: Commits and pushes after each chunk
 - **Self-healing**: Auto-fixes format/lint/type errors (max 3 attempts)
 - **Quality-gated**: Must pass `just check-all` before PR
-- **Autonomous**: No user interaction required
+- **Autonomous**: No user interaction
 
 ---
 
 ## Workflow
 
-Use TodoWrite to track progress through these phases.
+Use TodoWrite to track progress.
 
-### Phase 0: Load & Verify (Idempotent Entry Point)
+### Phase 0: Load & Verify
 
-**This phase ensures we can resume from interruptions.**
+**Ensures resumption after interruption.**
 
-1. **Fetch GitHub Issue**
+1. **Fetch Issue**
    ```bash
    gh issue view {ISSUE_NUMBER} --json body
    ```
 
-2. **Parse Structured Metadata**
+2. **Parse Metadata**
    Extract from issue body:
    ```bash
    EPIC_ID=$(grep "^EPIC_ID:" | cut -d: -f2 | xargs)
@@ -51,53 +51,51 @@ Use TodoWrite to track progress through these phases.
 
 3. **Verify Dependencies**
    If DEPENDS_ON != "none":
-   - Check each dependency issue is closed
-   - If not closed: error and exit
+   - Check each dependency issue closed
+   - If open: error and exit
    ```
-   ❌ Cannot start - dependencies not complete:
+   ❌ Cannot start - dependencies incomplete:
       - #123 still open
 
    Complete dependencies first, then run:
       /work {ISSUE_NUMBER}
    ```
 
-4. **Check Branch State (Idempotent)**
+4. **Check Branch State**
    ```bash
    if git rev-parse --verify "$BRANCH_NAME" 2>/dev/null; then
      # Branch exists - resume
      git checkout "$BRANCH_NAME"
 
-     # Check if PR exists
      PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --json number -q '.[0].number')
 
      if [ -n "$PR_NUMBER" ]; then
-       # PR exists - check status
        PR_STATE=$(gh pr view "$PR_NUMBER" --json state -q '.state')
 
        if [ "$PR_STATE" = "MERGED" ]; then
-         echo "✅ Task already complete (PR #$PR_NUMBER merged)"
+         echo "✅ Task complete (PR #$PR_NUMBER merged)"
          exit 0
        elif [ "$PR_STATE" = "OPEN" ]; then
-         echo "⚠️  PR #$PR_NUMBER already exists"
-         echo "Resuming from current state..."
+         echo "⚠️  PR #$PR_NUMBER exists"
+         echo "Resuming..."
        fi
      fi
    else
-     # Branch doesn't exist - create from main
+     # Create branch from main
      git checkout main
      git pull origin main
      git checkout -b "$BRANCH_NAME"
    fi
    ```
 
-### Phase 1: Documentation (~2-5 min)
+### Phase 1: Documentation
 
 **Use retcon writing: document as if feature exists (present tense).**
 
 1. **Parse Documentation Files from Issue**
-   Extract file paths and what to update from "Files to Change" → "Documentation" section.
+   Extract paths from "Files to Change" → "Documentation".
 
-2. **Update Each Documentation File**
+2. **Update Each File**
    - Read current content
    - Update with new functionality
    - Use present tense (retcon style)
@@ -111,9 +109,9 @@ Use TodoWrite to track progress through these phases.
    git push origin "$BRANCH_NAME"
    ```
 
-### Phase 2: Implementation with Chunk Testing (~10-30 min)
+### Phase 2: Implementation with Chunk Testing
 
-**Use the `software-development` skill for implementation.**
+**Use `software-development` skill.**
 
 For each chunk in "Implementation Guidance" → "Phase 2: Implementation Chunks":
 
@@ -128,7 +126,7 @@ For each chunk in "Implementation Guidance" → "Phase 2: Implementation Chunks"
 #### B. Write Tests for Chunk
 
 - Add unit tests per issue guidance
-- Test specific functionality in this chunk
+- Test specific functionality in chunk
 - Follow testing strategy from issue
 
 #### C. Verify Chunk Quality
@@ -137,11 +135,11 @@ For each chunk in "Implementation Guidance" → "Phase 2: Implementation Chunks"
 just check-all
 ```
 
-**If failures occur:**
+**If failures:**
 - Parse error messages
 - Apply common fixes
-- Retry up to 3 times per chunk
-- If still failing after 3 attempts → Use `software-debugging` skill
+- Retry up to 3 times
+- If still failing → Use `software-debugging` skill
 
 #### D. Commit Chunk
 
@@ -156,13 +154,13 @@ git commit -m "feat: Implement {CHUNK_NAME} for #${ISSUE_NUMBER}"
 git push origin "$BRANCH_NAME"
 ```
 
-*Incremental pushes make work recoverable if interrupted.*
+*Incremental pushes make work recoverable.*
 
-### Phase 3: Test Review (~5-10 min)
+### Phase 3: Test Review
 
-**Use the `software-quality` skill for test coverage analysis.**
+**Use `software-quality` skill.**
 
-After all chunks implemented:
+After all chunks:
 
 1. **Run Quality Check with Coverage**
    ```bash
@@ -171,7 +169,7 @@ After all chunks implemented:
 
 2. **Check Coverage Threshold**
    - Must be >= 96%
-   - If below threshold:
+   - If below:
      - Use `software-quality` skill to identify gaps
      - Add tests for uncovered code
      - Re-run `just check-all`
@@ -188,7 +186,7 @@ After all chunks implemented:
    git push origin "$BRANCH_NAME"
    ```
 
-### Phase 4: Final Verification (~2-5 min)
+### Phase 4: Final Verification
 
 1. **Run Full Quality Gate**
    ```bash
@@ -205,23 +203,23 @@ After all chunks implemented:
    ```
 
    **Attempt 2:**
-   If still failing, use `software-debugging` skill:
+   Use `software-debugging` skill:
    - Parse error messages
    - Identify root cause
    - Apply fix
    - Re-run `just check-all`
 
    **Attempt 3:**
-   - Review all errors systematically
+   - Review errors systematically
    - Fix remaining issues
    - Re-run `just check-all`
 
-   **If still failing after 3 attempts:**
+   **If still failing:**
    → Go to Phase 6 (Blocked Path)
 
 3. **Run User Acceptance Tests**
 
-   Extract and run commands from "User Verification" section of issue.
+   Extract and run commands from "User Verification" section.
    ```bash
    {COMMAND_FROM_ISSUE}  # Verify: {EXPECTED_OUTPUT}
    ```
@@ -301,7 +299,7 @@ After all chunks implemented:
 
 ### Phase 6: PR Creation (Blocked Path)
 
-**When quality checks cannot be passed after 3 attempts:**
+**When quality checks fail after 3 attempts:**
 
 1. **Generate Diagnostic Report**
    ```markdown
@@ -334,7 +332,7 @@ After all chunks implemented:
 
    ## Next Steps
 
-   1. Review diagnostics above
+   1. Review diagnostics
    2. Fix issues manually or update task spec
    3. Re-run (idempotent): `/work ${ISSUE_NUMBER}`
    ```
@@ -362,8 +360,8 @@ After all chunks implemented:
      --body "$(cat <<EOF
    ⚠️  Task blocked on quality checks
 
-   Draft PR created: #${PR_NUMBER}
-   See diagnostics in PR for details.
+   Draft PR: #${PR_NUMBER}
+   See diagnostics in PR.
 
    After fixing, re-run (idempotent):
    \`\`\`bash
@@ -390,7 +388,7 @@ After all chunks implemented:
 
 ## Idempotent Guarantees
 
-**Re-running `/work <issue>` is always safe:**
+**Re-running `/work <issue>` is safe:**
 
 - Checks if branch exists → resumes if yes, creates if no
 - Checks if PR exists → reports if merged, resumes if open
@@ -398,21 +396,21 @@ After all chunks implemented:
 - Skips completed commits (checks git log)
 - Resumes from current chunk
 
-**You can interrupt at any time and restart.**
+**Interrupt anytime and restart.**
 
 ---
 
 ## Skills Used
 
 - **`software-development`** - Phase 2 implementation
-- **`software-debugging`** - When self-healing needed
-- **`software-quality`** - Phase 3 test coverage analysis
+- **`software-debugging`** - Self-healing
+- **`software-quality`** - Phase 3 test coverage
 
 ---
 
 ## Quality Checks
 
-Before PR creation:
+Before PR:
 - [ ] All documentation updated
 - [ ] All chunks implemented
 - [ ] All chunk tests passing
@@ -428,16 +426,16 @@ Before PR creation:
 
 **Dependency not closed:**
 ```
-❌ Cannot start - dependencies not complete:
+❌ Cannot start - dependencies incomplete:
    - #123: Setup infrastructure (still open)
 
 Complete #123 first, then run:
    /work {ISSUE_NUMBER}
 ```
 
-**Branch already merged:**
+**Branch merged:**
 ```
-✅ Task #124 already complete
+✅ Task #124 complete
    PR #45 merged on 2025-01-15
 ```
 
