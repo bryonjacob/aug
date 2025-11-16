@@ -9,6 +9,8 @@ description: Design, discover, and refactor multi-command workflows for Claude C
 
 Help define multi-command workflows that guide users through complex processes. Workflows are sequences of commands that accomplish a larger goal, with each command representing a discrete phase.
 
+**Reference Implementation:** See `../../workflows/epic-development.md` for complete example of a well-designed workflow.
+
 ## Core Concepts
 
 ### What is a Workflow?
@@ -75,6 +77,8 @@ Input: /plan-chat, /plan-breakdown, /plan-create, /work commands
 Output: epic-development workflow document
 ```
 
+**See:** `../../workflows/epic-development.md` - Real example of discovery mode applied to aug-dev plan/work commands.
+
 ### 2. Design Mode - Create New Workflow
 
 **When:** Designing a new multi-step process from scratch
@@ -114,6 +118,8 @@ Output: Improved workflow with added verification phase
 ## Workflow Document Structure
 
 Location: `workflows/[workflow-name].md`
+
+**Example:** See `../../workflows/epic-development.md` for reference implementation.
 
 Template:
 ```markdown

@@ -5,6 +5,8 @@ description: Execute complete workflow automated using /automate for each phase
 
 Execute entire workflow autonomously. Each phase runs via `/automate`, with user-standin agent handling interactive prompts.
 
+**Example Workflow:** See `../workflows/epic-development.md` for reference workflow this command executes.
+
 ## Usage
 
 ```bash
@@ -97,7 +99,7 @@ Execute entire workflow autonomously. Each phase runs via `/automate`, with user
 
 **Command:** `/workflow-run epic-development`
 
-**Workflow loads:** `workflows/epic-development.md`
+**Workflow loads:** `workflows/epic-development.md` (see `../workflows/epic-development.md` for full workflow definition)
 
 **Phases parsed:**
 1. Design - `/plan-chat`
