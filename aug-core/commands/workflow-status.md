@@ -5,8 +5,6 @@ description: Show current workflow position, completed phases, and next steps
 
 Display workflow progress. Shows which phases complete, current position, next command to run.
 
-**Example Workflow:** See `../workflows/epic-development.md` for reference workflow this command tracks.
-
 ## Usage
 
 ```bash
@@ -100,8 +98,6 @@ Display workflow progress. Shows which phases complete, current position, next c
 ## Detection Heuristics
 
 ### Epic Development Workflow
-
-See `../workflows/epic-development.md` for full workflow definition.
 
 **Phase 1: Design (/plan-chat)**
 - ✓ Complete if: `/tmp/devplan/` exists with files
