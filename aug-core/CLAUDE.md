@@ -29,9 +29,6 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 ### Agents (`agents/`)
 - `user-standin.md` - Context-aware proxy for user in automated workflows
 
-### Workflows (`workflows/`)
-- `epic-development.md` - Example: end-to-end epic planning to execution workflow
-
 ## Public Interface
 
 ### Session Management

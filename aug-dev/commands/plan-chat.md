@@ -4,7 +4,7 @@ description: Interactive architecture and design session for epic planning
 argument-hint: <epic-description>
 ---
 
-**Workflow:** [epic-development](../../aug-core/workflows/epic-development.md) • **Phase:** design (step 1/4) • **Next:** /plan-breakdown
+**Workflow:** [epic-development](../workflows/epic-development.md) • **Phase:** design (step 1/4) • **Next:** /plan-breakdown
 
 # Plan Chat - Interactive Epic Design
 

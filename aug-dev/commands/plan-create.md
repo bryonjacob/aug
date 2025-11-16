@@ -3,7 +3,7 @@ name: plan-create
 description: Create comprehensive GitHub issues from planning artifacts
 ---
 
-**Workflow:** [epic-development](../../aug-core/workflows/epic-development.md) • **Phase:** create-issues (step 3/4) • **Next:** /work
+**Workflow:** [epic-development](../workflows/epic-development.md) • **Phase:** create-issues (step 3/4) • **Next:** /work
 
 # Plan Create - Generate GitHub Issues
 
