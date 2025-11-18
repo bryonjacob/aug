@@ -25,7 +25,7 @@ When stack skill doesn't exist for language.
 
 ### Mode 2: Validate Existing Stack
 
-When stack skill exists, validate against stack-architect standards.
+When stack skill exists, validate against development-stack-standards standards.
 
 **Example:** `/stack-guide python` (validates configuring-python-stack)
 
@@ -50,9 +50,9 @@ ls aug-dev/skills/configuring-[language]-stack/
 
 If exists, suggest Mode 2 (validate) instead.
 
-#### 2. Load stack-architect Standards
+#### 2. Load development-stack-standards Standards
 
-Use `stack-architect` skill to understand requirements.
+Use `development-stack-standards` skill to understand requirements.
 
 #### 3. Interactive Wizard
 
@@ -146,7 +146,7 @@ For each dimension, ask:
 
 Create `aug-dev/skills/configuring-[language]-stack/SKILL.md`
 
-**Use template from stack-architect:**
+**Use template from development-stack-standards:**
 
 ```markdown
 ---
@@ -161,7 +161,7 @@ description: [Language] stack - [tools] ([coverage]%)
 | Standard | Level | Status |
 |----------|-------|--------|
 | justfile-standard-interface | Baseline | ✓ Full |
-| stack-architect | Level [N] | ✓ Complete |
+| development-stack-standards | Level [N] | ✓ Complete |
 
 **Dimensions:** [X]/[Y] (Foundation + Quality Gates + Security)
 
@@ -192,7 +192,7 @@ description: [Language] stack - [tools] ([coverage]%)
 
 #### 5. Validate Generated Skill
 
-Run through stack-architect checklist:
+Run through development-stack-standards checklist:
 - All Level 0 dimensions covered?
 - Justfile implements justfile-standard-interface?
 - Config examples complete?
@@ -226,7 +226,7 @@ Once validated, the skill is ready for use.
 cat aug-dev/skills/configuring-[language]-stack/SKILL.md
 ```
 
-#### 2. Assess Against stack-architect
+#### 2. Assess Against development-stack-standards
 
 Check each requirement:
 
@@ -274,7 +274,7 @@ Check each requirement:
 
 ```
 Stack Validation: configuring-[language]-stack
-Standard: stack-architect
+Standard: development-stack-standards
 
 Structure: [X]/8 ✓
   ✓ Frontmatter
@@ -314,13 +314,13 @@ After fixes, stack will be Level 1 complete.
 **If gaps found:**
 - List specific missing items
 - Provide exact additions needed
-- Reference stack-architect for requirements
+- Reference development-stack-standards for requirements
 
 **If complete:**
 ```
 Stack validation: PASS ✓
 
-configuring-[language]-stack fully implements stack-architect Level [N].
+configuring-[language]-stack fully implements development-stack-standards Level [N].
 All dimensions present, justfile correct, examples complete.
 
 No improvements needed.
@@ -403,7 +403,7 @@ description: [Variant] stack - based on [base-stack] with [customizations]
 | Standard | Level | Status |
 |----------|-------|--------|
 | justfile-standard-interface | Baseline | ✓ Full |
-| stack-architect | Level [N] | ✓ Complete (customized) |
+| development-stack-standards | Level [N] | ✓ Complete (customized) |
 | configuring-[base]-stack | Base | ✓ Inherits |
 
 [Rest follows base stack template with modifications noted]
@@ -418,7 +418,7 @@ description: [Variant] stack - based on [base-stack] with [customizations]
 
 Check:
 - Still implements justfile-standard-interface?
-- Still meets stack-architect Level requirements (if customizations don't violate them)?
+- Still meets development-stack-standards Level requirements (if customizations don't violate them)?
 - Customizations documented?
 - Migration path from base clear?
 
@@ -454,7 +454,7 @@ $ /stack-guide rust
 
 No stack skill found for Rust. Creating new stack definition.
 
-Loading stack-architect standards...
+Loading development-stack-standards standards...
 
 --- Interactive Wizard ---
 
@@ -501,7 +501,7 @@ $ /stack-guide python
 
 Found existing stack: configuring-python-stack
 
-Validating against stack-architect standards...
+Validating against development-stack-standards standards...
 
 Structure: 8/8 ✓
 Level 0: 8/8 ✓
@@ -510,7 +510,7 @@ Level 2: 4/4 ✓
 
 Stack validation: PASS ✓
 
-configuring-python-stack fully implements stack-architect Level 2.
+configuring-python-stack fully implements development-stack-standards Level 2.
 No improvements needed.
 ```
 
@@ -557,5 +557,5 @@ Note: This is team-specific. Not for upstream contribution.
 - Mode 1: Interactive wizard, comprehensive questions
 - Mode 2: Automated validation, actionable improvements
 - Mode 3: Inheritance model, document customizations
-- All modes: Reference stack-architect for standards
+- All modes: Reference development-stack-standards for standards
 - All modes: Validate output before completion

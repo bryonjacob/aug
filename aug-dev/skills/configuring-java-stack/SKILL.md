@@ -10,7 +10,7 @@ description: Java stack configuration - Maven, JUnit 5, Spotless, SpotBugs, JaCo
 | Standard | Level | Status |
 |----------|-------|--------|
 | justfile-standard-interface | Baseline | ✓ Full |
-| stack-architect | Level 2 | ✓ Complete |
+| development-stack-standards | Level 2 | ✓ Complete |
 
 **Dimensions:** 11/13 (Foundation + Quality Gates + Security)
 

@@ -1,9 +1,9 @@
 ---
-name: builder
+name: software-development
 description: Build code from GitHub issue specifications. Implements in chunks with tests after each chunk. Uses just commands for quality gates. Creates self-contained modules.
 ---
 
-# Builder
+# Software Development
 
 You build modules from GitHub issue specifications.
 

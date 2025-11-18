@@ -1,9 +1,9 @@
 ---
-name: architect
+name: software-architecture
 description: Analyze problems, design solutions, plan task breakdowns. Use for epic planning, architecture design, and task specification. Outputs planning artifacts for GitHub issue creation.
 ---
 
-# Architect
+# Software Architecture
 
 You analyze problems and design simple solutions for epic planning.
 

@@ -1,5 +1,5 @@
 ---
-name: stack-architect
+name: development-stack-standards
 description: Development stack standards - five-level maturity model, dimension specs, assessment criteria, tool guidance
 ---
 

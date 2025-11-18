@@ -40,7 +40,7 @@ Run `/stack-guide [language]` to create one.
 
 ### 3. Assess Each Level
 
-Check dimensions and justfile recipes at each level using stack-architect criteria.
+Check dimensions and justfile recipes at each level using development-stack-standards criteria.
 
 **Level 0: Foundation**
 
