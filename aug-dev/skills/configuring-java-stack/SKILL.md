@@ -5,6 +5,15 @@ description: Java stack configuration - Maven, JUnit 5, Spotless, SpotBugs, JaCo
 
 # Java Stack
 
+## Standards Compliance
+
+| Standard | Level | Status |
+|----------|-------|--------|
+| justfile-standard-interface | Baseline | ✓ Full |
+| stack-architect | Level 2 | ✓ Complete |
+
+**Dimensions:** 11/13 (Foundation + Quality Gates + Security)
+
 ## Toolchain
 
 | Tool | Use |
@@ -19,6 +28,24 @@ description: Java stack configuration - Maven, JUnit 5, Spotless, SpotBugs, JaCo
 | **PMD** | Detailed complexity analysis |
 | **cloc** | Lines of code counter |
 
+## Stack Dimensions
+
+| Dimension | Tool | Level |
+|-----------|------|-------|
+| Package manager | Maven | 0 |
+| Format | Spotless + Google Java Format | 0 |
+| Lint | SpotBugs | 0 |
+| Typecheck | javac | 0 |
+| Test | JUnit 5 | 0 |
+| Coverage | JaCoCo (96%) | 1 |
+| Complexity | Checkstyle (≤10) | 1 |
+| Test watch | fizzed-watcher | 1 |
+| LOC | cloc | 1 |
+| Deps | versions:display-dependency-updates | 2 |
+| Vulns | dependency-check | 2 |
+| License | license:add-third-party | 2 |
+| SBOM | cyclonedx-maven-plugin | 2 |
+
 ## Quick Reference
 
 ```bash
@@ -30,7 +57,9 @@ mvn test -Dgroups="!integration"
 mvn clean verify -Dgroups="!integration"
 ```
 
-**Web services:** Bind to `0.0.0.0` (not `127.0.0.1`) for Docker.
+## Docker Compatibility
+
+Web services: Bind to `0.0.0.0` (not `127.0.0.1`)
 
 ```properties
 # application.properties

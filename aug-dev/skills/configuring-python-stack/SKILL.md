@@ -5,6 +5,15 @@ description: Python stack configuration - uv, ruff, mypy, pytest with 96% covera
 
 # Python Stack
 
+## Standards Compliance
+
+| Standard | Level | Status |
+|----------|-------|--------|
+| justfile-standard-interface | Baseline | ✓ Full |
+| stack-architect | Level 2 | ✓ Complete |
+
+**Dimensions:** 11/13 (Foundation + Quality Gates + Security)
+
 ## Toolchain
 
 | Tool | Use |
@@ -21,6 +30,24 @@ description: Python stack configuration - uv, ruff, mypy, pytest with 96% covera
 | **pip-licenses** | License analysis |
 | **cyclonedx-py** | SBOM generation |
 
+## Stack Dimensions
+
+| Dimension | Tool | Level |
+|-----------|------|-------|
+| Package manager | uv | 0 |
+| Format | ruff | 0 |
+| Lint | ruff | 0 |
+| Typecheck | mypy | 0 |
+| Test | pytest | 0 |
+| Coverage | pytest-cov (96%) | 1 |
+| Complexity | radon (≤10) | 1 |
+| Test watch | pytest-watcher | 1 |
+| LOC | pygount | 1 |
+| Deps | uv pip list | 2 |
+| Vulns | pip-audit | 2 |
+| License | pip-licenses | 2 |
+| SBOM | cyclonedx-py | 2 |
+
 ## Quick Reference
 
 ```bash
@@ -32,9 +59,13 @@ uv run pytest -m "not integration" --durations=10
 uv run pytest -m "not integration" --cov=src --cov-fail-under=96
 ```
 
-**Web services:** Bind to `0.0.0.0` (not `127.0.0.1`) for Docker.
+## Docker Compatibility
+
+Web services: Bind to `0.0.0.0` (not `127.0.0.1`)
 
 ```python
+import os
+
 host = os.getenv("HOST", "0.0.0.0")
 port = int(os.getenv("PORT", "8000"))
 ```

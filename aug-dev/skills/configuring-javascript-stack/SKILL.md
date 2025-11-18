@@ -5,6 +5,15 @@ description: JavaScript/TypeScript stack configuration - pnpm, prettier, eslint,
 
 # JavaScript/TypeScript Stack
 
+## Standards Compliance
+
+| Standard | Level | Status |
+|----------|-------|--------|
+| justfile-standard-interface | Baseline | ✓ Full |
+| stack-architect | Level 2 | ✓ Complete |
+
+**Dimensions:** 11/13 (Foundation + Quality Gates + Security)
+
 ## Toolchain
 
 | Tool | Use |
@@ -15,6 +24,24 @@ description: JavaScript/TypeScript stack configuration - pnpm, prettier, eslint,
 | **eslint** | Linter (complexity check) |
 | **vitest** | Testing framework |
 | **tsx** | TypeScript execution |
+
+## Stack Dimensions
+
+| Dimension | Tool | Level |
+|-----------|------|-------|
+| Package manager | pnpm | 0 |
+| Format | prettier | 0 |
+| Lint | eslint | 0 |
+| Typecheck | tsc | 0 |
+| Test | vitest | 0 |
+| Coverage | vitest (96%) | 1 |
+| Complexity | eslint (≤10) | 1 |
+| Test watch | vitest | 1 |
+| LOC | cloc | 1 |
+| Deps | pnpm outdated | 2 |
+| Vulns | pnpm audit | 2 |
+| License | license-checker | 2 |
+| SBOM | @cyclonedx/cyclonedx-npm | 2 |
 
 ## Quick Reference
 
@@ -27,11 +54,14 @@ pnpm vitest run tests/unit --reporter=verbose
 pnpm vitest run tests/unit --coverage --coverage.lines=96
 ```
 
-**Web services:** Bind to `0.0.0.0` (not `127.0.0.1`) for Docker.
+## Docker Compatibility
+
+Web services: Bind to `0.0.0.0` (not `127.0.0.1`)
 
 ```typescript
 const host = process.env.HOST || '0.0.0.0'
 const port = parseInt(process.env.PORT || '3000', 10)
+
 app.listen(port, host)
 ```
 
