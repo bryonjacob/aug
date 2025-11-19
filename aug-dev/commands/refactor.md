@@ -104,14 +104,22 @@ just loc
 ```
 Parse output, find files >500 lines.
 
-**Duplicates (if tool available):**
+**Duplicates:**
 ```bash
-# jscpd or similar
-jscpd <module-path> --threshold 30
+# Prefer justfile command if available
+just duplicates
+# Or direct: jscpd <module-path> --threshold 30
 ```
-Find files with >30% duplicate code.
+Parse output, find files with >30% duplicate code.
 
-**Result:** List of candidate files per module.
+**TODOs/FIXMEs:**
+```bash
+# Find TODO/FIXME/HACK comments
+grep -rn "TODO\|FIXME\|HACK" <module-path> --include="*.py" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.java"
+```
+Count per file, add to metrics.
+
+**Result:** List of candidate files per module with metrics (complexity, LOC, duplicates, TODOs).
 
 ### 5. Deep Code Analysis (Expensive)
 
@@ -171,6 +179,8 @@ For each candidate file:
   'current': 18,
   'target': 10,
   'issues': ['long_function', 'nested_conditionals', 'magic_strings'],
+  'todos': 3,  # count of TODO/FIXME/HACK comments
+  'duplicates_pct': 15,  # percentage of duplicate code
   'approach': ['extract_email_validation', 'guard_clauses', 'extract_constants'],
   'scope': 'single file',
   'coupling': 15,  # call sites
@@ -231,10 +241,13 @@ For each new opportunity:
 ## Current State
 - Complexity: <current> (target: <target>)
 - Lines: <line-count>
+- TODOs: <count> unaddressed
+- Duplicates: <percentage>% (if >30%)
 - Issues: <smell-list>
 
 ## Impact
 <Why this matters - maintainability, testing, performance>
+<Mention TODOs as incomplete implementation if present>
 
 ## Approach
 1. <Step 1>

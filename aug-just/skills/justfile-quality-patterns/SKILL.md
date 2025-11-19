@@ -1,11 +1,11 @@
 ---
 name: justfile-quality-patterns
-description: Level 1 patterns - test-watch, integration-test, complexity, loc
+description: Level 1 patterns - test-watch, integration-test, complexity, loc, duplicates, slowtests
 ---
 
 # Quality Patterns (Level 1)
 
-Add when CI matters. Fast feedback, test separation, complexity analysis.
+Add when CI matters. Fast feedback, test separation, complexity analysis, duplicate detection, test performance.
 
 ## Commands
 
@@ -107,6 +107,109 @@ loc N="20":
       xargs wc -l | sort -rn | head -n {{N}}
 ```
 
+### duplicates
+
+Find duplicate code blocks. Informational, not blocking.
+
+```just
+# Find duplicate code blocks
+duplicates:
+    <detect copy-paste code, threshold 30%, informational>
+```
+
+**Universal (requires jscpd):**
+```just
+duplicates:
+    jscpd . --threshold 30 --min-lines 5 --reporters console
+```
+
+**Configuration:** `.jscpd.json`
+```json
+{
+  "threshold": 30,
+  "minLines": 5,
+  "minTokens": 50,
+  "ignore": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    "**/*.test.js",
+    "**/*.test.ts",
+    "**/*_test.py",
+    "**/*Test.java"
+  ],
+  "reporters": ["console", "json"],
+  "format": ["javascript", "typescript", "python", "java"]
+}
+```
+
+**Install:**
+- `npm install -g jscpd` (global)
+- Or: `npx jscpd` (no install)
+
+**Key:** Detects copy-paste opportunities. Used by `/refactor` analysis.
+
+### slowtests
+
+Show tests slower than threshold. Identifies optimization targets.
+
+```just
+# Show tests slower than N milliseconds
+slowtests N="50":
+    <run tests, filter by duration > N ms>
+```
+
+**Python:**
+```just
+slowtests N="50":
+    pytest -v --durations=0 | python -c "import sys; [print(l) for l in sys.stdin if any(int(t.split('.')[0]) > int('{{N}}') for t in l.split() if t.endswith('s'))]"
+```
+
+**JavaScript:**
+```just
+slowtests N="50":
+    vitest run --reporter=verbose --reporter=json --outputFile=.test-results.json && \
+    jq -r '.testResults[].assertionResults[] | select(.duration > {{N}}) | "\(.title): \(.duration)ms"' .test-results.json
+```
+
+**Java:**
+```just
+slowtests N="50":
+    mvn test | grep "Time elapsed:" | awk -v n={{N}} '{ split($4,a,"."); if(a[1]*1000+a[2] > n) print $0 }'
+```
+
+**Key:** Identifies slow tests for optimization. Target: unit tests <50ms.
+
+### test-profile
+
+Run tests with detailed timing information.
+
+```just
+# Profile all tests with detailed timing
+test-profile:
+    <run all tests with comprehensive timing data>
+```
+
+**Python:**
+```just
+test-profile:
+    pytest -v --durations=0 --cov=. --cov-report=term-missing
+```
+
+**JavaScript:**
+```just
+test-profile:
+    vitest run --reporter=verbose --coverage
+```
+
+**Java:**
+```just
+test-profile:
+    mvn test -X
+```
+
+**Key:** Full diagnostic timing. Use to analyze test suite performance.
+
 ## Test Separation Philosophy
 
 **Unit tests (unmarked):**
@@ -168,8 +271,11 @@ Add when:
 - Multiple developers
 - Need fast local feedback (test-watch)
 - Integration tests exist (separate from unit)
+- Identifying code quality issues (complexity, duplicates)
+- Optimizing test suite performance (slowtests, test-profile)
 
 Skip when:
 - Solo project, no CI
 - No integration tests yet
+- Test suite already fast (<5s)
 - Prefer simplicity over thoroughness

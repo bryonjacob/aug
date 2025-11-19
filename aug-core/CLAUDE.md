@@ -9,8 +9,10 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 - Session context management across conversations
 - Concise prompt and context writing (hemingwayesque)
 - Autonomous command execution with user proxy (automate)
+- Autonomous work + review + merge (autocommit)
 - Multi-command workflow definition and orchestration
 - Workflow design and analysis
+- Code pattern detection and consistency suggestions
 
 ## Key Files
 
@@ -21,10 +23,14 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 - `automate.md` - Execute commands autonomously with user-standin agent
 - `workflow-run.md` - Execute complete workflow automated
 - `workflow-status.md` - Show current workflow position and next steps
+- `learn.md` - Analyze codebase for pattern conventions
+- `suggest.md` - Compare file to conventions, suggest improvements
+- `patterns.md` - Show all detected project conventions
 
 ### Skills (`skills/`)
 - `hemingwayesque/` - Ruthless concision for AI prompts and context
 - `workflow-design/` - Design, discover, and refactor multi-command workflows
+- `code-patterns/` - Learn project conventions, detect patterns, suggest consistency
 
 ### Agents (`agents/`)
 - `user-standin.md` - Context-aware proxy for user in automated workflows
@@ -45,6 +51,11 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 ### Workflows
 - `/workflow-run [workflow-name]` - Execute full workflow automated
 - `/workflow-status [workflow-name]` - Show workflow progress and next step
+
+### Code Patterns
+- `/learn [pattern-type]` - Analyze codebase for conventions (error-handling, testing, imports, naming, architecture)
+- `/suggest [file]` - Compare file to project conventions
+- `/patterns` - Show all detected conventions
 
 ### Skills
 All skills available for use via `Skill` tool.

@@ -27,6 +27,7 @@ Core development workflows and tooling standards for software engineering projec
 
 **Task Execution:**
 - `work.md` - Autonomous task execution from GitHub issue to PR
+- `autocommit.md` - Autonomous work → review → merge workflow
 
 **Project Setup:**
 - `start-project.md` - Initialize new project with full development setup
@@ -36,6 +37,7 @@ Core development workflows and tooling standards for software engineering projec
 **Code Quality:**
 - `docsaudit.md` - Automated documentation auditing and maintenance
 - `refactor.md` - Autonomous refactoring analysis and issue creation
+- `test-optimize.md` - Test suite optimization (speed and redundancy analysis)
 
 ### Skills (`skills/`)
 
@@ -86,6 +88,8 @@ Core development workflows and tooling standards for software engineering projec
 **Autonomous Execution:**
 ```bash
 /work 124                               # Execute task issue autonomously
+/autocommit 124                         # Work → review → merge (fully automated)
+/autocommit 124 125 126                 # Multiple issues sequentially
 ```
 
 ### Project Management
@@ -101,6 +105,7 @@ Core development workflows and tooling standards for software engineering projec
 ```bash
 /docsaudit [PATH]                       # Audit and update documentation
 /refactor [SCOPE]                       # Analyze code and create refactoring issues
+/test-optimize [MODULE]                 # Analyze test suite for speed and redundancy
 ```
 
 ### Skills

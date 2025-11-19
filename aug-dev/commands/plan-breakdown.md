@@ -46,7 +46,9 @@ Use the `software-architecture` skill in BREAKDOWN mode to guide this process.
    - Each task should be:
      - Independently deliverable
      - Single PR to main
+     - **Includes implementation AND tests** (not separate tasks)
      - Clear acceptance criteria
+     - Tests pass before task is complete
 
 3. **Present to User**
    ```
@@ -110,20 +112,25 @@ For each approved task, create `/tmp/devplan/{epic-id}/tasks/task-{n}.md`:
 
 #### Phase 2: Implementation Chunks
 
+**IMPORTANT**: Each chunk includes BOTH implementation AND tests. Never separate "write code" and "write tests" into different chunks or tasks.
+
 **Chunk 1: {DESCRIPTIVE_NAME}**
 - Implement: {CONCRETE_STEPS}
-- Test: {TEST_CASES}
+- Write tests: {TEST_CASES}
+- Verify tests pass: `just test`
 - Verify: `just check-all`
 
 **Chunk 2: {DESCRIPTIVE_NAME}**
 - Implement: {CONCRETE_STEPS}
-- Test: {TEST_CASES}
+- Write tests: {TEST_CASES}
+- Verify tests pass: `just test`
 - Verify: `just check-all`
 
-#### Phase 3: Test Review
+#### Phase 3: Final Verification
 - Review all tests for completeness
 - Ensure edge cases covered
 - Run: `just check-all` (includes coverage check, 96% threshold)
+- All tests must pass before task is complete
 
 ### Code Examples
 
@@ -217,14 +224,16 @@ Next: /plan-create
 Before marking breakdown complete:
 - [ ] 3-8 tasks defined
 - [ ] Each task independently deliverable
+- [ ] **Each task includes BOTH implementation AND tests** (no separate "testing" tasks)
 - [ ] Each task has clear scope (in/out)
 - [ ] Implementation guidance is concrete
 - [ ] Code examples provided
 - [ ] Dependencies identified
-- [ ] Test strategy defined
-- [ ] Acceptance criteria clear
+- [ ] Test strategy defined per task
+- [ ] Acceptance criteria clear (includes passing tests)
 - [ ] All task specs written to tasks/*.md
 - [ ] metadata.json updated with task list
+- [ ] **No tasks titled "Add tests" or "Write tests"** (tests are part of each task)
 
 ---
 
@@ -236,9 +245,39 @@ A good task spec:
 - **Is chunked**: Broken into 2-4 verifiable chunks
 - **Is testable**: Clear test cases for each chunk
 - **Is bounded**: Explicit out-of-scope to prevent scope creep
+- **Tests included**: Each chunk has implementation + tests together
 
 A bad task spec:
 - Vague: "Improve error handling"
 - Too big: "Implement entire authentication system"
 - No guidance: "Add tests"
 - No examples: Only prose descriptions
+- **Tests separate**: "Task 1: Implement feature, Task 2: Write tests"
+
+---
+
+## Anti-Patterns to Avoid
+
+**❌ NEVER separate implementation and testing into different tasks:**
+```
+Task 1: Implement user validation
+Task 2: Implement email handling
+Task 3: Implement password rules
+Task 4: Write tests for all features  ← WRONG
+```
+
+**✅ ALWAYS include tests in each task:**
+```
+Task 1: Implement user validation (with tests)
+Task 2: Implement email handling (with tests)
+Task 3: Implement password rules (with tests)
+```
+
+**Definition of Done for EVERY task:**
+- Code implemented
+- Tests written
+- Tests passing
+- Coverage ≥96%
+- `just check-all` passes
+
+**If you find yourself creating a task titled "Add tests" or "Write tests for X", you're doing it wrong.** Tests are part of each implementation task, not a separate task.

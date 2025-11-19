@@ -34,7 +34,7 @@ typecheck:
 
 # Run unit tests
 test:
-    <unit tests only (unmarked/untagged), fast>
+    <unit tests only (unmarked/untagged), fast, show timing>
 
 # Run unit tests with coverage threshold (96%)
 coverage:
@@ -109,10 +109,10 @@ typecheck:
     pnpm exec tsc --noEmit
 
 test:
-    pnpm vitest run --project unit
+    pnpm vitest run --project unit --reporter=verbose
 
 coverage:
-    pnpm vitest run --coverage
+    pnpm vitest run --coverage --reporter=verbose
 
 clean:
     rm -rf node_modules .next out dist coverage
@@ -133,10 +133,10 @@ typecheck:
     @echo "⚠️ typecheck not applicable (Java is statically typed)"
 
 test:
-    mvn test
+    mvn test -Dsurefire.printSummary=true
 
 coverage:
-    mvn verify jacoco:check
+    mvn verify jacoco:check -Dsurefire.printSummary=true
 
 clean:
     mvn clean
