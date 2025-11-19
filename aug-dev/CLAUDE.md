@@ -10,6 +10,7 @@ Core development workflows and tooling standards for software engineering projec
 - Autonomous task execution from GitHub issues
 - Project initialization and environment setup
 - Systematic refactoring with coverage requirements
+- Documentation auditing and maintenance
 - Stack configuration (JavaScript/TypeScript, Python, Java)
 - Development standards (justfile, git hooks, GitHub Actions, CLAUDE.md/MkDocs docs)
 
@@ -31,7 +32,10 @@ Core development workflows and tooling standards for software engineering projec
 - `start-project.md` - Initialize new project with full development setup
 - `devinit.md` - Audit existing project and set up missing components
 - `quicktask.md` - Ad-hoc task workflow (quick one-off tasks)
-- `refactor.md` - Systematic refactoring requiring 96%+ coverage
+
+**Code Quality:**
+- `docsaudit.md` - Automated documentation auditing and maintenance
+- `refactor.md` - Autonomous refactoring analysis and issue creation
 
 ### Skills (`skills/`)
 
@@ -57,6 +61,7 @@ Core development workflows and tooling standards for software engineering projec
 **Development Workflows:**
 - `executing-development-issues/` - Complete issue lifecycle (branch → PR → merge)
 - `refactoring/` - Refactoring with coverage/complexity gates
+- `documenting-with-audit/` - Automated documentation auditing and maintenance
 - `self-reviewing-code/` - Self-review checklist before marking PR ready
 - `working-in-git-worktrees/` - Parallel work with isolated directories
 - `creating-agents/` - Agent definition patterns
@@ -89,7 +94,13 @@ Core development workflows and tooling standards for software engineering projec
 /start-project [NAME]                   # Initialize new project
 /devinit                                # Audit and setup development environment
 /quicktask [DESCRIPTION]                # Quick ad-hoc task with issue tracking
-/refactor [SCOPE]                       # Refactor with coverage gates
+```
+
+### Code Quality
+
+```bash
+/docsaudit [PATH]                       # Audit and update documentation
+/refactor [SCOPE]                       # Analyze code and create refactoring issues
 ```
 
 ### Skills

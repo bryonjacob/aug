@@ -22,6 +22,25 @@ just test         # Verify after each change
 just check-all    # Quality gate before merge
 ```
 
+## Finding Refactoring Opportunities
+
+**Two approaches:**
+
+### Autonomous (Recommended)
+
+```bash
+/refactor
+# AI analyzes codebase
+# Finds opportunities automatically
+# Creates detailed GitHub issues
+```
+
+Then execute: `/work <issue-number>`
+
+### Manual
+
+Use justfile commands to identify targets yourself.
+
 ## Workflow
 
 ### 1. Identify Targets
@@ -109,5 +128,13 @@ refactor: simplify conditionals with guard clauses
 
 This skill works with:
 - `justfile-standard-interface` - Provides coverage/complexity/test commands
-- `/plan` - Creates refactoring issues with clear acceptance criteria
+- `/refactor` - Autonomous analysis, creates refactoring issues (recommended)
+- `/plan` - Manual planning for custom refactorings
 - `/work` - Executes refactoring with test verification gates
+
+**Typical flow:**
+```bash
+/refactor          # Find opportunities, create issues
+/work 101          # Execute using this skill's guidance
+/work 102          # Continue with next refactoring
+```
