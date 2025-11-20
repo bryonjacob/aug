@@ -17,11 +17,36 @@ Complete autonomous workflow: execute issue → review → merge.
 ## Purpose
 
 Fully autonomous task execution from issue to merged PR:
-1. Run `/work <issue>` (implementation)
-2. Automated code review
-3. Auto-merge if review passes
+1. Run `/work <issue>` in subagent (implementation)
+2. Automated code review in subagent
+3. Fix issues in subagent (if needed, max 2 attempts)
+4. Auto-merge if review passes
 
 **Key constraint:** Review ONLY checks against original issue acceptance criteria. No scope creep.
+
+## Token Management Strategy
+
+**CRITICAL: Main thread orchestrates, subagents execute.**
+
+Main thread (lightweight orchestration):
+- Parse issue numbers
+- Fetch issue metadata via `gh` CLI
+- Spawn Task subagents for heavy work
+- Merge PRs if approved
+- Generate summary
+
+Subagents (fresh token budgets):
+- **Work agent:** Execute `/work {issue}` (development)
+- **Review agent:** Code review against acceptance criteria
+- **Fix agent:** Address review feedback (if needed)
+
+**Why:** Each subagent gets fresh context and full token budget. Main thread can process many issues because it only orchestrates, not develops/reviews.
+
+**Agent types:**
+- `general-purpose`: For `/work` execution and fixing review issues
+- `superpowers:code-reviewer`: For code review against acceptance criteria
+
+Both are standard built-in agents. The `/work` command provides sufficient guidance for the general-purpose agent.
 
 ## Instructions
 
@@ -59,22 +84,42 @@ Parse JSON, extract:
 - Issue title
 - Issue body (contains acceptance criteria)
 
-**Step 2.2: Execute /work**
+**Step 2.2: Execute /work in Subagent**
 
-Launch `/work <issue-number>` via normal command execution (not Task tool).
+**CRITICAL: Use Task tool to spawn subagent for /work (token management).**
 
-Wait for `/work` to complete. It will:
-- Create feature branch
-- Implement changes
-- Run tests
-- Fix format/lint/type errors (up to 3 attempts)
-- Run `just check-all`
-- Create PR
+Launch general-purpose agent via Task tool:
 
-**Output from /work will include:**
+```
+Task(
+  subagent_type: "general-purpose",
+  description: "Execute work command for issue {issue-number}",
+  prompt: "Execute the /work {issue-number} command.
+
+  This will:
+  - Fetch issue details
+  - Create feature branch
+  - Implement changes
+  - Run tests
+  - Fix format/lint/type errors (up to 3 attempts)
+  - Run just check-all
+  - Create PR
+
+  Report back:
+  - Success/failure status
+  - Branch name
+  - PR number
+  - PR URL
+  - Any errors encountered
+  "
+)
+```
+
+**Agent will report back:**
 - Branch name
 - PR number
 - PR URL
+- Success/failure status
 
 **If /work fails:**
 ```
@@ -88,53 +133,93 @@ Review and fix manually.
 
 Stop processing remaining issues.
 
-**Step 2.3: Launch Code Review Agent**
+**Step 2.3: Launch Code Review in Subagent**
 
-Use Task tool to launch code-reviewer subagent:
+**Use Task tool to spawn code-reviewer subagent:**
 
 ```
-Prompt: Review PR #<pr-number> against original issue #<issue-number>
+Task(
+  subagent_type: "superpowers:code-reviewer",
+  description: "Review PR for issue {issue-number}",
+  prompt: "Review PR #{pr-number} against original issue #{issue-number}
 
-Issue acceptance criteria:
-<paste-acceptance-criteria-from-issue>
+  Issue acceptance criteria:
+  {paste-acceptance-criteria-from-issue}
 
-Review checklist:
-- [ ] All acceptance criteria from issue met?
-- [ ] No additional features added (YAGNI)?
-- [ ] No unnecessary abstractions (DRY not over-applied)?
-- [ ] Tests exist for new/changed code?
-- [ ] Tests pass (just test)?
-- [ ] Coverage ≥96% (just coverage)?
-- [ ] Complexity within limits (just complexity)?
-- [ ] just check-all passes?
-- [ ] No security vulnerabilities introduced?
-- [ ] Breaking changes documented (if any)?
+  Review checklist:
+  - [ ] All acceptance criteria from issue met?
+  - [ ] No additional features added (YAGNI)?
+  - [ ] No unnecessary abstractions (DRY not over-applied)?
+  - [ ] Tests exist for new/changed code?
+  - [ ] Tests pass (just test)?
+  - [ ] Coverage ≥96% (just coverage)?
+  - [ ] Complexity within limits (just complexity)?
+  - [ ] just check-all passes?
+  - [ ] No security vulnerabilities introduced?
+  - [ ] Breaking changes documented (if any)?
 
-Provide detailed review with:
-- Acceptance criteria status (met/not met)
-- Code quality issues (if any)
-- YAGNI violations (if any)
-- Recommendation: APPROVE or REQUEST_CHANGES
+  Provide detailed review with:
+  - Acceptance criteria status (met/not met)
+  - Code quality issues (if any)
+  - YAGNI violations (if any)
+  - Recommendation: APPROVE or REQUEST_CHANGES
+  "
+)
 ```
 
-**Agent response will include:**
+**Agent will report back:**
 - Review findings
 - Recommendation (APPROVE or REQUEST_CHANGES)
 
 **Step 2.4: Process Review Results**
 
 **If recommendation is REQUEST_CHANGES:**
+
+Launch fix iteration (max 2 attempts):
+
 ```
-Review found issues for PR #<pr-number>:
+Iteration 1: Review found issues, spawning fix agent
 
-<paste-review-findings>
+Task(
+  subagent_type: "general-purpose",
+  description: "Fix review issues for PR {pr-number}",
+  prompt: "Address code review feedback for PR #{pr-number}
 
-Action: Commented on PR, NOT merging.
+  Review findings:
+  {paste-review-findings}
 
-Manual fix required:
-1. Address review comments
-2. Push updates to branch
-3. Re-run: /autocommit <issue-number> (will re-review)
+  Tasks:
+  1. Check out the PR branch: git checkout {branch-name}
+  2. Address each review issue
+  3. Run tests: just test
+  4. Run quality checks: just check-all
+  5. Commit changes: git commit -am 'fix: address review feedback'
+  6. Push: git push
+
+  Report back:
+  - Issues addressed
+  - Tests passing
+  - Ready for re-review
+  "
+)
+```
+
+**After fix agent completes, re-run Step 2.3 (code review).**
+
+**If review passes after fixes:** Proceed to merge.
+
+**If review fails after 2 fix attempts:**
+```
+Review still has issues after 2 fix attempts for PR #{pr-number}:
+
+{paste-latest-review-findings}
+
+Stopping automated workflow.
+
+Manual intervention required:
+1. Review PR #{pr-number} manually
+2. Address remaining issues
+3. Can re-run: /autocommit {issue-number} to retry
 ```
 
 Stop processing remaining issues.
@@ -330,19 +415,33 @@ Summary:
 ## Integration Points
 
 **Uses:**
-- `/work` command (aug-dev) - Implementation
+- Task tool with general-purpose subagent - Implementation (`/work`)
 - Task tool with code-reviewer subagent - Review
-- GitHub CLI (`gh`) - Issue/PR operations
+- Task tool with general-purpose subagent - Fixes (if needed)
+- GitHub CLI (`gh`) - Issue/PR operations (main thread only)
 
 **Workflow:**
 ```
-/autocommit 123
+/autocommit 123 124 125 (main thread)
   ↓
-/work 123 (aug-dev)
+For each issue:
   ↓
-Task(code-reviewer) (superpower or aug-dev agent)
+  Fetch issue via gh CLI (main thread)
   ↓
-gh pr merge (if approved)
+  Task(general-purpose: /work {issue}) → PR created (subagent)
+  ↓
+  Task(code-reviewer: review PR) → APPROVE/REQUEST_CHANGES (subagent)
+  ↓
+  If REQUEST_CHANGES (max 2 attempts):
+    Task(general-purpose: fix issues) → push fixes (subagent)
+    Task(code-reviewer: re-review) → APPROVE/REQUEST_CHANGES (subagent)
+  ↓
+  If APPROVE:
+    gh pr merge (main thread)
+  ↓
+  Next issue
+
+Summary (main thread)
 ```
 
 ## Error Handling
