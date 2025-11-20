@@ -20,7 +20,7 @@ Execute GitHub issue through to PR. Fully autonomous.
 
 - **Idempotent**: Safe to re-run if interrupted
 - **Incremental**: Commits and pushes after each chunk
-- **Self-healing**: Auto-fixes format/lint/type errors (max 3 attempts)
+- **Self-healing**: Auto-fixes format/lint/type errors (convergence-based iteration)
 - **Quality-gated**: Must pass `just check-all` before PR
 - **Autonomous**: No user interaction
 
@@ -193,29 +193,38 @@ After all chunks:
    just check-all
    ```
 
-2. **Self-Healing (max 3 attempts)**
+2. **Self-Healing (convergence-based)**
 
-   If `just check-all` fails:
+   If `just check-all` fails, iterate with convergence tracking:
 
-   **Attempt 1:**
-   ```bash
-   just check-all
-   ```
+   **For each attempt:**
+   - Track what was tried and outcome
+   - Parse current error messages
+   - Use `software-debugging` skill:
+     - Identify root cause
+     - Generate hypothesis for fix
+     - Apply fix
+     - Re-run `just check-all`
+   - Assess convergence
 
-   **Attempt 2:**
-   Use `software-debugging` skill:
-   - Parse error messages
-   - Identify root cause
-   - Apply fix
-   - Re-run `just check-all`
+   **Signs of convergence (keep trying):**
+   - Error count decreasing
+   - Different errors each iteration (making progress)
+   - New hypotheses identified
+   - Clear path to resolution
 
-   **Attempt 3:**
-   - Review errors systematically
-   - Fix remaining issues
-   - Re-run `just check-all`
+   **Signs of spinning (stop and report):**
+   - Same error after multiple attempts
+   - No new hypotheses to try
+   - Error getting worse or multiplying
+   - Tried all reasonable approaches
+   - Stuck on fundamental issue
 
-   **If still failing:**
-   → Go to Phase 6 (Blocked Path)
+   **If converging:** Continue iteration.
+
+   **If passing:** → Go to Phase 5 (Success Path)
+
+   **If spinning/stuck:** → Go to Phase 6 (Blocked Path)
 
 3. **Run User Acceptance Tests**
 
@@ -299,7 +308,7 @@ After all chunks:
 
 ### Phase 6: PR Creation (Blocked Path)
 
-**When quality checks fail after 3 attempts:**
+**When quality checks fail after convergence assessment shows spinning:**
 
 1. **Generate Diagnostic Report**
    ```markdown
@@ -307,6 +316,14 @@ After all chunks:
 
    Task: #{ISSUE_NUMBER}
    Branch: {BRANCH_NAME}
+
+   ### Fix Attempts
+   1. {what was tried} → {outcome}
+   2. {what was tried} → {outcome}
+   ...
+
+   ### Assessment
+   No clear path forward after {N} attempts. Need human guidance.
    Status: Quality checks failing
 
    ## Failing Checks
@@ -377,10 +394,10 @@ After all chunks:
 
    Draft PR: {PR_URL}
 
-   Quality checks failing after 3 attempts.
-   See diagnostics in PR.
+   Quality checks failing - no clear path forward after {N} attempts.
+   See diagnostics and attempt history in PR.
 
-   After fixing, re-run (idempotent):
+   Human guidance needed. After fixing, re-run (idempotent):
      /work ${ISSUE_NUMBER}
    ```
 

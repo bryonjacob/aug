@@ -19,7 +19,7 @@ Complete autonomous workflow: execute issue → review → merge.
 Fully autonomous task execution from issue to merged PR:
 1. Run `/work <issue>` in subagent (implementation)
 2. Automated code review in subagent
-3. Fix issues in subagent (if needed, max 2 attempts)
+3. Fix issues in subagent (if needed, convergence-based iteration)
 4. Auto-merge if review passes
 
 **Key constraint:** Review ONLY checks against original issue acceptance criteria. No scope creep.
@@ -101,7 +101,7 @@ Task(
   - Create feature branch
   - Implement changes
   - Run tests
-  - Fix format/lint/type errors (up to 3 attempts)
+  - Fix format/lint/type errors (convergence-based)
   - Run just check-all
   - Create PR
 
@@ -175,10 +175,15 @@ Task(
 
 **If recommendation is REQUEST_CHANGES:**
 
-Launch fix iteration (max 2 attempts):
+Launch fix iteration with convergence tracking:
 
 ```
-Iteration 1: Review found issues, spawning fix agent
+Attempt {N}: Review found issues, spawning fix agent
+
+Track:
+- Previous attempts: {list what we tried}
+- Previous outcomes: {what happened}
+- Current issues: {paste-review-findings}
 
 Task(
   subagent_type: "general-purpose",
@@ -187,6 +192,9 @@ Task(
 
   Review findings:
   {paste-review-findings}
+
+  Previous attempts (if any):
+  {list what was tried and what happened}
 
   Tasks:
   1. Check out the PR branch: git checkout {branch-name}
@@ -199,27 +207,52 @@ Task(
   Report back:
   - Issues addressed
   - Tests passing
-  - Ready for re-review
+  - New hypotheses to try if issues remain
+  - Assessment: Are we converging toward solution?
   "
 )
 ```
 
-**After fix agent completes, re-run Step 2.3 (code review).**
+**After fix agent completes, assess convergence:**
 
-**If review passes after fixes:** Proceed to merge.
+**Signs of convergence (keep going):**
+- Errors are reducing in number
+- Different errors each iteration (making progress)
+- Agent reports new hypotheses to try
+- Clear path forward identified
 
-**If review fails after 2 fix attempts:**
+**Signs of spinning (stop and ask for help):**
+- Same error repeatedly after multiple attempts
+- No new ideas or hypotheses
+- Tried all reasonable approaches
+- Error getting worse or more complex
+- Agent reports being stuck
+
+**If converging:** Re-run Step 2.3 (code review), continue iteration.
+
+**If review passes:** Proceed to merge.
+
+**If spinning/stuck:**
 ```
-Review still has issues after 2 fix attempts for PR #{pr-number}:
+Unable to resolve review issues for PR #{pr-number} after {N} attempts.
 
+Attempts made:
+1. {what was tried} → {outcome}
+2. {what was tried} → {outcome}
+...
+
+Current state:
 {paste-latest-review-findings}
+
+Assessment: No clear path forward, need human input.
 
 Stopping automated workflow.
 
 Manual intervention required:
-1. Review PR #{pr-number} manually
-2. Address remaining issues
-3. Can re-run: /autocommit {issue-number} to retry
+1. Review attempt history above
+2. Review PR #{pr-number} to understand context
+3. Provide guidance or fix manually
+4. Can re-run: /autocommit {issue-number} to retry
 ```
 
 Stop processing remaining issues.
@@ -432,9 +465,10 @@ For each issue:
   ↓
   Task(code-reviewer: review PR) → APPROVE/REQUEST_CHANGES (subagent)
   ↓
-  If REQUEST_CHANGES (max 2 attempts):
+  If REQUEST_CHANGES (iterate until converging or stuck):
     Task(general-purpose: fix issues) → push fixes (subagent)
     Task(code-reviewer: re-review) → APPROVE/REQUEST_CHANGES (subagent)
+    Assess convergence → continue or stop
   ↓
   If APPROVE:
     gh pr merge (main thread)
