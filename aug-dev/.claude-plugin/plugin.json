@@ -1,7 +1,7 @@
 {
   "name": "aug-dev",
   "description": "Core development workflows and tooling standards. Stack configuration (Python/JS/Java), documentation (CLAUDE.md/MkDocs), workflow automation (justfile), CI/CD (GitHub Actions), and issue management.",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": {
     "name": "Bryon"
   }

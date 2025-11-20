@@ -14,7 +14,7 @@ This marketplace provides a centralized distribution point for Claude Code plugi
 - Skills and commands organized within each plugin
 
 **Design Decisions:**
-- Simple two-plugin structure (dev/util) for initial organization
+- Four-plugin architecture (dev, core, just, web)
 - Local development support via `/plugin marketplace add` with absolute paths
 - Git-ready structure for future GitHub distribution
 - Each plugin is independently installable
@@ -23,6 +23,7 @@ This marketplace provides a centralized distribution point for Claude Code plugi
 
 - `aug-dev/` - Development workflows and tooling (see aug-dev/CLAUDE.md)
 - `aug-core/` - AI-enhancement capabilities (see aug-core/CLAUDE.md)
+- `aug-just/` - Justfile standard interface management (see aug-just/CLAUDE.md)
 - `aug-web/` - Web development patterns (see aug-web/CLAUDE.md)
 - `.claude-plugin/` - Marketplace metadata (marketplace.json)
 
@@ -42,8 +43,7 @@ This marketplace provides a centralized distribution point for Claude Code plugi
 /plugin marketplace add /app/bryon/aug
 
 # Install plugins
-/plugin install aug-dev@aug
-/plugin install util@aug
+/plugin install aug-dev@aug aug-core@aug aug-just@aug aug-web@aug
 ```
 
 ### Directory Structure
@@ -54,19 +54,36 @@ aug/
 │   └── marketplace.json          # Marketplace registry
 ├── CLAUDE.md                      # This file
 ├── README.md                      # User-facing documentation
-├── dev/                           # Dev plugin
+├── aug-dev/                       # Development workflows plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── CLAUDE.md
 │   ├── README.md
 │   ├── skills/
-│   └── commands/
-└── util/                          # Util plugin
+│   ├── commands/
+│   └── workflows/
+├── aug-core/                      # AI-enhancement plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── CLAUDE.md
+│   ├── README.md
+│   ├── skills/
+│   ├── commands/
+│   └── agents/
+├── aug-just/                      # Justfile standards plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── CLAUDE.md
+│   ├── README.md
+│   ├── skills/
+│   ├── commands/
+│   └── workflows/
+└── aug-web/                       # Web patterns plugin
     ├── .claude-plugin/
     │   └── plugin.json
     ├── CLAUDE.md
     ├── README.md
-    └── commands/
+    └── skills/
 ```
 
 ### Adding New Plugins

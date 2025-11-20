@@ -1,3 +1,8 @@
+---
+name: justfile-adoption
+description: End-to-end workflow from assessment through implementation
+---
+
 # Justfile Adoption Workflow
 
 End-to-end workflow from assessment through implementation. New or existing projects.

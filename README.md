@@ -10,7 +10,7 @@ Core development workflows and tooling standards for software engineering projec
 
 **Location:** `aug-dev/`
 
-**Version:** 2.0.0
+**Version:** 3.0.0
 
 **Contents:**
 - Epic planning with architecture design and task breakdown
@@ -45,6 +45,30 @@ AI-enhancement capabilities for making Claude more powerful.
 
 [View plugin details](aug-core/README.md)
 
+### aug-just
+
+Justfile standard interface management with maturity model.
+
+**Location:** `aug-just/`
+
+**Version:** 3.0.0 (New in v3)
+
+**Contents:**
+- Justfile standard interface (baseline commands)
+- 5-level maturity model (baseline → quality → security → advanced → polyglot)
+- Assessment-driven progression with YAGNI enforcement
+- Stack-specific implementations (Python, JavaScript, Java, Polyglot)
+- Installation, assessment, refactoring, and upgrade commands
+
+**Key Features:**
+- `/just-init [stack]` - Generate baseline justfile for your stack
+- `/just-assess` - Analyze current justfile maturity and gaps
+- `/just-refactor` - Make existing justfile conform to standard
+- `/just-upgrade [level|pattern]` - Add capabilities incrementally
+- Level 0 non-negotiable, higher levels added as needed
+
+[View plugin details](aug-just/README.md)
+
 ### aug-web
 
 Web development patterns and Next.js-specific workflows.
@@ -76,10 +100,11 @@ Web development patterns and Next.js-specific workflows.
 # Install plugins
 /plugin install aug-dev@aug
 /plugin install aug-core@aug
+/plugin install aug-just@aug
 /plugin install aug-web@aug
 
 # Or install all at once
-/plugin install aug-dev@aug aug-core@aug aug-web@aug
+/plugin install aug-dev@aug aug-core@aug aug-just@aug aug-web@aug
 ```
 
 ## Quick Start
@@ -120,6 +145,19 @@ Web development patterns and Next.js-specific workflows.
 # Run commands autonomously
 /automate /plan-breakdown
 /automate /refactor src/auth/
+```
+
+### Justfile Standards
+
+```bash
+# Initialize new project with justfile
+/just-init python
+
+# Assess existing justfile
+/just-assess
+
+# Upgrade to next maturity level
+/just-upgrade 1  # Add quality gates
 ```
 
 ## Plugin Structure

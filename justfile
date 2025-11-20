@@ -9,7 +9,7 @@ tok:
     #!/usr/bin/env bash
     echo "Token count by file:"
     echo "===================="
-    find aug-dev aug-util aug-web -name "*.md" -type f | while read -r file; do
+    find aug-dev aug-core aug-just aug-web -name "*.md" -type f | while read -r file; do
         # Rough estimate: ~4 chars per token
         chars=$(wc -c < "$file")
         tokens=$((chars / 4))
@@ -17,7 +17,7 @@ tok:
     done | sort -rn
     echo ""
     echo "Total:"
-    total_chars=$(find aug-dev aug-util aug-web -name "*.md" -type f -exec cat {} + | wc -c)
+    total_chars=$(find aug-dev aug-core aug-just aug-web -name "*.md" -type f -exec cat {} + | wc -c)
     total_tokens=$((total_chars / 4))
     printf "%6d tokens (estimated)\n" "$total_tokens"
 
@@ -27,7 +27,7 @@ lint:
     echo "Validating frontmatter..."
     exit_code=0
 
-    find aug-dev aug-util aug-web -name "*.md" -type f | while read -r file; do
+    find aug-dev aug-core aug-just aug-web -name "*.md" -type f | while read -r file; do
         # Skip CLAUDE.md and README.md files
         if [[ "$file" == */CLAUDE.md ]] || [[ "$file" == */README.md ]]; then
             continue
@@ -91,7 +91,7 @@ valid:
     fi
 
     # Validate all plugin.json files
-    find dev util -name "plugin.json" -type f | while read -r file; do
+    find aug-dev aug-core aug-just aug-web -name "plugin.json" -type f | while read -r file; do
         if jq empty "$file" 2>/dev/null; then
             echo "✅ $file is valid JSON"
         else
@@ -109,11 +109,11 @@ refs:
     exit_code=0
 
     # Find all skill and command files
-    skills=$(find dev util -path "*/skills/*.md" -type f)
-    commands=$(find dev util -path "*/commands/*.md" -type f)
+    skills=$(find aug-dev aug-core aug-just aug-web -path "*/skills/*.md" -type f)
+    commands=$(find aug-dev aug-core aug-just aug-web -path "*/commands/*.md" -type f)
 
     # Check for references to non-existent skills/commands
-    find aug-dev aug-util aug-web -name "*.md" -type f | while read -r file; do
+    find aug-dev aug-core aug-just aug-web -name "*.md" -type f | while read -r file; do
         # Look for skill references (skill:name-format)
         grep -o 'skill:[a-z-]*' "$file" 2>/dev/null | while read -r ref; do
             skill_name=$(echo "$ref" | cut -d: -f2)
@@ -154,7 +154,7 @@ analyze:
     echo "Analyzing skills and commands for anti-patterns..."
     echo ""
 
-    find dev util -path "*/skills/*.md" -o -path "*/commands/*.md" | while read -r file; do
+    find aug-dev aug-core aug-just aug-web -path "*/skills/*.md" -o -path "*/commands/*.md" | while read -r file; do
         echo "Analyzing: $file"
         claude -p "Analyze this Claude Code skill/command for anti-patterns: YAGNI violations, token waste, boundary violations (skills acting like commands), procedural content in skills. Be concise. List only actual problems found. File: $file" < "$file"
         echo ""

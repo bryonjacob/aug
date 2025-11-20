@@ -1,3 +1,8 @@
+---
+name: epic-development
+description: End-to-end workflow from epic planning through task execution
+---
+
 # Epic Development Workflow
 
 ## Overview

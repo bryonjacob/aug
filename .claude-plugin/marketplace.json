@@ -13,7 +13,7 @@
       "name": "aug-dev",
       "source": "./aug-dev",
       "description": "Core development workflows and tooling standards",
-      "version": "2.0.0",
+      "version": "3.0.0",
       "category": "development",
       "keywords": ["development", "workflow", "ci-cd", "testing", "refactoring", "git"]
     },
