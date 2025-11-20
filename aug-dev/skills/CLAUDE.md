@@ -17,7 +17,7 @@ Reusable skill definitions for aug-dev plugin. Core development workflows, stack
 - `configuring-python-stack/` - Python toolchain
 - `configuring-java-stack/` - Java toolchain
 - `configuring-polyglot-stack/` - Multi-language orchestration
-- `justfile-standard-interface/` - Standard justfile commands
+- Note: Justfile standards defined in aug-just plugin
 
 **Development Standards:**
 - `installing-git-hooks/` - Pre-commit/pre-push hooks

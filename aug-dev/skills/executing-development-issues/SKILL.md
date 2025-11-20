@@ -13,7 +13,7 @@ Complete workflow: branch → code → tests → PR → merge. Works for GitHub 
 
 ## Uses
 
-**Standard Interface:** justfile-standard-interface
+**Standard Interface:** aug-just/justfile-interface (Level 0+1)
 
 ```bash
 just test-watch  # Continuous testing

@@ -231,10 +231,6 @@ audits:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
-  aug-dev/skills/justfile-standard-interface/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
-
   aug-dev/skills/refactoring/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z

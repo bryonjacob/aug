@@ -416,8 +416,9 @@ Run '/docsaudit' to create CLAUDE.md hierarchy.
 ```
 Error: Required command not found: just complexity
 
-This command requires justfile-standard-interface.
-See: aug-dev/skills/justfile-standard-interface
+This command requires aug-just plugin with justfile Level 1+ (quality patterns).
+Install: /plugin install aug-just@aug
+Then run: /just-init [stack] or /just-upgrade quality
 ```
 
 **GitHub CLI not available:**
@@ -553,7 +554,7 @@ Run without --dry-run to create these issues.
 ## Notes
 
 - Requires CLAUDE.md files (run `/docsaudit` first)
-- Requires justfile-standard-interface
+- Requires aug-just plugin with Level 1+ (quality patterns)
 - Requires 96% test coverage (prerequisite for refactoring)
 - Uses GitHub CLI for issue creation
 - Module-level state tracking (lightweight)

@@ -160,7 +160,7 @@ description: [Language] stack - [tools] ([coverage]%)
 
 | Standard | Level | Status |
 |----------|-------|--------|
-| justfile-standard-interface | Baseline | ✓ Full |
+| aug-just/justfile-interface | Baseline (Level 0) | ✓ Full |
 | development-stack-standards | Level [N] | ✓ Complete |
 
 **Dimensions:** [X]/[Y] (Foundation + Quality Gates + Security)
@@ -194,7 +194,7 @@ description: [Language] stack - [tools] ([coverage]%)
 
 Run through development-stack-standards checklist:
 - All Level 0 dimensions covered?
-- Justfile implements justfile-standard-interface?
+- Justfile implements aug-just/justfile-interface?
 - Config examples complete?
 - Docker compatibility addressed?
 
@@ -251,9 +251,9 @@ Check each requirement:
 - ✓/✗ Clean
 
 **Justfile:**
-- ✓/✗ All 10 baseline recipes
+- ✓/✗ All baseline recipes (Level 0)
 - ✓/✗ Correct check-all dependencies
-- ✓/✗ Implements justfile-standard-interface
+- ✓/✗ Implements aug-just/justfile-interface
 
 **Level 1 (if claimed):**
 - ✓/✗ Coverage threshold 96%
@@ -402,7 +402,7 @@ description: [Variant] stack - based on [base-stack] with [customizations]
 
 | Standard | Level | Status |
 |----------|-------|--------|
-| justfile-standard-interface | Baseline | ✓ Full |
+| aug-just/justfile-interface | Baseline (Level 0) | ✓ Full |
 | development-stack-standards | Level [N] | ✓ Complete (customized) |
 | configuring-[base]-stack | Base | ✓ Inherits |
 
@@ -417,7 +417,7 @@ description: [Variant] stack - based on [base-stack] with [customizations]
 #### 5. Validate Variant
 
 Check:
-- Still implements justfile-standard-interface?
+- Still implements aug-just/justfile-interface?
 - Still meets development-stack-standards Level requirements (if customizations don't violate them)?
 - Customizations documented?
 - Migration path from base clear?

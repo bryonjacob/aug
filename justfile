@@ -162,10 +162,6 @@ analyze:
         echo ""
     done
 
-# Validate a justfile against v2 interface spec
-validate-justfile JUSTFILE:
-    @bash aug-dev/skills/justfile-standard-interface/scripts/validate-justfile.sh "{{JUSTFILE}}"
-
 # Clean generated artifacts
 clean:
     @echo "Nothing to clean yet"

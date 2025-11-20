@@ -31,7 +31,7 @@ Reference for creating and assessing language-specific development stacks. Defin
 | **Build** | Create artifacts | Package for distribution |
 | **Clean** | Reset state | Remove generated files, dependencies |
 
-**Justfile recipes:** (implements justfile-standard-interface)
+**Justfile recipes:** (implements aug-just/justfile-interface Level 0)
 - `dev-install` - Setup environment
 - `format` - Auto-fix formatting
 - `lint` - Auto-fix linting
@@ -528,8 +528,8 @@ description: [Language] stack - [tools summary] ([coverage threshold])
 
 | Standard | Level | Status |
 |----------|-------|--------|
-| justfile-standard-interface | Baseline | ✓ Full |
-| stack-architect | Level [N] | ✓ Complete |
+| aug-just/justfile-interface | Baseline (Level 0) | ✓ Full |
+| development-stack-standards | Level [N] | ✓ Complete |
 
 **Dimensions:** [X]/[Y] ([dimension summary])
 
@@ -556,7 +556,7 @@ Web services: Bind to `0.0.0.0` (not `127.0.0.1`)
 
 ## Standard Justfile Interface
 
-**Implements:** justfile-standard-interface
+**Implements:** aug-just/justfile-interface (Level 0 baseline)
 
 ```just
 [complete justfile for this stack]
@@ -606,7 +606,7 @@ Web services: Bind to `0.0.0.0` (not `127.0.0.1`)
 **Justfile recipes?** (10/10 required)
 - All baseline recipes present
 - `check-all` dependencies: `format lint typecheck coverage`
-- Comments match justfile-standard-interface
+- Comments match aug-just/justfile-interface
 
 **Functional?**
 - `just dev-install` succeeds

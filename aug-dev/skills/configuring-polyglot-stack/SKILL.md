@@ -22,13 +22,14 @@ my-project/
     └── src/
 ```
 
-**Each subproject implements full justfile-standard-interface.**
+**Each subproject implements full aug-just/justfile-interface (Level 0 baseline).**
 
 **Root implements minimal subset for orchestration.**
 
 ## Root Justfile
 
-**Implements:** Subset of justfile-standard-interface
+**Implements:** Subset of aug-just/justfile-interface
+**Requires:** aug-just plugin for justfile management
 
 ```just
 set shell := ["bash", "-uc"]
@@ -115,7 +116,7 @@ cd web && just test-watch     # Watch mode for web
 **web/ (JavaScript):** See `configuring-javascript-stack`
 
 Each subproject has its own:
-- Full justfile implementing justfile-standard-interface
+- Full justfile implementing aug-just/justfile-interface
 - Stack-specific config files (pyproject.toml, package.json, etc.)
 - Independent test suites, coverage thresholds, quality gates
 

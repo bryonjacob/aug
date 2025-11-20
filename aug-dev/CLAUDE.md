@@ -52,7 +52,7 @@ Core development workflows and tooling standards for software engineering projec
 - `configuring-python-stack/` - Python toolchain (uv, ruff, mypy, pytest)
 - `configuring-java-stack/` - Java toolchain (maven, spotless, spotbugs, junit5)
 - `configuring-polyglot-stack/` - Multi-language project orchestration
-- `justfile-standard-interface/` - Standard justfile commands
+- Note: Justfile standards defined in aug-just plugin (required dependency)
 
 **Development Standards:**
 - `installing-git-hooks/` - Pre-commit/pre-push hooks calling justfile
@@ -148,7 +148,7 @@ All skills available for use via `Skill` tool.
 
 **Quality Gates:**
 - All workflows require `just check-all` passing before merge
-- 96% coverage threshold (justfile-standard-interface)
+- 96% coverage threshold (aug-just baseline)
 - No shortcuts on testing or quality
 
 **Tooling Standards:**

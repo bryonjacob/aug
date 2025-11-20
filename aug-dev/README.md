@@ -130,7 +130,8 @@ main (protected)
 - **`configuring-python-stack`** - Python (uv, ruff, mypy, pytest)
 - **`configuring-java-stack`** - Java (maven, spotless, spotbugs, junit5)
 - **`configuring-polyglot-stack`** - Multi-language orchestration
-- **`justfile-standard-interface`** - Standard justfile commands
+
+Note: Justfile standards defined in aug-just plugin (install with `/plugin install aug-just@aug`)
 
 ### Development Standards
 

@@ -9,7 +9,7 @@ description: JavaScript/TypeScript stack configuration - pnpm, prettier, eslint,
 
 | Standard | Level | Status |
 |----------|-------|--------|
-| justfile-standard-interface | Baseline | ✓ Full |
+| aug-just/justfile-interface | Baseline (Level 0) | ✓ Full |
 | development-stack-standards | Level 2 | ✓ Complete |
 
 **Dimensions:** 11/13 (Foundation + Quality Gates + Security)
@@ -67,7 +67,8 @@ app.listen(port, host)
 
 ## Standard Justfile Interface
 
-**Implements:** justfile-standard-interface
+**Implements:** aug-just/justfile-interface (Level 0 baseline)
+**Requires:** aug-just plugin for justfile management
 
 ```just
 set shell := ["bash", "-uc"]

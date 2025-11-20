@@ -13,7 +13,7 @@ Systematically improve code maintainability using `just coverage` and `just comp
 
 ## Uses
 
-**Standard Interface:** justfile-standard-interface
+**Standard Interface:** aug-just/justfile-interface (Level 0+1)
 
 ```bash
 just coverage      # Find low-coverage areas (blocks if <96%)
@@ -106,7 +106,7 @@ refactor: simplify conditionals with guard clauses
 
 ## Coverage Threshold
 
-**Required before refactoring:** 96% (justfile-standard-interface threshold)
+**Required before refactoring:** 96% (aug-just baseline threshold)
 
 **If below threshold:** Write tests first, then refactor
 
@@ -127,7 +127,7 @@ refactor: simplify conditionals with guard clauses
 ## Integration
 
 This skill works with:
-- `justfile-standard-interface` - Provides coverage/complexity/test commands
+- `aug-just` plugin - Provides coverage/complexity/test commands
 - `/refactor` - Autonomous analysis, creates refactoring issues (recommended)
 - `/plan` - Manual planning for custom refactorings
 - `/work` - Executes refactoring with test verification gates
