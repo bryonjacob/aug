@@ -19,10 +19,14 @@ Complete autonomous workflow: execute issue → review → merge.
 Fully autonomous task execution from issue to merged PR:
 1. Run `/work <issue>` in subagent (implementation)
 2. Automated code review in subagent
-3. Fix issues in subagent (if needed, convergence-based iteration)
+3. Fix issues in subagent (if needed, objective iteration rules)
 4. Auto-merge if review passes
 
-**Key constraint:** Review ONLY checks against original issue acceptance criteria. No scope creep.
+**Key principles:**
+- Review ONLY checks against original issue acceptance criteria (no scope creep)
+- Work through quality check failures systematically (default to continuing)
+- Stop only on objective blockers (same error 3x) or iteration limits (10 attempts)
+- Capture error metrics each iteration for objective continuation assessment
 
 ## Token Management Strategy
 
@@ -175,87 +179,78 @@ Task(
 
 **If recommendation is REQUEST_CHANGES:**
 
-Launch fix iteration with convergence tracking:
+Track iterations: `{attempt, mypy_count, pytest_count, lint_count, actions}`
+
+**Fix loop (until check-all passes, blocked, or 10 attempts):**
 
 ```
-Attempt {N}: Review found issues, spawning fix agent
-
-Track:
-- Previous attempts: {list what we tried}
-- Previous outcomes: {what happened}
-- Current issues: {paste-review-findings}
-
 Task(
   subagent_type: "general-purpose",
-  description: "Fix review issues for PR {pr-number}",
-  prompt: "Address code review feedback for PR #{pr-number}
+  description: "Fix PR {pr-number} attempt {N}",
+  prompt: "Fix PR #{pr-number}
 
   Review findings:
   {paste-review-findings}
 
-  Previous attempts (if any):
-  {list what was tried and what happened}
+  Previous attempts (if N > 1):
+  {list: attempt #, error counts, actions taken}
 
   Tasks:
-  1. Check out the PR branch: git checkout {branch-name}
-  2. Address each review issue
-  3. Run tests: just test
-  4. Run quality checks: just check-all
-  5. Commit changes: git commit -am 'fix: address review feedback'
-  6. Push: git push
+  1. git checkout {branch-name}
+  2. Fix all review issues
+  3. just test
+  4. just check-all
+  5. git commit -am 'fix: address review feedback'
+  6. git push
 
-  Report back:
-  - Issues addressed
-  - Tests passing
-  - New hypotheses to try if issues remain
-  - Assessment: Are we converging toward solution?
+  Work through ALL issues. Fix systematic errors mechanically. Update tests to match refactoring.
+
+  Report:
+  - Actions: files changed, patterns applied
+  - Counts: mypy errors, pytest failures, lint errors
+  - Status: pass/fail
   "
 )
 ```
 
-**After fix agent completes, assess convergence:**
+**After fix, check rules (in order):**
 
-**Signs of convergence (keep going):**
-- Errors are reducing in number
-- Different errors each iteration (making progress)
-- Agent reports new hypotheses to try
-- Clear path forward identified
+1. **check-all passes** → Re-review (expect APPROVE)
 
-**Signs of spinning (stop and ask for help):**
-- Same error repeatedly after multiple attempts
-- No new ideas or hypotheses
-- Tried all reasonable approaches
-- Error getting worse or more complex
-- Agent reports being stuck
-
-**If converging:** Re-run Step 2.3 (code review), continue iteration.
-
-**If review passes:** Proceed to merge.
-
-**If spinning/stuck:**
+2. **Same error 3x + unchanged count + different approaches** → BLOCKED
 ```
-Unable to resolve review issues for PR #{pr-number} after {N} attempts.
+PR #{pr-number} blocked after {N} attempts.
 
-Attempts made:
-1. {what was tried} → {outcome}
-2. {what was tried} → {outcome}
-...
+{iteration history: attempt, counts, actions}
 
-Current state:
-{paste-latest-review-findings}
+Blocking error (3x unchanged):
+{error}
 
-Assessment: No clear path forward, need human input.
+Branch: {branch-name}
+PR: {pr-url}
 
-Stopping automated workflow.
-
-Manual intervention required:
-1. Review attempt history above
-2. Review PR #{pr-number} to understand context
-3. Provide guidance or fix manually
-4. Can re-run: /autocommit {issue-number} to retry
+Check out branch and investigate. Re-run: /autocommit {issue} when fixed.
 ```
+Stop processing issues.
 
-Stop processing remaining issues.
+3. **Error count decreased** → CONTINUE
+   **Error messages changed** → CONTINUE
+   **N < 10** → CONTINUE
+
+4. **N ≥ 10** → LIMIT
+```
+PR #{pr-number} incomplete after 10 attempts.
+
+{iteration history: attempt, counts, actions}
+
+Current: mypy {count}, pytest {count}, lint {count}
+
+Branch: {branch-name}
+PR: {pr-url}
+
+Check out branch to continue. Re-run: /autocommit {issue} for 10 more.
+```
+Stop processing issues.
 
 **If recommendation is APPROVE:**
 
@@ -418,6 +413,67 @@ Manual fix required:
 4. Re-run: /autocommit 124
 ```
 
+### Quality Check Failures (Systematic Fixes)
+
+```bash
+$ /autocommit 203
+
+Processing issue #203: Update matching layer for type safety
+
+Step 1: Running /work 203
+  → Branch: epic/unified-schema/task-3
+  → Implementation complete
+  → PR #208 created (draft)
+
+Step 2: Reviewing PR #208
+  → Acceptance criteria: Update matchers for StudentProfile type
+  → Quality checks: FAILED
+    - 89 mypy errors (type safety)
+    - 163 pytest failures (test updates needed)
+  → Recommendation: REQUEST_CHANGES
+
+Step 3: Fix iteration loop
+  Attempt 1:
+    → Fixed BaseMatcher to accept StudentProfile | dict
+    → Updated 7 scorers to use direct attribute access
+    → Updated 5 matchers with normalization
+    → Result: 68 mypy errors (-21), 220 pytest failures
+    → Rule: Error count decreased → CONTINUE
+
+  Attempt 2:
+    → Updated legacy matchers (v2.1, v2.3, matcher.py)
+    → Fixed BaseMatcher helper methods
+    → Updated test fixtures to use StudentProfile objects
+    → Result: 34 mypy errors (-34), 180 pytest failures (-40)
+    → Rule: Error count decreased → CONTINUE
+
+  Attempt 3:
+    → Cascaded fixes to all 19 child matchers
+    → Updated remaining test cases
+    → Fixed import statements
+    → Result: 8 mypy errors (-26), 45 pytest failures (-135)
+    → Rule: Error count decreased → CONTINUE
+
+  Attempt 4:
+    → Fixed edge case type assertions
+    → Updated mock objects in tests
+    → Result: 0 mypy errors (-8), 0 pytest failures (-45)
+    → just check-all: PASS
+    → Rule: SUCCESS → Re-review
+
+Step 4: Re-reviewing PR #208
+  → All acceptance criteria met ✓
+  → Quality checks: PASS ✓
+  → Recommendation: APPROVE
+
+Step 5: Merging PR #208
+  → Squash merge complete
+  → Branch deleted
+  → Status: Merged ✓
+
+✓ Issue #203 complete (4 fix iterations)
+```
+
 ### Multiple Issues
 
 ```bash
@@ -465,10 +521,17 @@ For each issue:
   ↓
   Task(code-reviewer: review PR) → APPROVE/REQUEST_CHANGES (subagent)
   ↓
-  If REQUEST_CHANGES (iterate until converging or stuck):
-    Task(general-purpose: fix issues) → push fixes (subagent)
-    Task(code-reviewer: re-review) → APPROVE/REQUEST_CHANGES (subagent)
-    Assess convergence → continue or stop
+  If REQUEST_CHANGES (iterate with objective rules):
+    Loop (max 10 iterations or until success/blocked):
+      Task(general-purpose: fix issues) → push fixes (subagent)
+      Capture error snapshot (mypy, pytest, lint counts)
+      Apply objective continuation rules:
+        - check-all passes → re-review, expect APPROVE
+        - Same error 3x unchanged → HARD STOP (blocked)
+        - Error count decreased → CONTINUE
+        - Error messages changed → CONTINUE (different errors)
+        - Iteration < 10 → CONTINUE
+        - Iteration ≥ 10 → ITERATION LIMIT (stop)
   ↓
   If APPROVE:
     gh pr merge (main thread)
@@ -480,22 +543,30 @@ Summary (main thread)
 
 ## Error Handling
 
-**Work fails:**
-- Report error
-- Stop processing
-- User fixes manually
+**Work fails (/work subagent returns failure):**
+- Report error with diagnostics
+- Stop processing remaining issues
+- User investigates and fixes manually
 
-**Review finds issues:**
-- Comment on PR
-- Stop processing
-- User addresses and re-runs /autocommit
+**Review finds issues (REQUEST_CHANGES):**
+- Enter fix iteration loop (objective rules)
+- Continue up to 10 iterations or until:
+  - SUCCESS: check-all passes (re-review → APPROVE → merge)
+  - HARD STOP: Same error 3x with different approaches (blocked)
+  - ITERATION LIMIT: 10 attempts exhausted
+- If stopped before success: Report diagnostics, stop processing remaining issues
 
 **Merge fails:**
-- Report error
-- Leave PR open
-- User investigates (conflicts, checks, rules)
+- Report error with reason
+- Leave PR open with diagnostic info
+- Stop processing remaining issues
+- User investigates (conflicts, CI checks, branch protection rules)
 
-**All errors stop batch processing** - don't continue to next issue if current failed.
+**Philosophy:**
+- Work through quality check failures systematically (they're just work, not blockers)
+- Only stop on genuine blockers (repeated identical errors) or iteration limits
+- Default to continuing, not stopping
+- Objective metrics (error counts, iteration limits) over subjective assessment
 
 ## Safety Features
 
