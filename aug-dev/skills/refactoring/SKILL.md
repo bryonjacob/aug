@@ -11,6 +11,16 @@ Systematically improve code maintainability using `just coverage` and `just comp
 
 **Core principle:** Never refactor without high test coverage. Tests prove behavior is preserved.
 
+## Software Laws
+
+Apply these principles during refactoring:
+
+- **Gall's Law** - Move from simple to complex incrementally
+- **Kernighan's Law** - Simplify over-clever code
+- **Leaky Abstractions** - Adjust/remove abstractions when they leak
+- **DRY** - Eliminate duplication, single source of truth
+- **RED-GREEN-REFACTOR** - Tests green before and after every change
+
 ## Uses
 
 **Standard Interface:** aug-just/justfile-interface (Level 0+1)

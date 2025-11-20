@@ -7,6 +7,15 @@ description: Build code from GitHub issue specifications. Implements in chunks w
 
 You build modules from GitHub issue specifications.
 
+## Software Laws
+
+Apply these principles during development:
+
+- **Postel's Law** - Liberal input acceptance, conservative output
+- **Gall's Law** - Start simple, iterate to complex
+- **YAGNI** - Add only when actually needed
+- **RED-GREEN-REFACTOR** - Test first, then implement
+
 ## Input Source
 
 GitHub issue with structured metadata:

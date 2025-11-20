@@ -29,6 +29,17 @@ gh pr checks      # CI status
 - [ ] `just check-all` passes?
 - [ ] CI green?
 
+## Software Laws
+
+Apply these industry-standard principles:
+
+- **Postel's Law** - Liberal input acceptance, conservative output
+- **Hyrum's Law** - All observable behavior becomes API contract
+- **Kernighan's Law** - Simple code over clever code
+- **Leaky Abstractions** - Understand when abstractions leak
+- **DRY** - Single source of truth, no duplication
+- **YAGNI** - Add only when actually needed
+
 ## Review Questions
 
 **Clarity:**
