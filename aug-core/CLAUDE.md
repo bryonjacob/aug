@@ -20,6 +20,7 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 - `notetoself.md` - Save current session context to `/tmp` for later resumption
 - `futureme.md` - Resume work from previous session using saved context
 - `hemingway.md` - Apply hemingwayesque principles to rewrite content concisely
+- `yagni-dry-edit.md` - Interactive section-by-section audit for redundancy and unnecessary content
 - `automate.md` - Execute commands autonomously with user-standin agent
 - `workflow-run.md` - Execute complete workflow automated
 - `workflow-status.md` - Show current workflow position and next steps
@@ -45,6 +46,7 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 
 ### Prompt Crafting
 - `/hemingway [content]` - Rewrite content using hemingwayesque principles
+- `/yagni-dry-edit [file]` - Interactive audit for redundancy and YAGNI violations
 - Skills can reference hemingwayesque for consistent voice
 
 ### Automation

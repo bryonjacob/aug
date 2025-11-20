@@ -12,6 +12,7 @@ Slash commands for aug-core plugin. Focus on AI-enhancement, session management,
 
 **Prompt Crafting:**
 - `hemingway.md` - Ruthlessly concise rewriting
+- `yagni-dry-edit.md` - Interactive YAGNI/DRY audit
 
 **Automation:**
 - `automate.md` - Autonomous command execution with user-standin agent
