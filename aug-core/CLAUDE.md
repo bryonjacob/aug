@@ -9,10 +9,10 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 - Session context management across conversations
 - Concise prompt and context writing (hemingwayesque)
 - Autonomous command execution with user proxy (automate)
-- Autonomous work + review + merge (autocommit)
 - Multi-command workflow definition and orchestration
 - Workflow design and analysis
 - Code pattern detection and consistency suggestions
+- Team workflow variant generation (marketplace customization)
 
 ## Key Files
 
@@ -26,11 +26,13 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 - `learn.md` - Analyze codebase for pattern conventions
 - `suggest.md` - Compare file to conventions, suggest improvements
 - `patterns.md` - Show all detected project conventions
+- `create-variant.md` - Generate team-specific workflow variant from aug marketplace
 
 ### Skills (`skills/`)
 - `hemingwayesque/` - Ruthless concision for AI prompts and context
 - `workflow-design/` - Design, discover, and refactor multi-command workflows
 - `code-patterns/` - Learn project conventions, detect patterns, suggest consistency
+- `creating-variants/` - Create team-specific workflow variants adapted to existing tools
 
 ### Agents (`agents/`)
 - `user-standin.md` - Context-aware proxy for user in automated workflows
@@ -56,6 +58,9 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 - `/learn [pattern-type]` - Analyze codebase for conventions (error-handling, testing, imports, naming, architecture)
 - `/suggest [file]` - Compare file to project conventions
 - `/patterns` - Show all detected conventions
+
+### Team Variants
+- `/create-variant [team-name]` - Generate team-specific workflow files adapted to existing tools/processes
 
 ### Skills
 All skills available for use via `Skill` tool.

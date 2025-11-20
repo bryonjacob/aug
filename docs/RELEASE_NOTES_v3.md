@@ -77,6 +77,7 @@ Expanded from session management to AI-enhancement capabilities.
 - `/learn [pattern-type]` - Analyze codebase for conventions
 - `/suggest [file]` - Compare file to project conventions
 - `/patterns` - Show all detected conventions
+- `/create-variant [team-name]` - Generate team-specific workflow variants
 
 **New Agent:**
 - `user-standin` - Context-aware proxy that answers questions by analyzing:
@@ -89,6 +90,7 @@ Expanded from session management to AI-enhancement capabilities.
 - `workflow-design` - Discover, design, document, refactor workflows
 - `hemingwayesque` - Concise prompt writing principles
 - `code-patterns` - Learn project conventions, detect patterns, suggest consistency
+- `creating-variants` - Team-specific workflow variant generation patterns
 
 **Philosophy:**
 - Meta-capabilities for making Claude more powerful
@@ -173,6 +175,21 @@ Enhanced `/work` command:
 - `/patterns` - Show all detected conventions
   - Comprehensive overview for onboarding
   - Code consistency scoring
+
+**Team Workflow Variants** (`/create-variant`):
+- Generate team-specific workflow files adapted to existing tools
+- Interactive discovery of team context:
+  - Git workflow (trunk-based, gitflow, custom)
+  - Issue tracking (GitHub, Jira, Linear, file-based, none)
+  - CI/CD platform (GitHub Actions, Jenkins, GitLab CI, etc.)
+  - Build tools (just, make, npm, maven, gradle)
+  - Stack and existing tooling
+- Adaptation strategies:
+  - Keep working tools team likes
+  - Add opinionated defaults for gaps
+  - Replace painful tools (with permission)
+- Output: Customized commands/skills/workflows in `.claude/`
+- Philosophy: Prescriptive tools adapted to context, not generic runtime-flexible tools
 
 #### Development Standards
 

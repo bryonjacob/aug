@@ -25,6 +25,9 @@ Slash commands for aug-core plugin. Focus on AI-enhancement, session management,
 - `suggest.md` - Compare file to conventions
 - `patterns.md` - Show all detected patterns
 
+**Team Variants:**
+- `create-variant.md` - Generate team-specific workflow files
+
 ## Usage
 
 Commands invoked via `/command-name` in Claude Code. See individual files for syntax and options.

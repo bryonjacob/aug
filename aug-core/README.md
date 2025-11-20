@@ -36,6 +36,26 @@ Define and execute multi-command workflows.
 /workflow-status epic-development
 ```
 
+### Code Pattern Learning
+Analyze project conventions and suggest consistency improvements.
+
+```bash
+/learn error-handling      # Detect error handling patterns
+/suggest src/auth.py       # Compare file to conventions
+/patterns                  # Show all detected patterns
+```
+
+### Team Workflow Variants
+Generate team-specific workflow files adapted to existing tools and processes.
+
+```bash
+/create-variant acme-corp
+# Interactive wizard:
+# - Discovers team's git workflow, issue tracker, build tools
+# - Adapts aug workflows to team's existing practices
+# - Generates customized commands/skills to .claude/
+```
+
 ## Installation
 
 ```bash
@@ -67,6 +87,8 @@ Workflows define sequences of commands for common patterns. Example: `epic-devel
 
 - **hemingwayesque** - Concise prompt writing principles
 - **workflow-design** - Design and analyze workflows
+- **code-patterns** - Learn project conventions, detect patterns, suggest consistency
+- **creating-variants** - Create team-specific workflow variants adapted to existing tools
 
 ## Agents
 

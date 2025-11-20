@@ -9,6 +9,7 @@ Reusable skill definitions for aug-core plugin. Focus on prompt optimization, wo
 - `hemingwayesque/` - Ruthless concision principles for AI prompts
 - `workflow-design/` - Multi-command workflow patterns
 - `code-patterns/` - Statistical pattern detection and consistency analysis
+- `creating-variants/` - Team-specific workflow variant generation patterns
 
 ## Usage
 
