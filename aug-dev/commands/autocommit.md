@@ -3,10 +3,6 @@ name: autocommit
 description: Autonomous work + review + merge workflow
 ---
 
-# Autocommit - Autonomous Work to Merge
-
-Complete autonomous workflow: execute issue → review → merge.
-
 ## Usage
 
 ```bash
@@ -22,27 +18,9 @@ Fully autonomous task execution from issue to merged PR:
 3. Fix issues in subagent (if needed, objective iteration rules)
 4. Auto-merge if review passes
 
-**Key principles:**
-- Review ONLY checks against original issue acceptance criteria (no scope creep)
-- Work through quality check failures systematically (default to continuing)
-- Stop only on objective blockers (same error 3x) or iteration limits (10 attempts)
-- Capture error metrics each iteration for objective continuation assessment
-
 ## Token Management Strategy
 
 **CRITICAL: Main thread orchestrates, subagents execute.**
-
-Main thread (lightweight orchestration):
-- Parse issue numbers
-- Fetch issue metadata via `gh` CLI
-- Spawn Task subagents for heavy work
-- Merge PRs if approved
-- Generate summary
-
-Subagents (fresh token budgets):
-- **Work agent:** Execute `/work {issue}` (development)
-- **Review agent:** Code review against acceptance criteria
-- **Fix agent:** Address review feedback (if needed)
 
 **Why:** Each subagent gets fresh context and full token budget. Main thread can process many issues because it only orchestrates, not develops/reviews.
 
@@ -50,64 +28,33 @@ Subagents (fresh token budgets):
 - `general-purpose`: For `/work` execution and fixing review issues
 - `superpowers:code-reviewer`: For code review against acceptance criteria
 
-Both are standard built-in agents. The `/work` command provides sufficient guidance for the general-purpose agent.
-
 ## Instructions
 
 ### 1. Validate Inputs
 
-**Check issue numbers provided:**
-- At least one issue number required
-- All must be valid GitHub issue numbers
-- Can be space-separated list
+Require: one or more valid GitHub issue numbers (space-separated)
 
-**Check GitHub CLI available:**
-```bash
-gh --version
-```
-
-If not available:
-```
-Error: GitHub CLI (gh) not found
-
-This command requires GitHub CLI.
-Install: https://cli.github.com/
-```
+Check `gh` CLI available (`gh --version`). If missing, exit with install link.
 
 ### 2. Process Issues Sequentially
 
 For each issue number in order:
 
 **Step 2.1: Fetch Issue Details**
-```bash
-gh issue view <issue-number> --json number,title,body
-```
 
-Parse JSON, extract:
-- Issue number
-- Issue title
-- Issue body (contains acceptance criteria)
+`gh issue view <issue-number> --json number,title,body`
+
+Extract: number, title, body (acceptance criteria).
 
 **Step 2.2: Execute /work in Subagent**
 
-**CRITICAL: Use Task tool to spawn subagent for /work (token management).**
-
-Launch general-purpose agent via Task tool:
+**CRITICAL: Use Task tool to spawn subagent for /work.**
 
 ```
 Task(
   subagent_type: "general-purpose",
   description: "Execute work command for issue {issue-number}",
   prompt: "Execute the /work {issue-number} command.
-
-  This will:
-  - Fetch issue details
-  - Create feature branch
-  - Implement changes
-  - Run tests
-  - Fix format/lint/type errors (convergence-based)
-  - Run just check-all
-  - Create PR
 
   Report back:
   - Success/failure status
@@ -139,8 +86,6 @@ Stop processing remaining issues.
 
 **Step 2.3: Launch Code Review in Subagent**
 
-**Use Task tool to spawn code-reviewer subagent:**
-
 ```
 Task(
   subagent_type: "superpowers:code-reviewer",
@@ -162,18 +107,10 @@ Task(
   - [ ] No security vulnerabilities introduced?
   - [ ] Breaking changes documented (if any)?
 
-  Provide detailed review with:
-  - Acceptance criteria status (met/not met)
-  - Code quality issues (if any)
-  - YAGNI violations (if any)
-  - Recommendation: APPROVE or REQUEST_CHANGES
+  Report: findings, recommendation (APPROVE/REQUEST_CHANGES)
   "
 )
 ```
-
-**Agent will report back:**
-- Review findings
-- Recommendation (APPROVE or REQUEST_CHANGES)
 
 **Step 2.4: Process Review Results**
 
@@ -212,8 +149,6 @@ Task(
   "
 )
 ```
-
-**After fix, check rules (in order):**
 
 1. **check-all passes** → Re-review (expect APPROVE)
 
@@ -262,10 +197,6 @@ Proceed to merge.
 gh pr merge <pr-number> -s -d
 ```
 
-Flags:
-- `-s`: Squash commits (clean history)
-- `-d`: Delete branch after merge
-
 **If merge succeeds:**
 ```
 ✓ PR #<pr-number> merged and branch deleted
@@ -281,19 +212,8 @@ Error: Failed to merge PR #<pr-number>
 
 Reason: <error-message>
 
-Possible causes:
-- PR checks still running (wait and retry)
-- Conflicts with main branch (resolve manually)
-- Protected branch rules (check settings)
-
 Manual action required.
 ```
-
-Stop processing remaining issues.
-
-**Step 2.6: Continue to Next Issue**
-
-If more issues in list, repeat from Step 2.1.
 
 ### 3. Generate Summary
 
@@ -325,23 +245,12 @@ Review failed PRs:
 
 **Critical constraints:**
 
-1. **Scope adherence:**
-   - Review ONLY checks against original issue acceptance criteria
-   - Any additional features = YAGNI violation = REQUEST_CHANGES
-   - Any missing acceptance criteria = REQUEST_CHANGES
-
-2. **Quality gates:**
-   - Tests must exist for new/changed code
-   - Coverage must be ≥96%
-   - Complexity must be within limits
-   - `just check-all` must pass
-
-3. **No subjective preferences:**
+1. **No subjective preferences:**
    - Don't request style changes if they pass linters
    - Don't request "better" naming if current is clear
    - Don't request architecture changes unless acceptance criteria require
 
-4. **DRY vs YAGNI balance:**
+2. **DRY vs YAGNI balance:**
    - DRY is good, but not if it adds unnecessary abstraction
    - One or two similar code blocks ≠ automatic DRY requirement
    - Three+ similar blocks = suggest DRY
@@ -375,42 +284,6 @@ Step 3: Merging PR #456
   → Status: Merged ✓
 
 ✓ Issue #123 complete
-```
-
-### Review Failure Case
-
-```bash
-$ /autocommit 124
-
-Processing issue #124: Fix login bug
-
-Step 1: Running /work 124
-  → Branch: fix/124/login-bug
-  → Implementation complete
-  → PR #457 created
-
-Step 2: Reviewing PR #457
-  → Checking acceptance criteria
-
-  Issues found:
-  1. Added password strength meter (not in acceptance criteria)
-     - YAGNI violation
-     - Issue only requested bug fix
-
-  2. Refactored entire auth module
-     - Scope creep
-     - Should be separate issue
-
-  → Recommendation: REQUEST_CHANGES
-
-✗ Review found issues
-
-Action: Commented on PR #457
-Manual fix required:
-1. Revert password strength meter addition
-2. Revert auth module refactoring
-3. Keep only bug fix changes
-4. Re-run: /autocommit 124
 ```
 
 ### Quality Check Failures (Systematic Fixes)
@@ -474,142 +347,10 @@ Step 5: Merging PR #208
 ✓ Issue #203 complete (4 fix iterations)
 ```
 
-### Multiple Issues
-
-```bash
-$ /autocommit 123 124 125
-
-Processing 3 issues sequentially...
-
-Issue #123: Add validation
-  ✓ Work complete
-  ✓ Review passed
-  ✓ Merged
-
-Issue #124: Fix formatting
-  ✓ Work complete
-  ✓ Review passed
-  ✓ Merged
-
-Issue #125: Update API
-  ✓ Work complete
-  ✗ Review found issues (scope creep)
-  → Stopping workflow
-
-Summary:
-  2 merged successfully
-  1 requires manual fix
-```
-
-## Integration Points
-
-**Uses:**
-- Task tool with general-purpose subagent - Implementation (`/work`)
-- Task tool with code-reviewer subagent - Review
-- Task tool with general-purpose subagent - Fixes (if needed)
-- GitHub CLI (`gh`) - Issue/PR operations (main thread only)
-
-**Workflow:**
-```
-/autocommit 123 124 125 (main thread)
-  ↓
-For each issue:
-  ↓
-  Fetch issue via gh CLI (main thread)
-  ↓
-  Task(general-purpose: /work {issue}) → PR created (subagent)
-  ↓
-  Task(code-reviewer: review PR) → APPROVE/REQUEST_CHANGES (subagent)
-  ↓
-  If REQUEST_CHANGES (iterate with objective rules):
-    Loop (max 10 iterations or until success/blocked):
-      Task(general-purpose: fix issues) → push fixes (subagent)
-      Capture error snapshot (mypy, pytest, lint counts)
-      Apply objective continuation rules:
-        - check-all passes → re-review, expect APPROVE
-        - Same error 3x unchanged → HARD STOP (blocked)
-        - Error count decreased → CONTINUE
-        - Error messages changed → CONTINUE (different errors)
-        - Iteration < 10 → CONTINUE
-        - Iteration ≥ 10 → ITERATION LIMIT (stop)
-  ↓
-  If APPROVE:
-    gh pr merge (main thread)
-  ↓
-  Next issue
-
-Summary (main thread)
-```
-
 ## Error Handling
-
-**Work fails (/work subagent returns failure):**
-- Report error with diagnostics
-- Stop processing remaining issues
-- User investigates and fixes manually
-
-**Review finds issues (REQUEST_CHANGES):**
-- Enter fix iteration loop (objective rules)
-- Continue up to 10 iterations or until:
-  - SUCCESS: check-all passes (re-review → APPROVE → merge)
-  - HARD STOP: Same error 3x with different approaches (blocked)
-  - ITERATION LIMIT: 10 attempts exhausted
-- If stopped before success: Report diagnostics, stop processing remaining issues
-
-**Merge fails:**
-- Report error with reason
-- Leave PR open with diagnostic info
-- Stop processing remaining issues
-- User investigates (conflicts, CI checks, branch protection rules)
 
 **Philosophy:**
 - Work through quality check failures systematically (they're just work, not blockers)
 - Only stop on genuine blockers (repeated identical errors) or iteration limits
 - Default to continuing, not stopping
 - Objective metrics (error counts, iteration limits) over subjective assessment
-
-## Safety Features
-
-1. **Sequential processing** - One issue at a time, not parallel
-2. **Fail-fast** - Stop on first error
-3. **Review gate** - Can't merge without approval
-4. **Squash merge** - Clean history
-5. **Branch cleanup** - Auto-delete after merge
-6. **Scope enforcement** - Review catches scope creep
-
-## When to Use
-
-**Good for:**
-- Batch of well-specified issues
-- Backlog clearing
-- Routine refactorings
-- Bug fixes with clear acceptance criteria
-
-**Not good for:**
-- Exploratory work
-- Vague requirements
-- Issues requiring design decisions
-- Cross-cutting changes affecting multiple issues
-
-## Performance
-
-**Sequential execution** ensures:
-- No merge conflicts between issues
-- Clean review per issue
-- Main branch always up-to-date
-
-**Typical timing:**
-- /work: 5-15 minutes
-- Review: 1-2 minutes
-- Merge: <1 minute
-- Total per issue: 6-18 minutes
-
-For 10 issues: ~1-3 hours autonomous execution.
-
-## Notes
-
-- Requires GitHub CLI authenticated
-- Requires repo with PRs enabled
-- Review agent must be available (code-reviewer subagent)
-- Main branch must not have required PR reviews (or bot must be approved reviewer)
-- All quality gates (tests, coverage, linters) must be configured
