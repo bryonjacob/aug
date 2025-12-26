@@ -6,11 +6,11 @@ High-level documentation for the aug plugin marketplace. Release notes, design d
 
 ## Key Components
 
-**Release Documentation:**
-- `RELEASE_NOTES_v3.md` - Complete v3 feature documentation
-- `TIERED_MATURITY_MODEL.md` - Maturity model philosophy
-- `V3_ADDITIONAL_IDEAS.md` - Brainstorming for v3 features
-- `V3_FINAL_ADDITIONS.md` - Final v3 implementation summary
+**Core Documentation:**
+- `PHILOSOPHY.md` - Core principles (assessment-driven, YAGNI, maturity model)
+- `WORKFLOWS.md` - Detailed usage guide
+- `ADAPTATION.md` - How to swap tools/customize
+- `FUTURE_IDEAS.md` - Backlog of potential features
 
 **Design Documents:**
 - `plans/` - Planning and design artifacts for major features

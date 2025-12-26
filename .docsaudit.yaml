@@ -22,40 +22,49 @@ max_age_days: 90
 
 audits:
   CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["**/*"]
 
   README.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
+    scope: ["**/*"]
+
+  CONTRIBUTING.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["**/*"]
 
   aug-core/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["aug-core/**/*"]
 
   aug-core/README.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["aug-core/**/*"]
 
   aug-core/agents/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-core/agents/user-standin.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
   aug-core/commands/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-core/commands/automate.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
+
+  aug-core/commands/create-variant.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-core/commands/futureme.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -89,13 +98,21 @@ audits:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
+  aug-core/commands/yagni-dry-edit.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
+
   aug-core/skills/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-core/skills/code-patterns/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
+
+  aug-core/skills/creating-variants/SKILL.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-core/skills/hemingwayesque/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -106,22 +123,22 @@ audits:
     date: 2025-11-19T00:00:00Z
 
   aug-dev/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["aug-dev/**/*"]
 
   aug-dev/README.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["aug-dev/**/*"]
 
   aug-dev/commands/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/commands/autocommit.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/commands/devinit.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -156,16 +173,16 @@ audits:
     date: 2025-11-19T00:00:00Z
 
   aug-dev/commands/refactor.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/commands/stack-assess.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
   aug-dev/commands/stack-guide.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/commands/start-project.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -175,41 +192,49 @@ audits:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
+  aug-dev/commands/test-project-bootstrap.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
+
+  aug-dev/commands/web-qa.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
+
   aug-dev/commands/work.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/configuring-github-actions/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
   aug-dev/skills/configuring-java-stack/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/configuring-javascript-stack/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/configuring-polyglot-stack/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/configuring-python-stack/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/creating-agents/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
   aug-dev/skills/development-stack-standards/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/documenting-with-audit/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -224,20 +249,20 @@ audits:
     date: 2025-11-19T00:00:00Z
 
   aug-dev/skills/executing-development-issues/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/installing-git-hooks/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
   aug-dev/skills/refactoring/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/self-reviewing-code/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/software-architecture/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -248,24 +273,28 @@ audits:
     date: 2025-11-19T00:00:00Z
 
   aug-dev/skills/software-development/SKILL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/software-quality/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
+
+  aug-dev/skills/web-qa-exploration/SKILL.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/skills/working-in-git-worktrees/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
     date: 2025-11-19T00:00:00Z
 
   aug-dev/workflows/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-dev/workflows/epic-development.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-just/CLAUDE.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -273,13 +302,13 @@ audits:
     scope: ["aug-just/**/*"]
 
   aug-just/README.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["aug-just/**/*"]
 
   aug-just/commands/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-just/commands/just-assess.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -298,8 +327,8 @@ audits:
     date: 2025-11-19T00:00:00Z
 
   aug-just/skills/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-just/skills/justfile-advanced-patterns/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -326,12 +355,12 @@ audits:
     date: 2025-11-19T00:00:00Z
 
   aug-just/workflows/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-just/workflows/justfile-adoption.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-web/CLAUDE.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -339,13 +368,13 @@ audits:
     scope: ["aug-web/**/*"]
 
   aug-web/README.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: ["aug-web/**/*"]
 
   aug-web/skills/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
 
   aug-web/skills/building-static-sites/SKILL.md:
     commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
@@ -364,33 +393,33 @@ audits:
     date: 2025-11-19T00:00:00Z
 
   docs/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: []
 
-  docs/RELEASE_NOTES_v3.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+  docs/ADAPTATION.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: []
 
-  docs/TIERED_MATURITY_MODEL.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+  docs/PHILOSOPHY.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: []
 
-  docs/V3_ADDITIONAL_IDEAS.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+  docs/WORKFLOWS.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: []
 
-  docs/V3_FINAL_ADDITIONS.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T00:00:00Z
+  docs/FUTURE_IDEAS.md:
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: []
 
   docs/plans/CLAUDE.md:
-    commit: ea2dbf960eae7d7f6c14bbfcc7658e4833b0794f
-    date: 2025-11-19T23:06:53Z
+    commit: 680d5739dccda4fb3d0d801e4341c3cf2d8c2396
+    date: 2025-12-26T19:21:44Z
     scope: []
 
   docs/plans/2025-11-16-aug-core-capabilities.md:

@@ -7,8 +7,6 @@ description: Development stack standards - five-level maturity model, dimension 
 
 Reference for creating and assessing language-specific development stacks. Defines what constitutes a complete stack, maturity progression, assessment criteria.
 
-**References:** `docs/TIERED_MATURITY_MODEL.md` for tier philosophy
-
 **Used by:**
 - `/stack-assess` - Grade projects against stack standards
 - `/stack-guide` - Create/validate/customize stack definitions
