@@ -177,6 +177,37 @@ clean:
 
 See `CLAUDE.md` for architecture and implementation details.
 
+## Opinionated Choices
+
+This plugin makes specific decisions:
+
+| Choice | Rationale | Alternatives |
+|--------|-----------|--------------|
+| **justfile** | Simple syntax, cross-platform, no tabs | Makefile, npm scripts, task |
+| **96% coverage** | High bar, documents the 4% exceptions | 80%, 90%, 100% |
+| **Complexity ≤10** | Industry standard, enforces simplicity | 15, 20, no limit |
+| **Exact comment strings** | Machine-parseable for assessment | Free-form comments |
+| **5-level maturity** | Progressive, YAGNI-friendly | All-or-nothing |
+
+### Adaptation Guide
+
+**To use Makefile instead:**
+The maturity model pattern transfers. Define same command names:
+```makefile
+.PHONY: format lint typecheck coverage check-all
+check-all: format lint typecheck coverage
+```
+
+**To use different coverage threshold:**
+Adjust `--cov-fail-under=` in coverage command. Document your rationale.
+
+**To use npm scripts:**
+Same command names in package.json scripts. Keep check-all as entry point.
+
+The pattern (standard interface, quality gate, maturity progression) transfers regardless of build tool.
+
+See [ADAPTATION.md](../docs/ADAPTATION.md) for detailed examples.
+
 ## Version
 
 3.0.0 - Initial release with maturity model

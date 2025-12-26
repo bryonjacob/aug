@@ -98,6 +98,27 @@ Workflows define sequences of commands for common patterns. Example: `epic-devel
 
 See `CLAUDE.md` for architecture and implementation details.
 
+## Opinionated Choices
+
+This plugin makes specific design decisions:
+
+| Choice | Rationale | Alternatives |
+|--------|-----------|--------------|
+| **Ephemeral session files** | `/tmp` storage, directory-isolated | Database, git-based |
+| **Hemingwayesque style** | Economy for AI token efficiency | Verbose documentation |
+| **CLAUDE.md context** | User-standin reads project structure | Config files, prompts |
+| **Workflow YAML** | Simple phase definitions | DAG runners, CI tools |
+
+### Adaptation Guide
+
+**Session storage:** Change `/tmp/notetoself-{hash}.md` path in commands if you want persistent storage.
+
+**User-standin behavior:** The agent reads CLAUDE.md hierarchy. Ensure your project has good CLAUDE.md files for best automation results.
+
+**Workflow definitions:** Workflows are simple YAML with phases. Adapt to your team's command naming.
+
+These patterns are general-purpose and transfer to most contexts without modification.
+
 ## Version
 
 3.0.0 - Major v3 overhaul with automation and workflow capabilities

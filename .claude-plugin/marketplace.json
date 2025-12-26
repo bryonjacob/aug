@@ -6,7 +6,8 @@
   },
   "metadata": {
     "description": "Development workflows, tooling standards, and AI-enhancement capabilities for Claude Code",
-    "version": "3.0.0"
+    "version": "3.0.0",
+    "license": "Apache-2.0"
   },
   "plugins": [
     {

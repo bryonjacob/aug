@@ -39,8 +39,12 @@ This marketplace provides a centralized distribution point for Claude Code plugi
 ### Installation
 
 ```bash
-# Add marketplace locally
-/plugin marketplace add /app/bryon/aug
+# Clone the repo to your local machine
+cd /path/to/your/projects
+git clone https://github.com/bryonjacob/aug.git
+
+# Add marketplace from local path
+/plugin marketplace add /path/to/your/projects/aug
 
 # Install plugins
 /plugin install aug-dev@aug aug-core@aug aug-just@aug aug-web@aug

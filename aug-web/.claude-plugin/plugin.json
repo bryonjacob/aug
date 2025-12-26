@@ -2,6 +2,7 @@
   "name": "aug-web",
   "description": "Web development with Next.js 15+, React 19, static sites, Tailwind CSS v4 + CVA, and Formspree forms. Modern web UI patterns and deployment.",
   "version": "3.0.0",
+  "license": "Apache-2.0",
   "author": {
     "name": "Bryon"
   }

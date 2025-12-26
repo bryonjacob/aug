@@ -1,6 +1,8 @@
 # Future Enhancement Ideas
 
-Ideas for future versions of the aug marketplace. These align with v3's philosophy of autonomous workflows, maturity models, and quality automation, but were deferred to keep v3 scope manageable.
+Everything in Aug started as an ad-hoc prompt or workflow that I used repeatedly until the pattern became clear enough to codify into a tool. These are the candidates for future tools—things I'm already doing with snippets of prompts and manual workflows, but haven't yet turned into first-class commands.
+
+The bar for promotion: a confident, repeatable pattern that works reliably. Until then, they stay here as ideas.
 
 ## High Priority
 

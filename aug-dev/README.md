@@ -209,6 +209,37 @@ All workflows enforce:
 - Format/lint/typecheck/test all passing
 - No shortcuts on quality
 
+## Opinionated Choices
+
+This plugin makes specific technology decisions:
+
+| Choice | Rationale | Alternatives |
+|--------|-----------|--------------|
+| **uv** (Python) | Fast, handles venv + install, modern | poetry, pip-tools |
+| **pnpm** (JavaScript) | Fast, strict, good monorepo support | npm, yarn, bun |
+| **maven** (Java) | Declarative, widely supported | gradle |
+| **justfile** | Simple syntax, cross-platform | Makefile, npm scripts |
+| **96% coverage** | High bar, allows 4% for edge cases | 80%, 90%, 100% |
+| **Flat git branches** | LLMs handle flat better, no cascades | gitflow, trunk-based |
+| **CLAUDE.md** | Machine-readable context for AI | ADRs, wiki |
+| **MkDocs Material** | Clean, searchable, Python-based | Sphinx, Docusaurus |
+
+### Adaptation Guide
+
+**To use different Python tools:**
+Replace in justfile: `uv run` → `poetry run`
+
+**To use npm instead of pnpm:**
+Replace in justfile: `pnpm` → `npm`
+
+**To use different coverage threshold:**
+Change `--cov-fail-under=96` to your threshold
+
+**To use gitflow:**
+Modify `/work` command to target develop branch, add release workflow
+
+See [ADAPTATION.md](../docs/ADAPTATION.md) for detailed examples.
+
 ## Related Plugins
 
 - **`aug-web`** - Next.js, static sites, Tailwind (extends JavaScript stack)
