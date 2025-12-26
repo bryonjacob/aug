@@ -21,6 +21,7 @@ Slash commands for aug-dev plugin. Complete development lifecycle from epic plan
 **Project Setup:**
 - `start-project.md` - Initialize new project
 - `devinit.md` - Audit and setup existing project
+- `test-project-bootstrap.md` - Test fresh clone setup (catch "works on my machine")
 
 **Code Quality:**
 - `docsaudit.md` - Documentation auditing

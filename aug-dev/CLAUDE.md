@@ -33,6 +33,7 @@ Core development workflows and tooling standards for software engineering projec
 - `start-project.md` - Initialize new project with full development setup
 - `devinit.md` - Audit existing project and set up missing components
 - `quicktask.md` - Ad-hoc task workflow (quick one-off tasks)
+- `test-project-bootstrap.md` - Test fresh clone setup (catch "works on my machine")
 
 **Code Quality:**
 - `docsaudit.md` - Automated documentation auditing and maintenance
@@ -102,6 +103,7 @@ Core development workflows and tooling standards for software engineering projec
 /start-project [NAME]                   # Initialize new project
 /devinit                                # Audit and setup development environment
 /quicktask [DESCRIPTION]                # Quick ad-hoc task with issue tracking
+/test-project-bootstrap                 # Test fresh clone setup
 ```
 
 ### Code Quality

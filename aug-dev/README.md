@@ -113,7 +113,30 @@ main (protected)
 
 # Systematic refactoring with coverage gates
 /refactor src/auth/
+
+# Test fresh clone setup (catch "works on my machine" issues)
+/test-project-bootstrap
 ```
+
+### Bootstrap Testing
+
+Test whether your project can be set up from scratch by a new developer:
+
+```bash
+/test-project-bootstrap
+
+# Claude will:
+# - Clone project fresh to /tmp/bootstrap-test/
+# - Follow README/CLAUDE.md setup instructions literally
+# - Document every step and any errors
+# - Report missing docs, undocumented dependencies, assumptions
+```
+
+**Catches:**
+- Missing prerequisites in documentation
+- Undocumented environment variables
+- Steps that "work on my machine" but fail fresh
+- Documentation drift from actual setup process
 
 ## Web QA
 
