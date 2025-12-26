@@ -38,6 +38,7 @@ Core development workflows and tooling standards for software engineering projec
 - `docsaudit.md` - Automated documentation auditing and maintenance
 - `refactor.md` - Autonomous refactoring analysis and issue creation
 - `test-optimize.md` - Test suite optimization (speed and redundancy analysis)
+- `web-qa.md` - Exploratory QA testing with Playwright
 
 ### Skills (`skills/`)
 
@@ -67,6 +68,9 @@ Core development workflows and tooling standards for software engineering projec
 - `self-reviewing-code/` - Self-review checklist before marking PR ready
 - `working-in-git-worktrees/` - Parallel work with isolated directories
 - `creating-agents/` - Agent definition patterns
+
+**Quality Assurance:**
+- `web-qa-exploration/` - Exploratory QA testing with Playwright
 
 ## Public Interface
 
@@ -106,6 +110,7 @@ Core development workflows and tooling standards for software engineering projec
 /docsaudit [PATH]                       # Audit and update documentation
 /refactor [SCOPE]                       # Analyze code and create refactoring issues
 /test-optimize [MODULE]                 # Analyze test suite for speed and redundancy
+/web-qa [SCOPE]                         # Exploratory QA with Playwright
 ```
 
 ### Skills

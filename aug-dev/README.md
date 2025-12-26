@@ -115,6 +115,37 @@ main (protected)
 /refactor src/auth/
 ```
 
+## Web QA
+
+Exploratory QA testing using Playwright. Finds bugs, UX issues, and edge cases with visual evidence.
+
+```bash
+# Start QA session for a feature
+/web-qa "QA the new checkout flow"
+
+# Claude will:
+# - Launch Playwright browser (headed)
+# - Navigate through the flow
+# - Test edge cases at each step
+# - Document issues with screenshots
+# - Generate suggested Playwright tests
+# - Save report to /tmp/webqa/{session-id}/
+```
+
+**Output flows into planning:**
+```bash
+# After QA finds issues...
+/plan-chat "Fix authentication redirect bug from QA"
+# Or go straight to tasks:
+/plan-breakdown
+```
+
+**Key Features:**
+- Interactive exploration with Playwright
+- Systematic analysis checklist (visual, navigation, forms, a11y)
+- Issues documented with severity, screenshots, suggested tests
+- Report feeds directly into `/plan-chat` or `/plan-breakdown`
+
 ## Skills
 
 ### Core Development Skills
@@ -147,6 +178,10 @@ Note: Justfile standards defined in aug-just plugin (install with `/plugin insta
 - **`self-reviewing-code`** - Self-review checklist before PR ready
 - **`working-in-git-worktrees`** - Parallel work with isolated directories
 - **`creating-agents`** - Agent definition patterns
+
+### Quality Assurance
+
+- **`web-qa-exploration`** - Exploratory QA testing with Playwright
 
 ## Architecture Principles
 

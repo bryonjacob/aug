@@ -34,6 +34,9 @@ Reusable skill definitions for aug-dev plugin. Core development workflows, stack
 - `creating-agents/` - Agent definition patterns
 - `development-stack-standards/` - Stack maturity models
 
+**Quality Assurance:**
+- `web-qa-exploration/` - Exploratory QA testing with Playwright
+
 ## Usage
 
 Skills invoked via Skill tool. Referenced by commands and other skills for consistent behavior.

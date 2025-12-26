@@ -26,6 +26,7 @@ Slash commands for aug-dev plugin. Complete development lifecycle from epic plan
 - `docsaudit.md` - Documentation auditing
 - `refactor.md` - Refactoring analysis
 - `test-optimize.md` - Test suite optimization
+- `web-qa.md` - Exploratory QA with Playwright
 
 **Stack Management:**
 - `stack-assess.md` - Assess project stack
