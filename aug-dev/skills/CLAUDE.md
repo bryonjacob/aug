@@ -36,6 +36,7 @@ Reusable skill definitions for aug-dev plugin. Core development workflows, stack
 
 **Quality Assurance:**
 - `web-qa-exploration/` - Exploratory QA testing with Playwright
+- `feature-walkthrough/` - Generate walkthrough videos from Playwright tests
 
 ## Usage
 

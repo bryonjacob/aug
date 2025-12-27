@@ -40,6 +40,7 @@ Core development workflows and tooling standards for software engineering projec
 - `refactor.md` - Autonomous refactoring analysis and issue creation
 - `test-optimize.md` - Test suite optimization (speed and redundancy analysis)
 - `web-qa.md` - Exploratory QA testing with Playwright
+- `feature-walkthrough.md` - Generate demo videos from Playwright test suites
 
 ### Skills (`skills/`)
 
@@ -72,6 +73,7 @@ Core development workflows and tooling standards for software engineering projec
 
 **Quality Assurance:**
 - `web-qa-exploration/` - Exploratory QA testing with Playwright
+- `feature-walkthrough/` - Generate polished walkthrough videos from Playwright tests
 
 ## Public Interface
 
@@ -113,6 +115,7 @@ Core development workflows and tooling standards for software engineering projec
 /refactor [SCOPE]                       # Analyze code and create refactoring issues
 /test-optimize [MODULE]                 # Analyze test suite for speed and redundancy
 /web-qa [SCOPE]                         # Exploratory QA with Playwright
+/feature-walkthrough [FEATURE]          # Generate demo video from Playwright tests
 ```
 
 ### Skills
