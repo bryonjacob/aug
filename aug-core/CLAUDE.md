@@ -57,12 +57,12 @@ AI-enhancement capabilities for Claude Code. Provides tools for making Claude mo
 - `/workflow-status [workflow-name]` - Show workflow progress and next step
 
 ### Code Patterns
-- `/learn [pattern-type]` - Analyze codebase for conventions (error-handling, testing, imports, naming, architecture)
-- `/suggest [file]` - Compare file to project conventions
-- `/patterns` - Show all detected conventions
+- `/learn [pattern-type]` - Analyze codebase for conventions (uses code-patterns skill)
+- `/suggest [file]` - Compare file to project conventions (uses code-patterns skill)
+- `/patterns` - Show all detected conventions (uses code-patterns skill)
 
 ### Team Variants
-- `/create-variant [team-name]` - Generate team-specific workflow files adapted to existing tools/processes
+- `/create-variant [team-name]` - Generate team-specific workflow files (uses creating-variants skill)
 
 ### Skills
 All skills available for use via `Skill` tool.
