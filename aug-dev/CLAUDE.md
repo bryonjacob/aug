@@ -49,6 +49,7 @@ Core development workflows and tooling standards for software engineering projec
 - `software-development/` - Implementation following specifications
 - `software-debugging/` - Systematic bug finding and fixing
 - `software-quality/` - Test coverage analysis and strategy
+- `test-optimization/` - Test suite speed and redundancy analysis
 
 **Stack Configuration:**
 - `configuring-javascript-stack/` - JavaScript/TypeScript toolchain (pnpm, prettier, eslint, vitest)
