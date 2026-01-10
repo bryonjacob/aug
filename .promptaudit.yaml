@@ -1,0 +1,366 @@
+version: 1
+
+audits:
+  # Skills
+  aug-core/skills/code-patterns/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/skills/creating-variants/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/skills/hemingwayesque/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/skills/workflow-design/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/configuring-github-actions/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/configuring-java-stack/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/configuring-javascript-stack/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/configuring-polyglot-stack/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/configuring-python-stack/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/creating-agents/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/development-stack-standards/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/documenting-with-audit/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/documenting-with-claude-md/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/documenting-with-mkdocs/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/executing-development-issues/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/feature-walkthrough/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/installing-git-hooks/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/refactoring/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/self-reviewing-code/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/software-architecture/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/software-debugging/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/software-development/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/software-quality/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/web-qa-exploration/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/skills/working-in-git-worktrees/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/skills/justfile-advanced-patterns/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/skills/justfile-interface/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/skills/justfile-maturity-model/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/skills/justfile-polyglot-patterns/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/skills/justfile-quality-patterns/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/skills/justfile-security-patterns/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-web/skills/building-static-sites/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-web/skills/building-with-nextjs/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-web/skills/integrating-formspree-forms/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-web/skills/styling-with-tailwind-cva/SKILL.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  # Commands
+  aug-core/commands/automate.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/conversation-report.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/create-variant.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/futureme.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/hemingway.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/learn.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/notetoself.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/patterns.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/promptaudit.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/suggest.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/user-messages.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/workflow-run.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/workflow-status.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-core/commands/yagni-dry-edit.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/autocommit.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/devinit.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/docsaudit.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/feature-walkthrough.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/plan-breakdown.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/plan-chat.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/plan-commit.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/plan-create.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/plan-status.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/quicktask.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/refactor.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/stack-assess.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/stack-guide.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/start-project.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/test-optimize.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/test-project-bootstrap.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/web-qa.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-dev/commands/work.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/commands/just-assess.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/commands/just-init.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/commands/just-refactor.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  aug-just/commands/just-upgrade.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
+  # Agents
+  aug-core/agents/user-standin.md:
+    commit: 2b3ecd8
+    date: 2026-01-10
+    status: clean
+    issues: 0
