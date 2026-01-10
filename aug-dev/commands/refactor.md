@@ -89,129 +89,28 @@ Run '/docsaudit' first to create CLAUDE.md hierarchy.
 
 For each module to analyze:
 
-**Complexity:**
 ```bash
-just complexity
+just complexity    # Find files with complexity >10
+just loc           # Find files >500 lines
+just duplicates    # Find >30% duplicate code (if available)
 ```
-Parse output, find files with complexity >10:
-- Python: radon cc output
-- JavaScript: eslint complexity output
-- Java: checkstyle/PMD output
 
-**File size:**
-```bash
-just loc
-```
-Parse output, find files >500 lines.
+Also find TODO/FIXME/HACK comments per file.
 
-**Duplicates:**
-```bash
-# Prefer justfile command if available
-just duplicates
-# Or direct: jscpd <module-path> --threshold 30
-```
-Parse output, find files with >30% duplicate code.
-
-**TODOs/FIXMEs:**
-```bash
-# Find TODO/FIXME/HACK comments
-grep -rn "TODO\|FIXME\|HACK" <module-path> --include="*.py" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.java"
-```
-Count per file, add to metrics.
-
-**Result:** List of candidate files per module with metrics (complexity, LOC, duplicates, TODOs).
+**Result:** List of candidate files with metrics (complexity, LOC, duplicates, TODOs).
 
 ### 5. Deep Code Analysis (Expensive)
 
-For each candidate file:
+For each candidate file, read contents and detect code smells using `refactoring` skill knowledge.
 
-**Read file contents.**
-
-**Detect common smells:**
-
-- **Long functions:**
-  - Parse file, find functions >50 lines
-  - Estimate extraction opportunities
-
-- **Long parameter lists:**
-  - Find functions with >5 parameters
-  - Assess if parameters should be objects
-
-- **Deeply nested conditionals:**
-  - Find if/else nesting >3 levels
-  - Identify guard clause opportunities
-
-- **Repeated code blocks:**
-  - Find similar code patterns in same file
-  - Estimate extraction potential
-
-- **Magic numbers/strings:**
-  - Find hardcoded values
-  - Assess if should be constants
-
-**Detect architectural smells:**
-
-- **God objects:**
-  - Classes with >10 methods or >10 responsibilities
-  - Assess split opportunities
-
-- **Feature envy:**
-  - Methods using other class more than own
-  - Identify potential moves
-
-- **Leaky abstractions:**
-  - Implementation details exposed in interface
-  - Assess encapsulation improvements
-
-- **Tight coupling:**
-  - High import/dependency count
-  - Identify decoupling opportunities
-
-- **Circular dependencies:**
-  - Module A imports B imports A
-  - Identify break points
-
-**For each smell found, create opportunity record:**
-```python
-{
-  'file': 'src/auth/validate.py',
-  'type': 'complexity',
-  'current': 18,
-  'target': 10,
-  'issues': ['long_function', 'nested_conditionals', 'magic_strings'],
-  'todos': 3,  # count of TODO/FIXME/HACK comments
-  'duplicates_pct': 15,  # percentage of duplicate code
-  'approach': ['extract_email_validation', 'guard_clauses', 'extract_constants'],
-  'scope': 'single file',
-  'coupling': 15,  # call sites
-  'module_criticality': 'high'  # auth is critical
-}
-```
+Create opportunity record for each finding with:
+- File path, type, current/target metrics
+- Identified issues and suggested approach
+- Scope and coupling assessment
 
 ### 6. Prioritization
 
-For each opportunity, calculate:
-
-**Impact score (0-10):**
-- Complexity reduction: (current - target) / current × 10
-- Maintainability: subjective assessment
-- Code reuse: number of similar patterns eliminated
-- Performance: estimated improvement
-
-**Risk score (0-10):**
-- Scope: single function (2) < file (5) < module (8) < cross-module (10)
-- Current complexity: higher = riskier
-- Coupling: more call sites = riskier
-- Module criticality: auth/security (10) > api (7) > util (3)
-
-**Priority:**
-```
-priority = impact / (risk + 1)  # +1 to avoid division by zero
-```
-
-**Sort opportunities by priority (high to low).**
-
-**No filtering** - create issues for all opportunities, let GitHub handle queue.
+Use `refactoring` skill to prioritize by impact/risk. Sort by priority (high to low). Create issues for all opportunities.
 
 ### 7. Check Existing Issues
 
@@ -293,14 +192,6 @@ modules:
   <module-path>:
     last_analyzed_commit: <current-HEAD>
     last_analyzed_date: <now-ISO8601>
-```
-
-**If module deferred, keep note:**
-```yaml
-src/legacy:
-  last_analyzed_commit: abc123
-  last_analyzed_date: 2025-11-19T10:00:00Z
-  deferred: "Being replaced Q1 2026"
 ```
 
 **Write updated file.**
@@ -445,110 +336,20 @@ Reason: <error>
 Skipping this module, continuing with others...
 ```
 
-## Examples
-
-### First Run (Bootstrap)
+## Example
 
 ```bash
 $ /refactor
 
-Creating .refactoraudit.yaml...
-
-Found 5 modules (directories with CLAUDE.md):
-  src/auth
-  src/api
-  src/db
-  src/utils
-  tests
-
-Initialized state, analyzing all modules...
-
-[Analysis proceeds]
-
-Opportunities found: 8
-
-Created 8 GitHub issues (#101-108)
-```
-
-### Normal Run (Some Changed)
-
-```bash
-$ /refactor
-
-Loading .refactoraudit.yaml...
-
-Modules: 5 total
-  2 changed since last analysis
-  3 unchanged (skipped)
-
-Analyzing: src/auth, src/api
-
+Modules: 5 total (2 changed, 3 skipped)
 Opportunities found: 3
 
-High Priority (8-10):
-  1. src/auth/validate.py (complexity 18, nested conditionals)
-
-Medium Priority (5-7):
-  2. src/api/routes.py (god object, 15 responsibilities)
-  3. src/api/middleware.py (duplicate code 45%)
-
-Checking GitHub...
-Found 2 open [refactoring] issues (different targets)
-
-Creating 3 new issues...
+Creating issues...
   ✓ #109: [refactoring] Reduce complexity in src/auth/validate.py
   ✓ #110: [refactoring] Split god object in src/api/routes.py
   ✓ #111: [refactoring] Remove duplicates in src/api/middleware.py
 
 Next: /work 109
-```
-
-### No Changes
-
-```bash
-$ /refactor
-
-No modules changed since last analysis.
-
-All modules current:
-  src/auth (last analyzed: 2025-11-18)
-  src/api (last analyzed: 2025-11-18)
-  src/db (last analyzed: 2025-11-17)
-
-Use --force to re-analyze all modules.
-```
-
-### Specific Module
-
-```bash
-$ /refactor src/auth
-
-Analyzing: src/auth only
-
-Opportunities found: 1
-
-High Priority (9/10):
-  1. src/auth/validate.py (complexity 18)
-
-Creating 1 issue...
-  ✓ #112: [refactoring] Reduce complexity in src/auth/validate.py
-```
-
-### Dry Run
-
-```bash
-$ /refactor --dry-run
-
-DRY RUN - No issues will be created
-
-[Full analysis proceeds]
-
-Would create 5 issues:
-  1. #xxx: [refactoring] Reduce complexity in src/auth/validate.py
-  2. #xxx: [refactoring] Split god object in src/api/routes.py
-  ... (3 more)
-
-Run without --dry-run to create these issues.
 ```
 
 ## Notes
