@@ -37,97 +37,38 @@ Target: main (via PR)
 
 All branches from main. Flat structure only.
 
-## Implementation Process
+## Implementation Approach
 
-### 1. Read Issue Spec
-
-Extract:
-- Architecture context
-- Files to change
-- Implementation chunks
-- Code examples
-- Test requirements
-- Acceptance criteria
-
-### 2. Documentation First
+### Documentation First
 
 Update docs with retcon writing (present tense):
 - Document as if feature exists
 - Update relevant files
 - Verify DRY (no duplication)
 
-```bash
-just format
-git commit -m "docs: Update for #{ISSUE}"
-git push
-```
-
-### 3. Implement Chunks
+### Chunked Implementation
 
 For each chunk in issue:
 
-**A. Implement**
-- Follow guidance from issue
-- Use code examples as reference
-- Keep maximally simple
+1. **Implement** - Follow guidance from issue, keep maximally simple
+2. **Test** - Unit tests for this chunk's specific functionality
+3. **Verify** - Run `just check-all`
+4. **Commit** - Incremental commits, incremental pushes
 
-**B. Test**
-- Unit tests for this chunk
-- Test specific functionality
+Incremental commits are recoverable.
 
-**C. Verify**
-```bash
-just format      # Auto-fix
-just lint        # Auto-fix
-just typecheck   # Check types
-just test        # Run tests
-```
-
-**D. Commit**
-```bash
-git commit -m "feat: Implement {CHUNK} for #{ISSUE}"
-git push
-```
-
-Incremental commits. Incremental pushes. Recoverable.
-
-### 4. Test Review
+### Test Review
 
 After all chunks:
-```bash
-just coverage    # Verify >= 96%
-```
+- Verify coverage >= 96%
+- Add edge cases and error handling
+- Integration tests if specified
 
-If below threshold:
-- Identify uncovered code
-- Add missing tests
-- Re-run coverage
+### Final Verification
 
-Add edge cases, error handling, integration tests.
-
-```bash
-git commit -m "test: Enhance coverage for #{ISSUE}"
-git push
-```
-
-### 5. Final Verification
-
-```bash
-just check-all
-```
-
-Run user acceptance tests from issue.
-
-If failures:
+Run `just check-all`. If failures:
 - Attempt auto-fix (max 3 attempts)
-- `just format` → `just lint` → fix types → fix tests
-- Re-run `just check-all`
-
-If still failing after 3 attempts: escalate (not your job to force it).
-
-### 6. Done
-
-Quality gate passed. Ready for PR creation.
+- If still blocked: escalate
 
 ## Module Structure
 
@@ -179,29 +120,6 @@ Don't:
 - Skip tests after chunks
 - Push without verifying
 - Assume library availability
-
-## Just Commands
-
-Standard interface across all projects:
-
-```bash
-just format      # Auto-fix formatting
-just lint        # Auto-fix linting
-just typecheck   # Static type checking
-just test        # Run test suite
-just coverage    # Coverage analysis (96% threshold)
-just check-all   # Full quality gate
-```
-
-Use these. Don't invent custom verification.
-
-## Philosophy References
-
-Follow:
-- `@ai_context/IMPLEMENTATION_PHILOSOPHY.md`
-- `@ai_context/MODULAR_DESIGN_PHILOSOPHY.md`
-
-Check: `@DISCOVERIES.md` for known patterns
 
 ## Self-Healing
 
