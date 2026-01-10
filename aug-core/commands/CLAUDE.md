@@ -21,13 +21,13 @@ Slash commands for aug-core plugin. Focus on AI-enhancement, session management,
 - `workflow-run.md` - Execute multi-command workflows
 - `workflow-status.md` - Check workflow progress
 
-**Code Patterns:**
+**Code Patterns:** (all use code-patterns skill)
 - `learn.md` - Analyze codebase conventions
 - `suggest.md` - Compare file to conventions
 - `patterns.md` - Show all detected patterns
 
 **Team Variants:**
-- `create-variant.md` - Generate team-specific workflow files
+- `create-variant.md` - Generate team-specific workflow files (uses creating-variants skill)
 
 ## Usage
 
