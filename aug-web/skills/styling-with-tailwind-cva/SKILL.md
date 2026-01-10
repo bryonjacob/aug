@@ -218,12 +218,12 @@ const badgeVariants = cva('inline-flex items-center font-medium', {
 })
 ```
 
-## Quality Checklist
+## Quality Criteria
 
-- [ ] All colors defined as CSS variables
-- [ ] Typography follows consistent ratio
-- [ ] Spacing uses 8px base unit
-- [ ] Components have type-safe CVA variants
-- [ ] Mobile-first responsive design
-- [ ] Color contrast meets WCAG AA
-- [ ] Hover/focus states visible
+- All colors defined as CSS variables
+- Typography follows consistent ratio
+- Spacing uses 8px base unit
+- Components have type-safe CVA variants
+- Mobile-first responsive design
+- Color contrast meets WCAG AA (4.5:1 minimum)
+- Hover/focus states visible

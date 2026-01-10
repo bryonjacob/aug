@@ -13,18 +13,8 @@ Extends `building-with-nextjs` for static export.
 
 ## When to Use
 
-✅ **Good for:**
-- Marketing websites
-- Documentation sites
-- Blogs and portfolios
-- Landing pages
-- No authentication needed
-
-❌ **Not suitable for:**
-- Real-time dashboards
-- E-commerce with inventory
-- User authentication
-- API routes or server actions
+- Marketing sites, docs, blogs, portfolios, landing pages
+- No auth, no server-side logic, no real-time data
 
 ## Configuration
 
