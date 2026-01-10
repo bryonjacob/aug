@@ -14,13 +14,18 @@ Execute GitHub issue through to PR. Fully autonomous.
 
 **Prerequisites**: Task issue created by `/plan-create` with complete specification.
 
+**Skills Used**:
+- `software-development` - Implementation with chunk testing
+- `software-debugging` - Self-healing when quality checks fail
+- `software-quality` - Test coverage review
+
 ---
 
 ## Key Principles
 
 - **Idempotent**: Safe to re-run if interrupted
 - **Incremental**: Commits and pushes after each chunk
-- **Self-healing**: Auto-fixes format/lint/type errors (convergence-based iteration)
+- **Self-healing**: Auto-fixes format/lint/type errors (convergence-based)
 - **Quality-gated**: Must pass `just check-all` before PR
 - **Autonomous**: No user interaction
 
@@ -32,502 +37,104 @@ Use TodoWrite to track progress.
 
 ### Phase 0: Load & Verify
 
-**Ensures resumption after interruption.**
+1. **Fetch Issue**: `gh issue view {ISSUE_NUMBER} --json body`
 
-1. **Fetch Issue**
-   ```bash
-   gh issue view {ISSUE_NUMBER} --json body
-   ```
+2. **Parse Metadata** from issue body:
+   - EPIC_ID, TASK_ID, BRANCH_NAME, DEPENDS_ON, EPIC_ISSUE
 
-2. **Parse Metadata**
-   Extract from issue body:
-   ```bash
-   EPIC_ID=$(grep "^EPIC_ID:" | cut -d: -f2 | xargs)
-   TASK_ID=$(grep "^TASK_ID:" | cut -d: -f2 | xargs)
-   BRANCH_NAME=$(grep "^BRANCH_NAME:" | cut -d: -f2 | xargs)
-   DEPENDS_ON=$(grep "^DEPENDS_ON:" | cut -d: -f2 | xargs)
-   EPIC_ISSUE=$(grep "^EPIC_ISSUE:" | cut -d: -f2 | xargs)
-   ```
+3. **Verify Dependencies**: If DEPENDS_ON != "none", check each dependency issue is closed.
 
-3. **Verify Dependencies**
-   If DEPENDS_ON != "none":
-   - Check each dependency issue closed
-   - If open: error and exit
-   ```
-   ❌ Cannot start - dependencies incomplete:
-      - #123 still open
-
-   Complete dependencies first, then run:
-      /work {ISSUE_NUMBER}
-   ```
-
-4. **Check Branch State**
-   ```bash
-   if git rev-parse --verify "$BRANCH_NAME" 2>/dev/null; then
-     # Branch exists - resume
-     git checkout "$BRANCH_NAME"
-
-     PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --json number -q '.[0].number')
-
-     if [ -n "$PR_NUMBER" ]; then
-       PR_STATE=$(gh pr view "$PR_NUMBER" --json state -q '.state')
-
-       if [ "$PR_STATE" = "MERGED" ]; then
-         echo "✅ Task complete (PR #$PR_NUMBER merged)"
-         exit 0
-       elif [ "$PR_STATE" = "OPEN" ]; then
-         echo "⚠️  PR #$PR_NUMBER exists"
-         echo "Resuming..."
-       fi
-     fi
-   else
-     # Create branch from main
-     git checkout main
-     git pull origin main
-     git checkout -b "$BRANCH_NAME"
-   fi
-   ```
+4. **Check Branch State**:
+   - If branch exists with merged PR: exit (task complete)
+   - If branch exists with open PR: resume
+   - If no branch: create from main
 
 ### Phase 1: Documentation
 
-**Use retcon writing: document as if feature exists (present tense).**
+Use retcon writing: document as if feature exists (present tense).
 
-1. **Parse Documentation Files from Issue**
-   Extract paths from "Files to Change" → "Documentation".
+1. Parse documentation files from issue "Files to Change" section
+2. Update each file with new functionality
+3. Verify and commit: `just check-all`, then push
 
-2. **Update Each File**
-   - Read current content
-   - Update with new functionality
-   - Use present tense (retcon style)
-   - Verify DRY - no duplication
-
-3. **Verify and Commit**
-   ```bash
-   just check-all
-   git add <doc-files>
-   git commit -m "docs: Update documentation for #${ISSUE_NUMBER}"
-   git push origin "$BRANCH_NAME"
-   ```
-
-### Phase 2: Implementation with Chunk Testing
+### Phase 2: Implementation
 
 **Use `software-development` skill.**
 
-For each chunk in "Implementation Guidance" → "Phase 2: Implementation Chunks":
-
-#### A. Implement Chunk
-
-- Read implementation guidance from issue
-- Read code examples from issue
-- Follow architecture context
-- Implement changes
-- Keep maximally simple
-
-#### B. Write Tests for Chunk
-
-- Add unit tests per issue guidance
-- Test specific functionality in chunk
-- Follow testing strategy from issue
-
-#### C. Verify Chunk Quality
-
-```bash
-just check-all
-```
-
-**If failures:**
-- Parse error messages
-- Apply common fixes
-- Retry up to 3 times
-- If still failing → Use `software-debugging` skill
-
-#### D. Commit Chunk
-
-```bash
-git add .
-git commit -m "feat: Implement {CHUNK_NAME} for #${ISSUE_NUMBER}"
-```
-
-#### E. Push Incrementally
-
-```bash
-git push origin "$BRANCH_NAME"
-```
-
-*Incremental pushes make work recoverable.*
+For each chunk in "Implementation Guidance":
+- Implement chunk following issue guidance
+- Write tests for chunk
+- Verify: `just check-all`
+- Commit and push incrementally
 
 ### Phase 3: Test Review
 
 **Use `software-quality` skill.**
 
-After all chunks:
-
-1. **Run Quality Check with Coverage**
-   ```bash
-   just check-all
-   ```
-
-2. **Check Coverage Threshold**
-   - Must be >= 96%
-   - If below:
-     - Use `software-quality` skill to identify gaps
-     - Add tests for uncovered code
-     - Re-run `just check-all`
-
-3. **Enhance Test Suite**
-   - Edge cases from issue testing strategy
-   - Error handling scenarios
-   - Integration tests if specified
-
-4. **Commit Test Enhancements**
-   ```bash
-   git add .
-   git commit -m "test: Enhance coverage for #${ISSUE_NUMBER}"
-   git push origin "$BRANCH_NAME"
-   ```
+1. Run `just check-all` with coverage
+2. Must reach >= 96% coverage
+3. Add edge case and integration tests as needed
+4. Commit and push
 
 ### Phase 4: Final Verification
 
-1. **Run Full Quality Gate**
-   ```bash
-   just check-all
-   ```
+1. Run `just check-all`
+2. **Self-healing**: If failing, use `software-debugging` skill with convergence tracking
+   - Keep trying if: error count decreasing, different errors, clear path
+   - Stop if: same error repeatedly, no new hypotheses, spinning
+3. Run user acceptance tests from issue
 
-2. **Self-Healing (convergence-based)**
+### Phase 5: PR Creation
 
-   If `just check-all` fails, iterate with convergence tracking:
+**Success Path** (quality checks pass):
+- Create PR with verification report
+- Comment on epic issue
+- Output success with PR URL
 
-   **For each attempt:**
-   - Track what was tried and outcome
-   - Parse current error messages
-   - Use `software-debugging` skill:
-     - Identify root cause
-     - Generate hypothesis for fix
-     - Apply fix
-     - Re-run `just check-all`
-   - Assess convergence
-
-   **Signs of convergence (keep trying):**
-   - Error count decreasing
-   - Different errors each iteration (making progress)
-   - New hypotheses identified
-   - Clear path to resolution
-
-   **Signs of spinning (stop and report):**
-   - Same error after multiple attempts
-   - No new hypotheses to try
-   - Error getting worse or multiplying
-   - Tried all reasonable approaches
-   - Stuck on fundamental issue
-
-   **If converging:** Continue iteration.
-
-   **If passing:** → Go to Phase 5 (Success Path)
-
-   **If spinning/stuck:** → Go to Phase 6 (Blocked Path)
-
-3. **Run User Acceptance Tests**
-
-   Extract and run commands from "User Verification" section.
-   ```bash
-   {COMMAND_FROM_ISSUE}  # Verify: {EXPECTED_OUTPUT}
-   ```
-
-### Phase 5: PR Creation (Success Path)
-
-**When `just check-all` passes:**
-
-1. **Generate Verification Report**
-   ```markdown
-   ## Implementation Summary
-
-   Implements: #{ISSUE_NUMBER}
-   Epic: #{EPIC_ISSUE}
-   Branch: {BRANCH_NAME}
-
-   ## Changes
-   - {LIST_OF_CHANGES}
-
-   ## Quality Verification
-
-   ✅ `just check-all` passing
-   ✅ Coverage: {PERCENTAGE}%
-   ✅ All acceptance criteria met
-
-   ## Commits
-   - {COMMIT_1_HASH}: {MESSAGE}
-   - {COMMIT_2_HASH}: {MESSAGE}
-
-   ## User Acceptance
-   {VERIFICATION_COMMANDS_RAN_SUCCESSFULLY}
-
-   ## Next Steps
-   - Review and merge
-   - Close #{ISSUE_NUMBER}
-   - Update epic #{EPIC_ISSUE} checklist
-   ```
-
-2. **Create Pull Request**
-   ```bash
-   gh pr create \
-     --base main \
-     --head "$BRANCH_NAME" \
-     --title "$(gh issue view $ISSUE_NUMBER --json title -q '.title')" \
-     --body "$(cat <<EOF
-   Closes #${ISSUE_NUMBER}
-
-   ${VERIFICATION_REPORT}
-   EOF
-   )"
-   ```
-
-3. **Comment on Epic**
-   ```bash
-   gh issue comment "$EPIC_ISSUE" \
-     --body "✅ Task #${ISSUE_NUMBER} complete - PR #${PR_NUMBER}"
-   ```
-
-4. **Output Success**
-   ```
-   ✅ Task #${ISSUE_NUMBER} Complete!
-
-   PR: {PR_URL}
-
-   Commits: {COUNT}
-   - {COMMIT_SUMMARY_1}
-   - {COMMIT_SUMMARY_2}
-
-   Quality: ✅ just check-all passing
-   Coverage: {PERCENTAGE}%
-
-   Epic Progress:
-     Epic #{EPIC_ISSUE}: {X} of {Y} tasks complete
-
-   Next: Review and merge PR #{PR_NUMBER}
-   ```
-
-### Phase 6: PR Creation (Blocked Path)
-
-**When quality checks fail after convergence assessment shows spinning:**
-
-1. **Generate Diagnostic Report**
-   ```markdown
-   ## ⚠️ Task Blocked
-
-   Task: #{ISSUE_NUMBER}
-   Branch: {BRANCH_NAME}
-
-   ### Fix Attempts
-   1. {what was tried} → {outcome}
-   2. {what was tried} → {outcome}
-   ...
-
-   ### Assessment
-   No clear path forward after {N} attempts. Need human guidance.
-   Status: Quality checks failing
-
-   ## Failing Checks
-
-   {ERROR_OUTPUT_FROM_JUST_CHECK_ALL}
-
-   ## Attempts Made
-
-   1. Auto-fix with `just format && just lint`
-   2. Debugging analysis: {FINDINGS}
-   3. Manual fixes attempted: {WHAT_WAS_TRIED}
-
-   ## Current State
-
-   - Implementation: Complete
-   - Tests: {STATUS}
-   - Coverage: {PERCENTAGE}%
-   - Failures: {SPECIFIC_ERRORS}
-
-   ## Suggestions
-
-   {SPECIFIC_RECOMMENDATIONS_FOR_FIXING}
-
-   ## Next Steps
-
-   1. Review diagnostics
-   2. Fix issues manually or update task spec
-   3. Re-run (idempotent): `/work ${ISSUE_NUMBER}`
-   ```
-
-2. **Create Draft PR**
-   ```bash
-   gh pr create \
-     --base main \
-     --head "$BRANCH_NAME" \
-     --draft \
-     --title "[BLOCKED] $(gh issue view $ISSUE_NUMBER --json title -q '.title')" \
-     --body "$(cat <<EOF
-   ⚠️  Blocked on quality checks
-
-   Related: #${ISSUE_NUMBER}
-
-   ${DIAGNOSTIC_REPORT}
-   EOF
-   )"
-   ```
-
-3. **Comment on Task Issue**
-   ```bash
-   gh issue comment "$ISSUE_NUMBER" \
-     --body "$(cat <<EOF
-   ⚠️  Task blocked on quality checks
-
-   Draft PR: #${PR_NUMBER}
-   See diagnostics in PR.
-
-   After fixing, re-run (idempotent):
-   \`\`\`bash
-   /work ${ISSUE_NUMBER}
-   \`\`\`
-   EOF
-   )"
-   ```
-
-4. **Output Blocked Status**
-   ```
-   ⚠️  Task #${ISSUE_NUMBER} Blocked
-
-   Draft PR: {PR_URL}
-
-   Quality checks failing - no clear path forward after {N} attempts.
-   See diagnostics and attempt history in PR.
-
-   Human guidance needed. After fixing, re-run (idempotent):
-     /work ${ISSUE_NUMBER}
-   ```
+**Blocked Path** (quality checks fail after attempts):
+- Create draft PR with diagnostic report
+- Comment on task issue
+- Output blocked status with guidance
 
 ---
 
 ## Idempotent Guarantees
 
-**Re-running `/work <issue>` is safe:**
-
-- Checks if branch exists → resumes if yes, creates if no
-- Checks if PR exists → reports if merged, resumes if open
-- Checks if work complete → exits cleanly
-- Skips completed commits (checks git log)
-- Resumes from current chunk
-
-**Interrupt anytime and restart.**
-
----
-
-## Skills Used
-
-- **`software-development`** - Phase 2 implementation
-- **`software-debugging`** - Self-healing
-- **`software-quality`** - Phase 3 test coverage
+Re-running `/work <issue>` is safe:
+- Checks branch/PR state and resumes appropriately
+- Skips completed commits
+- Interrupt anytime and restart
 
 ---
 
 ## Quality Checks
 
 Before PR:
-- [ ] All documentation updated
-- [ ] All chunks implemented
-- [ ] All chunk tests passing
+- [ ] Documentation updated
+- [ ] All chunks implemented with tests
 - [ ] Coverage >= 96%
 - [ ] `just check-all` passing
 - [ ] User acceptance tests verified
-- [ ] All commits pushed
-- [ ] Branch up to date with main
 
 ---
 
-## Error Scenarios
-
-**Dependency not closed:**
-```
-❌ Cannot start - dependencies incomplete:
-   - #123: Setup infrastructure (still open)
-
-Complete #123 first, then run:
-   /work {ISSUE_NUMBER}
-```
-
-**Branch merged:**
-```
-✅ Task #124 complete
-   PR #45 merged on 2025-01-15
-```
-
-**Quality checks failing:**
-```
-⚠️  Task #124 blocked on quality checks
-   Draft PR: #46
-
-   See diagnostics and fix, then re-run:
-   /work 124
-```
-
----
-
-## Example Execution
+## Example
 
 ```bash
 $ /work 124
 
 Loading task #124...
-✓ Issue fetched
-✓ Metadata parsed:
-  - Epic: #123 (JWT Authentication)
-  - Branch: epic/jwt-auth/task-1
-  - Dependencies: none
+✓ Metadata parsed: Epic #123, Branch: epic/jwt-auth/task-1
 
-Checking branch state...
-✓ Branch created from main
-
-Phase 1: Documentation
-✓ Updated README.md
-✓ Updated docs/authentication.md
-✓ Committed and pushed
-
-Phase 2: Implementation
-  Chunk 1: Add JWT dependencies
-  ✓ Updated pyproject.toml
-  ✓ Tests added
-  ✓ Quality checks passing
-  ✓ Committed and pushed
-
-  Chunk 2: Implement token generation
-  ✓ Added token.py
-  ✓ Tests added
-  ✓ Quality checks passing
-  ✓ Committed and pushed
-
-Phase 3: Test Review
-✓ Coverage: 98%
-✓ Enhanced edge case tests
-✓ Committed and pushed
-
-Phase 4: Final Verification
-✓ just check-all passing
-✓ User acceptance tests passing
-
-Phase 5: PR Creation
-✓ PR created: #45
-✓ Epic #123 updated
+Phase 1: Documentation ✓
+Phase 2: Implementation ✓ (2 chunks)
+Phase 3: Test Review ✓ (98% coverage)
+Phase 4: Final Verification ✓
+Phase 5: PR Creation ✓
 
 ✅ Task #124 Complete!
-
 PR: https://github.com/user/repo/pull/45
-
-Commits: 4
-- docs: Update documentation for #124
-- feat: Add JWT dependencies for #124
-- feat: Implement token generation for #124
-- test: Enhance coverage for #124
-
-Quality: ✅ just check-all passing
 Coverage: 98%
-
-Epic Progress:
-  Epic #123: 1 of 5 tasks complete
 
 Next: Review and merge PR #45
 ```
