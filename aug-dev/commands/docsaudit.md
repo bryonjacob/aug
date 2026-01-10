@@ -149,32 +149,12 @@ find . -type d \
 
 ### 7. Run Sanity Check
 
-Using skill's sanity logic:
-
-**Analyze all docs for structural issues:**
-
-**Consolidate detection:**
-- Compare doc scopes
-- Calculate content similarity
-- If >70% similar: recommend consolidation
-
-**Move detection:**
-- Compare doc location to scope patterns
-- Example: `docs/api.md` with scope `src/api/**/*`
-- If mismatch: recommend move
-
-**Delete detection:**
-- Check if scope patterns match any files
-- If scope empty (no matches): recommend delete
-
-**Split detection:**
-- Check doc size (line count)
-- If >500 lines + multiple topics: recommend split
-
-**Merge detection:**
-- Find small docs (<50 lines each)
-- Check if related scopes
-- If related: recommend merge
+Use skill's sanity check patterns to detect:
+- Consolidation opportunities (>70% content overlap)
+- Location mismatches (doc vs scope)
+- Empty scopes (orphaned docs)
+- Large docs to split (>500 lines)
+- Small docs to merge (<50 lines, related scopes)
 
 **Collect recommendations** (don't apply).
 
@@ -275,31 +255,7 @@ audits:
 - Report errors clearly
 - Exit code 1
 
-## Examples
-
-### First Run (Bootstrap)
-
-```bash
-$ /docsaudit --init
-
-Creating .docsaudit.yaml...
-
-Found 15 existing documentation files:
-  README.md
-  CONTRIBUTING.md
-  docs/architecture.md
-  ... (12 more)
-
-Initialized audit tracking with:
-  - Sensible ignore patterns (node_modules, .git, dist, etc.)
-  - All existing docs at current commit
-  - Default scope inferred for each
-  - max_age_days: 90
-
-Next: Run '/docsaudit' for full audit
-```
-
-### Full Audit (Changes Found)
+## Example
 
 ```bash
 $ /docsaudit
@@ -307,136 +263,18 @@ $ /docsaudit
 Documentation Audit Report
 =========================
 
-Coverage (CLAUDE.md files):
-  Created (5):
-    + src/api/v2/CLAUDE.md (new API module, 3 endpoints)
-    + tests/integration/CLAUDE.md (integration test suite)
-    + scripts/deployment/CLAUDE.md (deployment utilities)
-    + src/utils/validators/CLAUDE.md (validation functions)
-    + migrations/CLAUDE.md (database migrations)
+Coverage: Created 3, Un-ignored 1
+Freshness: Updated 5, Current 12
+Recommendations: 2 (consolidate, split)
 
-  Un-ignored (2):
-    + src/utils/legacy/CLAUDE.md (grew to 8 modules, needs docs)
-    + data/seeds/CLAUDE.md (production seed data)
-
-Freshness (content updates):
-  Updated (7):
-    ~ README.md (project structure changed, added new sections)
-    ~ docs/architecture.md (auth system refactored to OAuth)
-    ~ docs/api.md (3 new endpoints, updated error responses)
-    ~ src/auth/CLAUDE.md (OAuth provider integration)
-    ~ src/db/CLAUDE.md (migration system rewritten)
-    ~ tests/CLAUDE.md (added performance test category)
-    ~ .github/workflows/CLAUDE.md (CI updated for new checks)
-
-  Already current (12):
-    ✓ CONTRIBUTING.md
-    ✓ docs/deployment.md
-    ✓ docs/testing.md
-    ✓ src/api/v1/CLAUDE.md
-    ... (8 more)
-
-Recommendations (review these):
-  ⚠ Consolidate: docs/api.md + docs/endpoints.md (95% overlap)
-  ⚠ Move: docs/database.md → src/db/CLAUDE.md (better location)
-  ⚠ Consider deleting: docs/old-v1-api.md (no code in scope)
-  ⚠ Split: README.md (847 lines, extract setup guide)
-
-Files changed: 14
+Files changed: 9
 Review: git diff
-Commit: git commit -am "docs: automated audit updates"
-```
-
-### Specific Directory
-
-```bash
-$ /docsaudit src/auth
-
-Documentation Audit Report
-=========================
-
-Scope: src/auth
-
-Coverage (CLAUDE.md files):
-  Already exists: src/auth/CLAUDE.md
-
-Freshness (content updates):
-  Updated (1):
-    ~ src/auth/CLAUDE.md (OAuth refactor, new providers)
-
-Recommendations:
-  None
-
-Files changed: 1
-Review: git diff src/auth/
-```
-
-### Dry Run
-
-```bash
-$ /docsaudit --dry-run
-
-Documentation Audit Report (DRY RUN)
-===================================
-
-Coverage (CLAUDE.md files):
-  Would create (3):
-    + src/new-module/CLAUDE.md
-    + tests/e2e/CLAUDE.md
-    + scripts/monitoring/CLAUDE.md
-
-Freshness (content updates):
-  Would update (5):
-    ~ README.md
-    ~ docs/api.md
-    ... (3 more)
-
-Recommendations:
-  ⚠ Consolidate: docs/api.md + docs/endpoints.md
-
-DRY RUN - No changes made
-Run without --dry-run to apply changes
-```
-
-### No Changes Needed
-
-```bash
-$ /docsaudit
-
-Documentation Audit Report
-=========================
-
-Coverage: ✓ Complete (all directories documented)
-Freshness: ✓ Current (no stale docs)
-Recommendations: None
-
-Documentation up to date ✓
+Commit: git commit -am "docs: automated audit"
 ```
 
 ## Error Handling
 
-**Git errors:**
-```
-Error: git diff failed for docs/api.md
-  Reason: <error message>
-  Skipping this file, continuing audit...
-```
-
-**File access errors:**
-```
-Error: Cannot write to src/new/CLAUDE.md
-  Reason: Permission denied
-  Skipping, please check permissions
-```
-
-**Parse errors:**
-```
-Warning: Cannot parse .docsaudit.yaml
-  Attempting to fix common issues...
-  If persists, delete and re-run with --init
-```
-
-**Continue on recoverable errors, report clearly.**
+Continues on recoverable errors (git failures, permission issues), reports clearly.
 
 ## Notes
 
