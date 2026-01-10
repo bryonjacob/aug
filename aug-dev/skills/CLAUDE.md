@@ -11,6 +11,7 @@ Reusable skill definitions for aug-dev plugin. Core development workflows, stack
 - `software-development/` - Implementation following specs
 - `software-debugging/` - Systematic bug finding
 - `software-quality/` - Test coverage strategy
+- `test-optimization/` - Test suite speed and redundancy analysis
 
 **Stack Configuration:**
 - `configuring-javascript-stack/` - JS/TS toolchain
