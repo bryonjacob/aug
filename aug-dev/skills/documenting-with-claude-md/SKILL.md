@@ -96,17 +96,11 @@ if user_type == "premium":
 - Bug workarounds
 - Business logic rationale
 
-## Workflow
+## Usage Patterns
 
-**New module:**
-1. Create module CLAUDE.md from template
-2. Add to root module index
-3. Keep updated as code evolves
+**New module:** Create module CLAUDE.md from template, add to root module index, keep updated as code evolves.
 
-**Existing code:**
-1. Create root CLAUDE.md with module index
-2. Create CLAUDE.md for significant modules
-3. Add docstrings and comments
+**Existing code:** Start with root CLAUDE.md and module index, then add CLAUDE.md for significant modules along with docstrings and comments.
 
 ## Maintenance
 
