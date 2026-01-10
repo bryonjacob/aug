@@ -23,12 +23,20 @@ Verify by checking for `$AUG_PATH/aug-dev/commands/plan-chat.md`.
 ### 1. Git Workflow
 **Detect:** `.git/config` (remote URL), `git branch -a` (patterns)
 
+**Key questions:**
+- "What branches do releases come from?" (main, develop, release/*)
+- "How are features developed?" (feature/*, user/*, TICKET-*)
+
 **Options:** Trunk-based, Gitflow, GitHub Flow, Custom
 
 **Adaptations:** Branch prefixes, PR targets, commit message format
 
 ### 2. Issue Tracking
 **Detect:** `gh auth status`, `.jira/config`, `.github/`
+
+**Key questions:**
+- "Where do you track work?" (GitHub Issues, Jira, Linear, files, none)
+- "How do you reference issues in commits?" (#123, PROJ-123, plain text)
 
 **Options:** GitHub Issues, Jira, Linear, File-based, None
 
@@ -37,20 +45,36 @@ Verify by checking for `$AUG_PATH/aug-dev/commands/plan-chat.md`.
 ### 3. CI/CD Platform
 **Detect:** `.github/workflows/`, `Jenkinsfile`, `.gitlab-ci.yml`, `.circleci/config.yml`
 
+**Key questions:**
+- "What triggers CI?" (push, PR, manual dispatch)
+- "What must pass before merge?" (tests, lint, coverage threshold)
+
 **Adaptations:** CI config generation, quality check integration
 
 ### 4. Build Tool
 **Detect:** `justfile`, `Makefile`, `package.json`, `pom.xml`, `build.gradle`
+
+**Key questions:**
+- "What runs your builds?" (just, make, npm, gradle, maven)
+- "What quality gates are missing?" (coverage, complexity, security)
 
 **Adaptations:** Build command interface, quality gates
 
 ### 5. Stack & Tooling
 **Detect:** File extensions, config files, dependency files
 
+**Key questions:**
+- "What tools do you love?" (keep these unchanged)
+- "What tools cause friction?" (candidates for replacement)
+
 **Merge strategy:** Keep working tools, add for gaps, replace only if causing pain
 
 ### 6. Team Conventions
 **Detect:** `git log` (commit format), `gh pr list` (PR naming), directory structure
+
+**Key questions:**
+- "What commit message format?" (conventional commits, Jira-prefix, freeform)
+- "Where does documentation live?" (README, docs/, wiki, Confluence)
 
 ## Adaptation Patterns
 

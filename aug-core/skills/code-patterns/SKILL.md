@@ -50,7 +50,43 @@ Statistical analysis to derive project conventions from code.
 
 **AST Parsing (preferred):** Use language-specific parsers for accurate structure analysis.
 
+**How to scan per pattern type:**
+- **Error handling:** Find try/except blocks, return statements with None/Error, raise statements
+- **Testing:** Scan test directories for file/function naming, fixture usage, mock imports
+- **Imports:** Parse import statements, categorize by source (stdlib, external, internal)
+- **Naming:** Extract function/class/constant names, categorize by case style
+- **Architecture:** Find class constructors, analyze parameter injection, trace layer calls
+
+**Python AST example:**
+```python
+import ast
+
+tree = ast.parse(source_code)
+
+# Find function definitions and analyze naming
+functions = [node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
+snake_case = sum(1 for f in functions if '_' in f.name)
+camel_case = sum(1 for f in functions if f.name[0].islower() and any(c.isupper() for c in f.name))
+
+# Calculate adoption
+total = len(functions)
+print(f"snake_case: {snake_case}/{total} ({100*snake_case/total:.0f}%)")
+```
+
 **Regex Matching (fallback):** For simple patterns when AST unavailable.
+
+**Regex example (Python imports):**
+```python
+import re
+
+# Count absolute vs relative imports
+absolute = len(re.findall(r'^from \w+\.\w+', code, re.MULTILINE))
+relative = len(re.findall(r'^from \.', code, re.MULTILINE))
+
+# Count error handling patterns
+try_except = len(re.findall(r'try:.*?except', code, re.DOTALL))
+return_none = len(re.findall(r'return None\s*$', code, re.MULTILINE))
+```
 
 ### Diff Analysis
 
