@@ -15,6 +15,8 @@ Transform planning artifacts from `/plan-chat` and `/plan-breakdown` into compre
 - Run `/plan-chat` to create architecture
 - Run `/plan-breakdown` to create task specs
 
+**Skills Used**: `software-architecture` skill for issue body templates and formatting.
+
 **Next Command**: Execute tasks with `/work <issue-number>`
 
 ---
