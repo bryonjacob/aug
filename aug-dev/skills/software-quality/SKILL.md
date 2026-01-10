@@ -216,10 +216,8 @@ Not:
 2. Over-testing
 3. Testing implementation details
 
-## Philosophy References
+## Philosophy
 
-Follow: `@ai_context/IMPLEMENTATION_PHILOSOPHY.md`
-
-Testing pyramid: 60% unit, 30% integration, 10% e2e
+Testing pyramid: 60% unit, 30% integration, 10% e2e.
 
 Strategic coverage beats comprehensive coverage.

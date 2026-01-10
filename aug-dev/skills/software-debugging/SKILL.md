@@ -163,12 +163,6 @@ After fixing, suggest:
 3. Documentation that would help
 4. Monitoring to catch earlier
 
-## Philosophy References
-
-Follow: `@ai_context/IMPLEMENTATION_PHILOSOPHY.md`
-
-Check: `@DISCOVERIES.md` for known issues
-
 ## Red Flags
 
 - Fixing symptoms, not root cause
