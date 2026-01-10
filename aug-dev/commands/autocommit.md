@@ -71,6 +71,8 @@ Task(
   - [ ] Tests exist and pass?
   - [ ] Coverage >= 96%?
   - [ ] just check-all passes?
+  - [ ] No security vulnerabilities introduced?
+  - [ ] Breaking changes documented (if any)?
 
   Report: findings, recommendation (APPROVE/REQUEST_CHANGES)"
 )
