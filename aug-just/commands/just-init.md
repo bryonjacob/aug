@@ -69,15 +69,6 @@ Generate level 0 justfile. All baseline commands, stack-appropriate implementati
    4. Upgrade: /just-upgrade 1 (when ready)
    ```
 
-## Stack Templates
-
-**Python:** uv, ruff, mypy, pytest
-**JavaScript:** pnpm, prettier, eslint, vitest
-**Java:** maven, spotless, pmd, junit5
-**Polyglot:** root orchestration with `_run-all` helper
-
-Follow justfile-interface skill for exact implementations.
-
 ## Polyglot Special Case
 
 For polyglot:
