@@ -178,6 +178,6 @@ Skills and commands are tested through:
 
 Defined in `.claude-plugin/plugin.json`:
 - Name: `aug-dev`
-- Version: `3.1.0`
+- Version: `3.2.0`
 - Category: `development`
 - Keywords: development, workflow, ci-cd, testing, refactoring, git, planning

@@ -93,6 +93,6 @@ Skills and commands tested through:
 
 Defined in `.claude-plugin/plugin.json`:
 - Name: `aug-just`
-- Version: `3.0.0`
+- Version: `3.2.0`
 - Category: `development`
 - Keywords: justfile, build, quality, maturity-model

@@ -50,6 +50,6 @@ All skills available for reference using `@skill-name` syntax.
 
 Defined in `.claude-plugin/plugin.json`:
 - Name: `aug-web`
-- Version: `1.2.0`
+- Version: `3.2.0`
 - Category: `development`
 - Keywords: nextjs, react, tailwind, static-sites, web

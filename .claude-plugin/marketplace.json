@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Development workflows, tooling standards, and AI-enhancement capabilities for Claude Code",
-    "version": "3.0.0",
+    "version": "3.2.0",
     "license": "Apache-2.0"
   },
   "plugins": [
@@ -14,7 +14,7 @@
       "name": "aug-dev",
       "source": "./aug-dev",
       "description": "Core development workflows and tooling standards",
-      "version": "3.1.0",
+      "version": "3.2.0",
       "category": "development",
       "keywords": ["development", "workflow", "ci-cd", "testing", "refactoring", "git"]
     },
@@ -22,7 +22,7 @@
       "name": "aug-web",
       "source": "./aug-web",
       "description": "Next.js, static sites, Tailwind, and web development patterns",
-      "version": "3.0.0",
+      "version": "3.2.0",
       "category": "development",
       "keywords": ["nextjs", "react", "tailwind", "static-sites", "web"]
     },
@@ -30,7 +30,7 @@
       "name": "aug-core",
       "source": "./aug-core",
       "description": "AI-enhancement capabilities and workflow orchestration",
-      "version": "3.0.0",
+      "version": "3.2.0",
       "category": "productivity",
       "keywords": ["ai-enhancement", "automation", "workflows", "session", "prompts"]
     },
@@ -38,7 +38,7 @@
       "name": "aug-just",
       "source": "./aug-just",
       "description": "Justfile standard interface management with maturity model",
-      "version": "3.0.0",
+      "version": "3.2.0",
       "category": "development",
       "keywords": ["justfile", "build", "quality", "maturity-model", "standards"]
     }

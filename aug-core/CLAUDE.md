@@ -115,6 +115,6 @@ Capabilities tested through:
 
 Defined in `.claude-plugin/plugin.json`:
 - Name: `aug-core`
-- Version: `3.0.0`
+- Version: `3.2.0`
 - Category: `productivity`
 - Keywords: ai-enhancement, automation, workflows, session, prompts
